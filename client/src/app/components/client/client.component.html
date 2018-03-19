@@ -1,0 +1,37 @@
+<div >
+  <h1>СПИСОК КЛИЕНТОВ </h1>
+  <a [routerLink]="['/client-create']" class="btn btn-default btn-lg align-middle">
+    <i class="material-icons align-middle">note_add</i>
+    <span>НОВЫЙ КЛИЕНТ</span>
+  </a>
+  <table class="table table-hover">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">НОМЕР ТЕЛЕФОНА</th>
+        <th scope="col">ИИН</th>
+        <th scope="col">ФИО</th>
+        <th scope="col">ПОДТВЕРЖДЕН</th>
+        <th scope="col">EMAIL</th>
+        <th scope="col">ПОЛ</th>
+        <th scope="col">ДАТА РОЖДЕНИЯ</th>
+        <th scope="col">ДЕЙСТВИЯ</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let client of clients">
+        <td>{{ client.phoneNumber }}</td>
+        <td>{{ client.uin }}</td>
+        <td>{{ client.name }}</td>
+        <td>{{ client.isVerified }}</td>
+        <td>{{ client.email }}</td>
+        <td>{{ client.sex }}</td>
+        <td>{{ client.birthDate | date: 'd.MM.yyyy' }}</td>
+        <td>
+          <a [routerLink]="['/client-details', client._id]" ><i class="material-icons" placeholder="ПРОСМОТР">pageview</i></a>
+          <a [routerLink]="['/client-edit', client._id]" ><i class="material-icons" placeholder="РЕДАКТИРОВАТЬ">mode_edit</i></a>
+          <a (click)="deleteClient(client._id)" ><i class="material-icons" placeholder="УДАЛИТЬ">delete_forever</i></a>
+        </td>
+      </tr>
+    </tbody>
+  </table> 
+</div>

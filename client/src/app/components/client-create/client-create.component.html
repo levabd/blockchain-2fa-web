@@ -1,0 +1,65 @@
+<section class="create-client">
+  <div class="create-client-container">
+    <mat-card>
+      <mat-card-title-group>
+        <mat-card-title>Новый клиент 2FA</mat-card-title>
+        <i class="material-icons">assignment_ind</i>
+      </mat-card-title-group>
+      <mat-card-footer>
+        <mat-progress-bar mode="determinate" value="100"></mat-progress-bar>
+      </mat-card-footer>
+    </mat-card>
+    <section class="create-client-form" fxLayout="column" fxLayoutAlign="center center">
+      <form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" (ngSubmit)="saveClient()" #clientForm="ngForm">
+        <mat-form-field hintLabel="Максимум 50 символов">
+          <input type="text" matInput placeholder="ФИО клиента" [(ngModel)]="client.name" name="name" required maxlength="50" #nameInput="ngModel">
+          <mat-icon matSuffix>person</mat-icon>
+          <mat-hint align="end">{{nameInput.value?.length || 0}}/50</mat-hint>
+          <mat-error *ngIf="nameInput.hasError('required')">Поле не должно быть пустым</mat-error>
+          <mat-error *ngIf="!nameInput.hasError('required')">Неверно введено имя</mat-error>
+          <mat-error></mat-error>
+        </mat-form-field>
+        <mat-form-field hintLabel="Максимум 20 символов">
+          <input type="tel" matInput placeholder="Номер телефона" [(ngModel)]="client.phoneNumber" maxlength="20" name="phoneNumber" required #phoneNumberInput="ngModel">
+          <mat-icon matSuffix>phone</mat-icon>
+          <mat-hint align="end">{{phoneNumberInput.value?.length || 0}}/20</mat-hint>
+          <mat-error *ngIf="phoneNumberInput.hasError('required')">Поле не должно быть пустым</mat-error>
+          <mat-error *ngIf="!phoneNumberInput.hasError('required')">Неверный формат номера</mat-error>
+          <mat-error></mat-error>
+        </mat-form-field>
+        <mat-form-field hintLabel="Максимум 12 цифр">
+          <input type="text" matInput placeholder="ИИН" [(ngModel)]="client.uin" name="uin" required #uinInput="ngModel" oninput="this.value=this.value.replace(/[^0-9]/g,'');" maxlength="12">
+          <mat-icon matSuffix>contacts</mat-icon>
+          <mat-hint align="end">{{uinInput.value?.length || 0}}/12</mat-hint>
+          <mat-error *ngIf="uinInput.hasError('required')">Поле не должно быть пустым</mat-error>
+          <mat-error *ngIf="!uinInput.hasError('required')">Неверный формат номера</mat-error>
+          <mat-error></mat-error>
+        </mat-form-field>
+        <mat-form-field hintLabel="Максимум 50 символов">
+          <input type="email" matInput placeholder="E-mail" [(ngModel)]="client.email" name="email" required maxlength="50" #emailInput="ngModel">
+          <mat-icon matSuffix>email</mat-icon>
+          <mat-hint align="end">{{emailInput.value?.length || 0}}/50</mat-hint>
+          <mat-error *ngIf="emailInput.hasError('required')">Поле не должно быть пустым</mat-error>
+          <mat-error *ngIf="!emailInput.hasError('required')">Неверный формат email</mat-error>
+          <mat-error></mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select [(ngModel)]="client.sex" name="sex" required placeholder="Пол" required>
+            <mat-option *ngFor="let s of sex" [value]="s">{{s}}
+            </mat-option>
+          </mat-select>
+          <mat-icon matSuffix>wc</mat-icon>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput [matDatepicker]="picker" placeholder="Дата рождения" [(ngModel)]="client.birthDate" name="birthDate" required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <div>
+          <button mat-raised-button  [routerLink]="['/dashboard']">Отмена</button>
+          <button type="submit" mat-raised-button color="primary" [disabled]="!clientForm.form.valid">Создать</button>
+        </div>
+      </form>
+    </section>
+  </div>
+</section>

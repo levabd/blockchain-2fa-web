@@ -1,0 +1,16 @@
+<mat-toolbar color="primary">
+  <div fxHide.gt-xs>
+    <button (click)="onToggleSidenav()" mat-icon-button>
+      <mat-icon>menu</mat-icon>
+    </button>
+  </div>
+  <div><a routerLink="/">КАБИНЕТ АДМИНИСТРАТОРА</a></div>
+  <div fxFlex fxLayout fxLayoutAlign="flex-end" fxHide.xs>
+    <ul fxLayout fxLayoutGap="15px" class="navigation-items">
+      <li *ngIf="!isAuth"><a routerLink="/signup">Регистрация</a></li>
+      <li *ngIf="!isAuth"><a routerLink="/login">Войти</a></li>
+      <li *ngIf="isAuth"><a routerLink="/users">Управление пользователями</a></li>
+      <li *ngIf="isAuth"><a style="cursor: pointer" (click)="onLogout()">Выйти</a></li>
+    </ul>
+  </div>
+</mat-toolbar>

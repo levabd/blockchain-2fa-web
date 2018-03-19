@@ -1,0 +1,34 @@
+<mat-toolbar color="primary">
+  <div fxHide.gt-xs>
+    <button (click)="onToggleSidenav()" mat-icon-button>
+      <mat-icon>menu</mat-icon>
+    </button>
+  </div>
+  <div>
+    <!-- <a routerLink="/">КАБИНЕТ АДМИНИСТРАТОРА</a> -->
+    <li class="navigation-items" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+      <a [routerLink]="['/']">
+        <span>ГЛАВНАЯ</span>
+      </a>
+    </li>
+  </div>
+  <div fxFlex fxLayout fxLayoutAlign="flex-end"  fxHide.xs>
+    <ul fxLayout fxLayoutGap="15px" class="navigation-items">
+      <li *ngIf="authService.loggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+        <a [routerLink]="['/dashboard']">ПАНЕЛЬ ЗАДАЧ </a>
+      </li>
+      <li *ngIf="authService.loggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+        <a [routerLink]="['/profile']">ПРОФИЛЬ </a>
+      </li>
+      <li *ngIf="!authService.loggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+        <a [routerLink]="['/login']">ВОЙТИ </a>
+      </li>
+      <li *ngIf="!authService.loggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+        <a [routerLink]="['/register']">РЕГИСТРАЦИЯ</a>
+      </li>
+      <li *ngIf="authService.loggedIn()">
+        <a style="cursor: pointer" (click)="onLogoutClick()">ВЫЙТИ</a>
+      </li>
+    </ul>
+  </div>
+</mat-toolbar>

@@ -1,0 +1,42 @@
+.edit-client-form {
+    box-shadow: 0 0 5px 0px black;
+    padding: 50px;
+    margin: 20px;
+    height: 600px;
+}
+
+.edit-client-form mat-form-field,
+.edit-client-form mat-checkbox,
+.edit-client-form mat-list {
+    width: 400px;
+}
+
+@media (max-width: 750px) {
+    .edit-client-form mat-form-field,
+    .edit-client-form mat-checkbox,
+    .edit-client-form mat-list {
+        width: 300px;
+        font-size: .99em;
+    }
+    .edit-client-form h1 {
+        font-size: .99em;
+    }
+    .edit-client-form mat-checkbox {
+        font-size: .8em;
+    }
+}
+
+@media (max-width: 450px) {
+    .edit-client-form mat-form-field,
+    .edit-client-form mat-checkbox,
+    .edit-client-form mat-list {
+        width: 200px;
+        font-size: .95em;
+    }
+    .edit-client-form h1 {
+        font-size: .95em;
+    }
+    .edit-client-form mat-checkbox {
+        font-size: .7em;
+    }
+}

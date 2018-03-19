@@ -1,0 +1,99 @@
+<section class="home-guest">
+  <div class="home-container">
+    <mat-card>
+      <mat-card-title-group>
+        <mat-card-title>ПАНЕЛЬ УПРАВЛЕНИЯ 2FA</mat-card-title>
+        <mat-card-subtitle>Система управления клиентами сервиса двухфакторной аутентификации</mat-card-subtitle>
+        <i class="material-icons">settings</i>
+      </mat-card-title-group>
+      <mat-card-footer>
+        <mat-progress-bar mode="determinate" value="100"></mat-progress-bar>
+      </mat-card-footer>
+    </mat-card>
+    <mat-tab-group>
+      <mat-tab label="ВСЕ КЛИЕНТЫ">
+          <button mat-icon-button color="primary" [routerLink]="['/client-create']">
+            <mat-icon aria-label="Создание нового клиента">assignment_ind</mat-icon>
+            Новый клиент
+          </button>
+        <div class="example-header">
+          <mat-form-field>
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Поиск клиента">
+          </mat-form-field>
+        </div>
+        <mat-table #table [dataSource]="dataSource">
+
+          <!-- phoneNumber Column -->
+          <ng-container matColumnDef="phoneNumber">
+            <mat-header-cell *matHeaderCellDef> Номер телефона </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.phoneNumber}} </mat-cell>
+          </ng-container>
+
+          <!-- uin Column -->
+          <ng-container matColumnDef="uin">
+            <mat-header-cell *matHeaderCellDef> ИИН </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.uin}} </mat-cell>
+          </ng-container>
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef> ФИО </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+          </ng-container>
+
+          <!-- isVerified Column -->
+          <ng-container matColumnDef="isVerified">
+            <mat-header-cell *matHeaderCellDef> Подтвержден </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.isVerified}} </mat-cell>
+          </ng-container>
+
+          <!-- email Column -->
+          <ng-container matColumnDef="email">
+            <mat-header-cell *matHeaderCellDef> Почтовый адрес </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.email}} </mat-cell>
+          </ng-container>
+
+          <!-- sex Column -->
+          <ng-container matColumnDef="sex">
+            <mat-header-cell *matHeaderCellDef> Пол </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.sex}} </mat-cell>
+          </ng-container>
+
+          <!-- birthDate Column -->
+          <ng-container matColumnDef="birthDate">
+            <mat-header-cell *matHeaderCellDef> Дата рождения </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.birthDate | date: 'd.MM.yyyy'}} </mat-cell>
+          </ng-container>
+
+          <!-- actions Column -->
+          <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef> Действия </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <button mat-icon-button color="primary" [routerLink]="['/client-details', element._id]">
+                <mat-icon aria-label="Просмотр карточки клиента">pageview</mat-icon>
+              </button>
+              <button mat-icon-button color="accent" [routerLink]="['/client-edit', element._id]">
+                <mat-icon aria-label="Редактирование клиента">mode_edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="deleteClient(element._id)">
+                <mat-icon aria-label="Удаление клиента">delete</mat-icon>
+              </button>
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+
+        <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true">
+        </mat-paginator>
+      </mat-tab>
+      <mat-tab label="ИНФОРМАЦИЯ">
+        
+      </mat-tab>
+      <mat-tab label="ПРОФИЛЬ АДМИНИСТРАТОРА">
+        
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</section>

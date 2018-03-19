@@ -1,0 +1,42 @@
+.register-form {
+    box-shadow: 0 0 5px 0px black;
+    padding: 50px;
+    margin: 20px;
+    height: 600px;
+}
+
+mat-form-field,
+mat-checkbox,
+mat-list {
+    width: 400px;
+}
+
+@media (max-width: 750px) {
+    mat-form-field,
+    mat-checkbox,
+    mat-list {
+        width: 300px;
+        font-size: .99em;
+    }
+    h1 {
+        font-size: .99em;
+    }
+    mat-checkbox {
+        font-size: .8em;
+    }
+}
+
+@media (max-width: 450px) {
+    mat-form-field,
+    mat-checkbox,
+    mat-list {
+        width: 200px;
+        font-size: .95em;
+    }
+    h1 {
+        font-size: .95em;
+    }
+    mat-checkbox {
+        font-size: .7em;
+    }
+}
