@@ -11,7 +11,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class ClientDetailComponent implements OnInit {
 
   client = {};
-
   constructor(private router: Router, private route: ActivatedRoute, private http: HttpClient) { }
 
   ngOnInit() {

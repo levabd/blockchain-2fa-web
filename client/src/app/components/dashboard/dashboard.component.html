@@ -26,56 +26,56 @@
           <!-- phoneNumber Column -->
           <ng-container matColumnDef="phoneNumber">
             <mat-header-cell *matHeaderCellDef> Номер телефона </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.phoneNumber}} </mat-cell>
+            <mat-cell *matCellDef="let element"> {{element.user.PhoneNumber}} </mat-cell>
           </ng-container>
 
           <!-- uin Column -->
           <ng-container matColumnDef="uin">
             <mat-header-cell *matHeaderCellDef> ИИН </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.uin}} </mat-cell>
+            <mat-cell *matCellDef="let element"> {{element.user.Uin}} </mat-cell>
           </ng-container>
 
           <!-- Name Column -->
           <ng-container matColumnDef="name">
             <mat-header-cell *matHeaderCellDef> ФИО </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+            <mat-cell *matCellDef="let element"> {{element.user.Name}} </mat-cell>
           </ng-container>
 
           <!-- isVerified Column -->
           <ng-container matColumnDef="isVerified">
             <mat-header-cell *matHeaderCellDef> Подтвержден </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.isVerified}} </mat-cell>
+            <mat-cell *matCellDef="let element"> {{element.user.IsVerified}} </mat-cell>
           </ng-container>
 
           <!-- email Column -->
           <ng-container matColumnDef="email">
             <mat-header-cell *matHeaderCellDef> Почтовый адрес </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.email}} </mat-cell>
+            <mat-cell *matCellDef="let element"> {{element.user.Email}} </mat-cell>
           </ng-container>
 
           <!-- sex Column -->
           <ng-container matColumnDef="sex">
             <mat-header-cell *matHeaderCellDef> Пол </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.sex}} </mat-cell>
+            <mat-cell *matCellDef="let element"> {{element.user.Sex}} </mat-cell>
           </ng-container>
 
           <!-- birthDate Column -->
           <ng-container matColumnDef="birthDate">
             <mat-header-cell *matHeaderCellDef> Дата рождения </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.birthDate | date: 'd.MM.yyyy'}} </mat-cell>
+            <mat-cell *matCellDef="let element"> {{element.user.Birthdate | date: 'd.MM.yyyy'}} </mat-cell>
           </ng-container>
 
           <!-- actions Column -->
           <ng-container matColumnDef="actions">
             <mat-header-cell *matHeaderCellDef> Действия </mat-header-cell>
             <mat-cell *matCellDef="let element">
-              <button mat-icon-button color="primary" [routerLink]="['/client-details', element._id]">
+              <button mat-icon-button color="primary" [routerLink]="['/client-details', element.address]">
                 <mat-icon aria-label="Просмотр карточки клиента">pageview</mat-icon>
               </button>
-              <button mat-icon-button color="accent" [routerLink]="['/client-edit', element._id]">
+              <button mat-icon-button color="accent" [routerLink]="['/client-edit', element.address]">
                 <mat-icon aria-label="Редактирование клиента">mode_edit</mat-icon>
               </button>
-              <button mat-icon-button color="warn" (click)="deleteClient(element._id)">
+              <button mat-icon-button color="warn" (click)="deleteClient(element.address)">
                 <mat-icon aria-label="Удаление клиента">delete</mat-icon>
               </button>
             </mat-cell>

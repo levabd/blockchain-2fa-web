@@ -63,7 +63,7 @@ export interface Element {
   sex: string;
   birthDate: string;
 }
-const ELEMENT_DATA: Element[] = this.clients;
+// const ELEMENT_DATA: Element[] = this.clients;
 // const ELEMENT_DATA: Element[] = [
 //   {
 //     phoneNumber: '+770544521452',

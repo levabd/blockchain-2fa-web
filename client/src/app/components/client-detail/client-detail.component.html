@@ -1,68 +1,71 @@
-<section class="home-guest">
-  <div class="home-container">
+<section class="detail-client" fxLayout="row" fxLayoutAlign="center center">
+  <div class="detail-client-container">
     <mat-card>
-      <mat-card-title-group>
-        <mat-card-title>Подробные сведения о клиенте 2FA
-            <button mat-raised-button class="btn-all-clients" color="primary" [routerLink]="['/dashboard']">{{ 'Все клиенты' | uppercase }}</button>
-        </mat-card-title>
-        <i class="material-icons">assignment_ind</i>
+      <mat-card-title-group fxLayout="row" fxLayoutAlign="center center">
+        <mat-card-title>Подробные сведения о клиенте</mat-card-title>
+        <button mat-raised-button class="btn-all-clients" color="primary" [routerLink]="['/dashboard']">
+          <mat-icon aria-label="Все клиенты">assignment_ind</mat-icon>
+          {{ '  Все клиенты' | uppercase }}</button>
+        <!-- <i class="material-icons icon-head">assignment_ind</i> -->
       </mat-card-title-group>
       <mat-card-footer>
         <mat-progress-bar mode="determinate" value="100"></mat-progress-bar>
       </mat-card-footer>
     </mat-card>
-    <mat-card>
-      <mat-card-title-group>
+    <div>
+      <mat-card>
+        <mat-card-title-group>
+          <mat-divider></mat-divider>
+          <mat-card-subtitle>ФИО</mat-card-subtitle>
+          <mat-card-title>{{ client.Name }}</mat-card-title>
+          <i class="material-icons">perm_identity</i>
+        </mat-card-title-group>
         <mat-divider></mat-divider>
-        <mat-card-subtitle>ФИО</mat-card-subtitle>
-        <mat-card-title>{{ client.name }}</mat-card-title>
-        <i class="material-icons">perm_identity</i>
-      </mat-card-title-group>
-      <mat-divider></mat-divider>
-      <mat-card-title-group>
-        <mat-card-subtitle>НОМЕР ТЕЛЕФОНА</mat-card-subtitle>
-        <mat-card-title>{{ client.phoneNumber }}</mat-card-title>
-        <i class="material-icons">phone</i>
-      </mat-card-title-group>
-      <mat-divider></mat-divider>
-      <mat-card-title-group>
-        <mat-card-subtitle>ИИН</mat-card-subtitle>
-        <mat-card-title>{{ client.uin }}</mat-card-title>
-        <i class="material-icons">recent_actors</i>
-      </mat-card-title-group>
-      <mat-divider></mat-divider>
-      <mat-card-title-group>
-        <mat-card-subtitle>EMAIL</mat-card-subtitle>
-        <mat-card-title>{{ client.email }}</mat-card-title>
-        <i class="material-icons">email</i>
-      </mat-card-title-group>
-      <mat-divider></mat-divider>
-      <mat-card-title-group>
-        <mat-card-subtitle>ПОЛ</mat-card-subtitle>
-        <mat-card-title>{{ client.sex }}</mat-card-title>
-        <i class="material-icons">wc</i>
-      </mat-card-title-group>
-      <mat-divider></mat-divider>
-      <mat-card-title-group>
-        <mat-card-subtitle>ДАТА РОЖДЕНИЯ</mat-card-subtitle>
-        <mat-card-title>{{ client.birthDate | date: 'd.MM.yyyy' }}</mat-card-title>
-        <i class="material-icons">date_range</i>
-      </mat-card-title-group>
-      <mat-card-title-group>
-        <mat-card-subtitle>ПОДТВЕРЖДЕН В СИСТЕМЕ</mat-card-subtitle>
-        <mat-card-title *ngIf="client.isVerified;else notVerified">Да</mat-card-title>
-        <ng-template #notVerified>
-          <mat-card-title>Нет</mat-card-title>
-        </ng-template>
-        <i class="material-icons">verified_user</i>
-      </mat-card-title-group>
-      <mat-card-footer>
-        <mat-progress-bar mode="determinate" value="100"></mat-progress-bar>
-        <mat-card-actions fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
-          <button mat-raised-button color="primary" [routerLink]="['/client-edit', client._id]">{{ 'Редактировать' | uppercase }}</button>
-          <button mat-raised-button color="warn" (click)="deleteClient(client._id)">{{ 'Удалить' | uppercase }}</button>
-        </mat-card-actions>
-      </mat-card-footer>
-    </mat-card>
+        <mat-card-title-group>
+          <mat-card-subtitle>НОМЕР ТЕЛЕФОНА</mat-card-subtitle>
+          <mat-card-title>{{ client.PhoneNumber }}</mat-card-title>
+          <i class="material-icons">phone</i>
+        </mat-card-title-group>
+        <mat-divider></mat-divider>
+        <mat-card-title-group>
+          <mat-card-subtitle>ИИН</mat-card-subtitle>
+          <mat-card-title>{{ client.Uin }}</mat-card-title>
+          <i class="material-icons">recent_actors</i>
+        </mat-card-title-group>
+        <mat-divider></mat-divider>
+        <mat-card-title-group>
+          <mat-card-subtitle>EMAIL</mat-card-subtitle>
+          <mat-card-title>{{ client.Email }}</mat-card-title>
+          <i class="material-icons">email</i>
+        </mat-card-title-group>
+        <mat-divider></mat-divider>
+        <mat-card-title-group>
+          <mat-card-subtitle>ПОЛ</mat-card-subtitle>
+          <mat-card-title>{{ client.Sex }}</mat-card-title>
+          <i class="material-icons">wc</i>
+        </mat-card-title-group>
+        <mat-divider></mat-divider>
+        <mat-card-title-group>
+          <mat-card-subtitle>ДАТА РОЖДЕНИЯ</mat-card-subtitle>
+          <mat-card-title>{{ client.Birthdate | date: 'd.MM.yyyy' }}</mat-card-title>
+          <i class="material-icons">date_range</i>
+        </mat-card-title-group>
+        <mat-card-title-group>
+          <mat-card-subtitle>ПОДТВЕРЖДЕН В СИСТЕМЕ</mat-card-subtitle>
+          <mat-card-title *ngIf="client.IsVerified;else notVerified">Да</mat-card-title>
+          <ng-template #notVerified>
+            <mat-card-title>Нет</mat-card-title>
+          </ng-template>
+          <i class="material-icons">verified_user</i>
+        </mat-card-title-group>
+        <mat-card-footer>
+          <mat-progress-bar mode="determinate" value="100"></mat-progress-bar>
+          <mat-card-actions fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+            <button mat-raised-button color="primary" [routerLink]="['/client-edit', client._id]">{{ 'Редактировать' | uppercase }}</button>
+            <!-- <button mat-raised-button color="warn" (click)="deleteClient(client._id)">{{ 'Удалить' | uppercase }}</button> -->
+          </mat-card-actions>
+        </mat-card-footer>
+      </mat-card>
+    </div>
   </div>
 </section>
