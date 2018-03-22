@@ -247,7 +247,7 @@ var ClientCreateComponent = (function () {
     };
     ClientCreateComponent.prototype.saveClient = function () {
         var _this = this;
-        this.http.post('http://localhost:8080/clients', this.client)
+        this.http.post('http://127.0.0.1:3002/clients', this.client)
             .subscribe(function (res) {
             var id = res['_id'];
             _this.router.navigate(['/client-details', id]);
@@ -328,13 +328,13 @@ var ClientDetailComponent = (function () {
     };
     ClientDetailComponent.prototype.getClientDetail = function (id) {
         var _this = this;
-        this.http.get('http://localhost:8080/clients/' + id).subscribe(function (data) {
+        this.http.get('http://127.0.0.1:3002/clients/' + id).subscribe(function (data) {
             _this.client = data;
         });
     };
     ClientDetailComponent.prototype.deleteClient = function (id) {
         var _this = this;
-        this.http.delete('http://localhost:8080/clients/' + id)
+        this.http.delete('http://127.0.0.1:3002/clients/' + id)
             .subscribe(function (res) {
             _this.router.navigate(['/clients']);
         }, function (err) {
@@ -416,14 +416,14 @@ var ClientEditComponent = (function () {
     };
     ClientEditComponent.prototype.getClient = function (id) {
         var _this = this;
-        this.http.get('http://localhost:8080/clients/' + id).subscribe(function (data) {
+        this.http.get('http://127.0.0.1:3002/clients/' + id).subscribe(function (data) {
             _this.client = data;
         });
     };
     ClientEditComponent.prototype.updateClient = function (id) {
         var _this = this;
         this.client.updated_date = Date.now();
-        this.http.put('http://localhost:8080/clients/' + id, this.client)
+        this.http.put('http://127.0.0.1:3002/clients/' + id, this.client)
             .subscribe(function (res) {
             var id = res['_id'];
             _this.router.navigate(['/client-details', id]);
@@ -496,7 +496,7 @@ var ClientComponent = (function () {
     }
     ClientComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.http.get('http://localhost:8080/clients').subscribe(function (data) {
+        this.http.get('http://127.0.0.1:3002/clients').subscribe(function (data) {
             console.log(data);
             _this.clients = data;
         });
@@ -649,7 +649,7 @@ var DashboardComponent = (function () {
     };
     DashboardComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.http.get('http://localhost:8080/clients').subscribe(function (data) {
+        this.http.get('http://127.0.0.1:3002/clients').subscribe(function (data) {
             console.log(data);
             _this.clients = data;
             _this.dataSource = new __WEBPACK_IMPORTED_MODULE_2__angular_material_table__["a" /* MatTableDataSource */](_this.clients);
@@ -661,7 +661,7 @@ var DashboardComponent = (function () {
     };
     DashboardComponent.prototype.deleteClient = function (id) {
         var _this = this;
-        this.http.delete('http://localhost:8080/clients/' + id)
+        this.http.delete('http://127.0.0.1:3002/clients/' + id)
             .subscribe(function (res) {
             // this.router.navigate(['/clients']);
             _this.ngOnInit();
@@ -1396,13 +1396,13 @@ var AuthService = (function () {
     AuthService.prototype.registerUser = function (user) {
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["Headers"]();
         headers.append('Content-Type', 'application/json');
-        return this.http.post('http://localhost:8080/users/register', user, { headers: headers })
+        return this.http.post('http://127.0.0.1:3002/users/register', user, { headers: headers })
             .map(function (res) { return res.json(); });
     };
     AuthService.prototype.authenticateUser = function (user) {
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["Headers"]();
         headers.append('Content-Type', 'application/json');
-        return this.http.post('http://localhost:8080/users/authenticate', user, { headers: headers })
+        return this.http.post('http://127.0.0.1:3002/users/authenticate', user, { headers: headers })
             .map(function (res) { return res.json(); });
     };
     AuthService.prototype.getProfile = function () {
@@ -1410,7 +1410,7 @@ var AuthService = (function () {
         this.loadToken();
         headers.append('Authorization', this.authToken);
         headers.append('Content-Type', 'application/json');
-        return this.http.get('http://localhost:8080/users/profile', { headers: headers })
+        return this.http.get('http://127.0.0.1:3002/users/profile', { headers: headers })
             .map(function (res) { return res.json(); });
     };
     AuthService.prototype.storeUserData = function (token, user) {
