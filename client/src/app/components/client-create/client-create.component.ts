@@ -18,7 +18,7 @@ export class ClientCreateComponent implements OnInit {
   }
 
   saveClient() {
-    this.http.post('http://localhost:8080/clients', this.client)
+    this.http.post('http://127.0.0.1:3002/clients', this.client)
       .subscribe(res => {
           const id = res['_id'];
           this.router.navigate(['/client-details', id]);

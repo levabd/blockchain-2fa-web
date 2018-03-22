@@ -29,7 +29,7 @@ return iso;
 /* GET single client BY ID */
 router.get('/:address', function (req, res, next) {
 
-  let optionsOne = generateOptions('http://127.0.0.1:8008/state/' + req.params.address, {
+  let optionsOne = generateOptions('http://sawtooth-rest-api-public:8008/state/' + req.params.address, {
     'Content-Type': 'application/octet-stream'
   });
   let getOneUserData = getState(optionsOne, 'one')

@@ -25,7 +25,7 @@ const decode = buf => JSON.parse(buf.toString())
 
 let userAddress = '5f1db908188607cab913d77feaa875bde99337ea1b07f5babae2761e70ac8de1f8a5bb';
 
-let stateUrl = 'http://127.0.0.1:8008/state';
+let stateUrl = 'http://sawtooth-rest-api-public:8008/state';
 
 let url = stateUrl + '/' + userAddress;
 

@@ -20,13 +20,13 @@ export class ClientDetailComponent implements OnInit {
 
 
   getClientDetail(id) {
-    this.http.get('http://localhost:8080/clients/' + id).subscribe(data => {
+    this.http.get('http://127.0.0.1:3002/clients/' + id).subscribe(data => {
       this.client = data;
     });
   }
 
   deleteClient(id) {
-    this.http.delete('http://localhost:8080/clients/' + id)
+    this.http.delete('http://127.0.0.1:3002/clients/' + id)
       .subscribe(res => {
           this.router.navigate(['/clients']);
         }, (err) => {
