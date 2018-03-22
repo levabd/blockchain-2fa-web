@@ -20,14 +20,14 @@ export class ClientEditComponent implements OnInit {
   }
 
   getClient(id) {
-    this.http.get('http://127.0.0.1:3002/clients/' + id).subscribe(data => {
+    this.http.get('http://176.36.70.236:3002/clients/' + id).subscribe(data => {
       this.client = data;
     });
   }
 
   updateClient(id) {
     this.client.updated_date = Date.now();
-    this.http.put('http://127.0.0.1:3002/clients/' + id, this.client)
+    this.http.put('http://176.36.70.236:3002/clients/' + id, this.client)
       .subscribe(res => {
         let id = res['_id'];
         this.router.navigate(['/client-details', id]);

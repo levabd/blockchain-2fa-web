@@ -14,7 +14,7 @@ export class ClientComponent implements OnInit {
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
-    this.http.get('http://127.0.0.1:3002/clients').subscribe(data => {
+    this.http.get('http://176.36.70.236:3002/clients').subscribe(data => {
       console.log(data);
       this.clients = data;
     });

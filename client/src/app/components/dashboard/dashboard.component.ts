@@ -32,7 +32,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.dataSource.filter = filterValue;
   }
   ngOnInit() {
-    this.http.get('http://127.0.0.1:3002/clients').subscribe(data => {
+    this.http.get('http://176.36.70.236:3002/clients').subscribe(data => {
       console.log(data);
       this.clients = data;
       this.dataSource = new MatTableDataSource<Element>(this.clients);
@@ -43,7 +43,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
   deleteClient(id) {
-    this.http.delete('http://127.0.0.1:3002/clients/' + id)
+    this.http.delete('http://176.36.70.236:3002/clients/' + id)
       .subscribe(res => {
         // this.router.navigate(['/clients']);
         this.ngOnInit();
