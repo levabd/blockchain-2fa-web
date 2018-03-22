@@ -8,34 +8,25 @@ const {
 
 const cbor = require('cbor');
 const protobuf = require('protobufjs');
-
 const atob = require('atob');
 const btoa = require('btoa');
-
-
 const context = createContext('secp256k1');
 const privateKey = context.newRandomPrivateKey();
 const signer = new CryptoFactory(context).newSigner(privateKey);
-
 const request = require('request');
-
 const encode = obj => Buffer.from(JSON.stringify(obj, Object.keys(obj).sort()))
 const decode = buf => JSON.parse(buf.toString())
 
 
 let userAddress = '5f1db908188607cab913d77feaa875bde99337ea1b07f5babae2761e70ac8de1f8a5bb';
-
 let stateUrl = 'http://sawtooth-rest-api-public:8008/state';
-
-let url = stateUrl + '/' + userAddress;
-
 let headers = {
     'Content-Type': 'application/octet-stream'
 }
 
-const generateOptions = (url, headers) => {
+const generateOptions = (_url, headers) => {
     let options = {
-        url: url,
+        url: _url,
         headers: headers
     }
     return options;
@@ -47,15 +38,14 @@ const getState = (options, method) => {
         request.get(options, (err, response) => {
             if (err) return console.log(err)
             var dataBase64 = JSON.parse(response.body).data
-            // console.log(dataBase64);
+            console.log(dataBase64);
             if (method === 'all') resolve(dataBase64);
             var decodeDataBase64 = cbor.decode(new Buffer(dataBase64, 'base64'));
-            //  console.log(decodeDataBase64); 
+             console.log(decodeDataBase64);
             if (method === 'one') resolve(decodeDataBase64);
         })
     });
 }
-
 
 let genOptions = generateOptions(stateUrl, headers);
 
@@ -67,9 +57,9 @@ let getAllUsersData = getState(genOptions, 'all')
 
 let getAllUsers = getAllUsersData.then((data) => {
     let users = [];
-    // console.log(data);
+    // console.log('getAllUsersData', data);
     for (let i = 0; i < data.length; i++) {
-        if (data[i].address.includes('5f1db9')) {
+        if (data[i].address.includes('cd242e')) {
             var decodeDataBase64 = cbor.decode(new Buffer(data[i].data, 'base64'));
             users.push({
                 address: data[i].address,
@@ -129,7 +119,6 @@ let getAllUsers = getAllUsersData.then((data) => {
 
 //     console.log(cbor.decode(new Buffer(dataBase64, 'base64')));
 // });
-
 
 module.exports.getAllUsers = getAllUsers;
 module.exports.generateOptions = generateOptions;
