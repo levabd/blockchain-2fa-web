@@ -5,7 +5,7 @@
 
 /* Action Buttons */
 
-.service-clients-container .button-container {
+/* .service-clients-container .button-container {
     grid-column: span 8;
     display: grid;
     grid-template-columns: repeat(12, 1fr);
@@ -18,12 +18,19 @@
     grid-column-start: 2;
     background-color: #3c4db0cf;
     color: white;
+} */
+
+.service-clients-table-container .client-create-button {
+    background-color: #3d50b6;
+    color: #ffffff;
+    text-transform: uppercase;
+    font-size: 10px;
 }
 
 /* Filter */
 
 .service-clients-container .filter-container {
-    grid-column: span 4;
+    grid-column: span 12;
     padding-right: 20px;
     padding-left: 20px;
     grid-template-columns: repeat(6, 1fr);

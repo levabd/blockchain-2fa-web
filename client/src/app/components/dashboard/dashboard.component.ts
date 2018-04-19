@@ -5,7 +5,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { ClientsTableComponent } from '../clients-table/clients-table.component';
 
 @Component({
   selector: 'app-dashboard',

@@ -22,8 +22,8 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { ClientDetailComponent } from './components/client-detail/client-detail.component';
 import { ClientCreateComponent } from './components/client-create/client-create.component';
 import { ClientEditComponent } from './components/client-edit/client-edit.component';
-import { ClientsTableComponent } from './components/clients-table/clients-table.component';
-import { ServiceClientsTableComponent } from './components/service-clients-table/service-clients-table.component';
+import { ClientsTableComponent } from './components/dashboard/clients-table/clients-table.component';
+import { ServiceClientsTableComponent } from './components/dashboard/service-clients-table/service-clients-table.component';
 
 import { ValidateService } from './services/validate.service';
 import { AuthService } from './services/auth.service';

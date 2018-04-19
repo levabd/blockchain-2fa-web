@@ -13,10 +13,6 @@
       font-size: 5em;
   }
   
-  .demo-card-blue {
-    background-color: #b0becc;  
-    
-  }
 
   .mat-card-actions {
     display: flex;
@@ -28,6 +24,7 @@
       padding: 5px;
       text-align: justify;
   }
+  
   a {
     display: block;
   }

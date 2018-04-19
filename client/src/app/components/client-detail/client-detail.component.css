@@ -1,3 +1,35 @@
+.client-detail-container {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+}
+
+.client-detail-actions {
+    grid-column: span 12;
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    justify-content: space-between;
+}
+
+.client-detail-actions .action-button{
+    margin: 0 10px;
+}
+
+.client-detail-form {
+    grid-column: span 4;
+    box-shadow: 0 0 5px 0px black;
+    padding: 10px;
+    margin: 10px;
+    height: auto;
+}
+
+.log-table-container {
+    grid-column: span 8;
+    box-shadow: 0 0 5px 0px black;
+    padding: 10px;
+    margin: 10px;
+}
+
 .btn-all-clients {
     margin-left: 30px;
 }
@@ -8,33 +40,17 @@
 
 * {
     box-sizing: border-box
-  }
-
-/* .detail-client-card {
-    box-shadow: 0 0 5px 0px black;
-    padding: 50px;
-    margin: 20px;
-    height: 500px;
-    width: 400px;
-} */
+}
 
 mat-list h4 {
     color: gray;
-    padding-bottom: 5px!important;
+    padding-bottom: 5px !important;
 }
 
 mat-list h2 {
-    color: rgb(12, 5, 5)!important;
-    font-size: 1.02em!important;
+    color: rgb(12, 5, 5) !important;
+    font-size: 1.02em !important;
 }
-
-.log-table-container  {
-    box-shadow: 0 0 5px 0px black;
-    width: 100%;
-    padding: 10px;
-    margin: 10px;
-}
-
 
 
 .log-table-filter .mat-form-field {
@@ -44,69 +60,6 @@ mat-list h2 {
     font-size: 0.8em;
 }
 
-.client-detail-container {
-    box-shadow: 0 0 5px 0px black;
-    padding: 10px;
-    margin: 10px;
-    height: auto;
-    width: 400px;
-}
-
-.detail-client-container {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    display: flex;
-    align-items: center;
-    align-content: center;
-    justify-content: center;
-    overflow: auto;
-    margin-top: 65px;
-}
-
-
-/* .detail-client-card mat-card {
-    width: 550px;
-} */
-
-.detail-client-card mat-card-subtitle{
+.detail-client-card mat-card-subtitle {
     padding: 5px;
 }
-
-/* .detail-client-card .material-icons i.icon-head{
-    font-size: 1.99em;
-}
-.detail-client-card .material-icons{
-    font-size: 1.99em;
-} */
-
-
-
-
-/* @media (max-width: 750px) {
-    .detail-client-card mat-card, {
-        width: 300px;
-        font-size: .99em;
-    }
-    .detail-client-card h1 {
-        font-size: .99em;
-    }
-    .detail-client-card mat-checkbox {
-        font-size: .8em;
-    }
-}
-
-@media (max-width: 450px) {
-    .detail-client-card mat-card, {
-        width: 200px;
-        font-size: .95em;
-    }
-    .detail-client-card h1 {
-        font-size: .95em;
-    }
-    .detail-client-card mat-checkbox {
-        font-size: .7em;
-    }
-} */

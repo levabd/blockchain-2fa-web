@@ -17,6 +17,7 @@ export class ClientDetailComponent implements OnInit, AfterViewInit {
   role: any;
   client = {};
   clientLog: any;
+  edit: any = true;
 
   constructor(private http: HttpClient, private authService: AuthService, private router: Router, private route: ActivatedRoute, ) { }
 
@@ -44,9 +45,16 @@ export class ClientDetailComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
+  editMode() {
+    if (this.route.snapshot.params['id'].includes('cd242e') && this.role === 'superadmin') {
+      this.edit = false;
+    }
+  }
+
   getClientDetail(id) {
     this.http.get('http://localhost:8080/api/clients/' + id).subscribe(data => {
       this.client = data;
+      this.editMode();
       this.clientLog = data['Logs'];
       this.dataSource = new MatTableDataSource<Element>(this.clientLog);
       this.dataSource.paginator = this.paginator;
