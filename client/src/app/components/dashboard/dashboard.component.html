@@ -20,37 +20,50 @@
         <app-clients-table></app-clients-table>
       </mat-tab>
       <mat-tab label="ИНСТРУМЕНТЫ АДМИНИСТРАТОРА">
-        <div class="admin-tools-container" fxLayout="row" fxLayoutAlign="left top">
-          <div class="left-containers">
-            <div class="admin-role-container" fxLayout="column" fxLayoutAlign="left top">
-              <h3>Роль администратора</h3>
-              <p>{{ role }}</p>
+
+        <div class="admin-tools-container">
+
+          <div class="admin-role-container">
+            <h3>Роль администратора</h3>
+            <img *ngIf="role=='superadmin'" src="http://icons.veryicon.com/ico/Avatar/Free%20Large%20Boss/Superman.ico" alt="Суперадминистратор">
+            <img *ngIf="role=='admin'" src="https://cdn1.iconfinder.com/data/icons/free-large-boss-icon-set/512/Businessman.png" alt="Просто администратор">
+            <p *ngIf="role=='superadmin'">Администратор 2FA</p>
+            <p *ngIf="role=='admin'">Администратор Казахтелеком</p>
+          </div>
+
+          <div class="admin-state-update-container">
+            <h3>Обновление состояний БД</h3>
+            <button mat-button [routerLink]="['/dashboard']" class="state-update-button" color="primary" (click)="uploadState('tfa')" *ngIf="role=='superadmin'">
+              <mat-icon aria-label="Обновить таблицу из блокчейна TFA">cloud_upload</mat-icon>
+              Сервис 2FA
+            </button>
+            <button mat-button [routerLink]="['/dashboard']" class="state-update-button" color="primary" (click)="uploadState('kaztel')">
+              <mat-icon aria-label="Обновить таблицу из блокчейна TFA">cloud_upload</mat-icon>
+              Казахтелеком
+            </button>
+          </div>
+
+          <div class="admin-delete-dbstate-container">
+            <h3>Удаление состояний из БД</h3>
+            <button mat-button [routerLink]="['/dashboard']" class="dbstate-update-button" color="primary" (click)="dbClear()" *ngIf="role=='superadmin'">
+              <mat-icon aria-label="Очистить базу данных">cloud_upload</mat-icon>
+              Очистить
+            </button>
+            <p>Внимание! Необходима повторная загрузка состояния</p>
+          </div>
+
+          <div class="admin-logs-container">
+            <div class="admin-logs-header">
+              <h3>Просмотр логов</h3>
+              <button mat-button class="upload-log-button" color="primary" (click)="uploadLog()">
+                <mat-icon aria-label="Обновить логи">autorenew</mat-icon>
+              </button>
             </div>
-            <div class="admin-btn-container" fxLayout="column" fxLayoutAlign="left top">
-              <h3>Обновление состояний БД</h3>
-              <button mat-icon-button color="primary" (click)="uploadState('tfa')" *ngIf="role=='superadmin'">
-                <mat-icon aria-label="Обновить таблицу из блокчейна TFA">cloud_upload</mat-icon>
-                Выгрузить состояние 2FA
-              </button>
-              <button mat-icon-button color="primary" (click)="uploadState('kaztel')">
-                <mat-icon aria-label="Обновить таблицу из блокчейна TFA">cloud_upload</mat-icon>
-                Выгрузить состояние Казахтелеком
-              </button>
+            <div class="logs-view-container">
+              <pre>{{allLogs}}</pre>
             </div>
           </div>
-          <div class="right-containers">
-            <div class="admin-logs-container" fxLayout="column" fxLayoutAlign="left top">
-              <div class="head-logs" fxLayout="row" fxLayoutAlign="left top">
-                <h3>Просмотр логов</h3>
-                <button mat-icon-button color="primary" (click)="uploadLog()">
-                  <mat-icon aria-label="Обновить логи">autorenew</mat-icon>
-                </button>
-              </div>
-              <pre>
-                {{allLogs}}
-              </pre>
-            </div>
-          </div>
+
         </div>
       </mat-tab>
     </mat-tab-group>

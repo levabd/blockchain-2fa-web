@@ -61,7 +61,7 @@ export class ClientCreateComponent implements OnInit {
   checkForm = true;
   datePipe: DatePipe = new DatePipe('en-US');
   service: any;
-
+  Loading: any = false;
   constructor(
     private http: HttpClient,
     private authService: AuthService,
@@ -80,44 +80,43 @@ export class ClientCreateComponent implements OnInit {
     });
   }
 
-
   checkClients() {
     this.client['CheckPhoneNumber'] = `77${this.client['CheckPhoneNumber']}`;
+    this.Loading = true;
     this.checkInAllServices(this.client['CheckPhoneNumber']).subscribe(
       data => {
-        // if TFA admin ->
-        // if return data[0] has not error then client equal data[0] and route to link /client-details->
-        // if return data[0] has error then open NewClient form
+        const DataTFA = data[0];
+        const DataKaztel = data[1];
         if (this.role === 'superadmin') {
-          if (!data[0]['error']) {
-            this.client = data[0];
+          if (!DataTFA['error']) {
+            this.client = DataTFA;
             this.openSnackBar('Пользователь с таким номером телефона уже существует в сети TFA');
             this.router.navigate(['/client-details', this.client['address']]);
             this.existingClient = true;
           }
-          if (data[0]['error']) {
+          if (DataTFA['error']) {
             this.openSnackBar('Номер проверен - вы можете добавить пользователя в сеть TFA');
             this.client['PhoneNumber'] = this.client['CheckPhoneNumber'];
             this.checkForm = false;
           }
         }
         if (this.role === 'admin') {
-          if (!data[1]['error']) {
-            this.client = data[0];
+          if (!DataKaztel['error']) {
+            this.client = DataKaztel;
             this.openSnackBar('Пользователь с таким номером телефона уже существует в сети Kaztel');
             this.router.navigate(['/client-details', this.client['address']]);
             this.checkForm = false;
             this.existingClient = true;
           }
-          if (data[1]['error']) {
-            if (!data[0]['error']) {
-              this.client = data[0];
+          if (DataKaztel['error']) {
+            if (!DataTFA['error']) {
+              this.client = DataTFA;
               this.client['AdditionalData'] = {};
               this.openSnackBar('Пользователь с таким номером телефона существует в сети TFA. Загружаем ...');
               this.checkForm = false;
               this.existingClient = true;
             }
-            if (data[0]['error']) {
+            if (DataTFA['error']) {
               this.client['AdditionalData'] = {};
               this.openSnackBar('Номер проверен - вы можете добавить пользователя в сеть Kaztel');
               this.client['PhoneNumber'] = this.client['CheckPhoneNumber'];
@@ -130,7 +129,6 @@ export class ClientCreateComponent implements OnInit {
     );
   }
 
-
   checkInAllServices(phoneNumber) {
     return Observable.forkJoin(
       this.http.get('http://localhost:8080/api/clients/check/tfa/' + phoneNumber),
@@ -138,63 +136,37 @@ export class ClientCreateComponent implements OnInit {
     );
   }
 
-  setService() {
+  saveClient() {
     if (this.role === 'superadmin') {
-      this.client['service'] = 'tfa';
+      this.postClient('tfa');
     }
-
     if (this.role === 'admin') {
-      this.client['service'] = 'kaztel';
+      if (this.existingClient) {
+        this.postClient('kaztel');
+      }
+      if (!this.existingClient) {
+        this.postClient('tfa', false);
+        this.postClient('kaztel');
+      }
     }
   }
 
-  saveClient() {
-    this.setService();
+  postClient(service, route = true) {
+    // let serviceName: any;
+    // if (service === 'tfa') { serviceName = 'TFA'; }
+    // if (service === 'kaztel') { serviceName = 'Казахтелеком'; }
+    this.client['service'] = service;
     this.client['IsVerified'] = false;
-
     this.http.post('http://localhost:8080/api/clients/', this.client)
       .subscribe(res => {
-        if (res['success']) { this.openSnackBar(res['message']); this.router.navigate(['/client-details', res['address']]); }
+        if (res['success']) {
+          this.openSnackBar(res['message'] + ' в сети ');
+          if (route) { this.router.navigate(['/client-details', res['address']]); }
+        }
         if (!res['success']) { this.openSnackBar(res['message'] + ' ' + res['error']); this.router.navigate(['/dashboard']); }
       }, (err) => {
         console.log(err);
       }
       );
   }
-
-  // this.client['CheckPhoneNumber']
-
-  // checkIt(role) {
-  //   if (role === 'superadmin') {
-  //     this.checkClient('tfa', this.client['CheckPhoneNumber']);
-  //     if (this.existingClient) {
-  //       this.router.navigate(['/client-details', this.client['address']]);
-  //     }
-  //   }
-
-  //   if (this.role === 'admin') {
-  //     this.checkClient('kaztel', this.client['CheckPhoneNumber']);
-  //     if (!this.existingClient) {
-  //       this.checkClient('tfa', this.client['CheckPhoneNumber']);
-  //     }
-  //   }
-  // }
-  // checkClient(service, phoneNumber) {
-  //   this.http.get('http://localhost:8080/clients/check/' + service + '/' + phoneNumber).subscribe(data => {
-  //     if (!data['error']) {
-  //       this.existingClient = true;
-  //       this.client = data;
-  //       if (this.role === 'superadmin') {
-  //         this.router.navigate(['/client-details', this.client['address']]);
-  //       }
-  //       // this.client['Birthdate'] = this.datePipe.transform(this.client['Birthdate'], 'dd.MM.yyyy');
-  //     } else {
-  //       if (!this.existingClient) {
-  //         this.checkForm = false;
-  //       }
-  //       this.errorData = JSON.stringify(data);
-  //     }
-  //   });
-  // }
-
 }

@@ -1,8 +1,15 @@
+.register-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
 .register-form {
+    grid-column: span 1;
+    grid-column-start: 2;
     box-shadow: 0 0 5px 0px black;
     padding: 50px;
-    margin: 20px;
-    height: 600px;
+    margin: 50px;
+    height: auto;
 }
 
 mat-form-field,

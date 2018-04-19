@@ -1,10 +1,10 @@
 <div class="clients-container">
-  <div class="button-container">
-      <button *ngIf="role=='admin'" class="client-create-button" mat-icon-button color="primary" [routerLink]="['/client-create']">
+  <!-- <div class="button-container">
+      <button *ngIf="role=='admin'" class="client-create-button" mat-button color="primary" [routerLink]="['/client-create']">
         <mat-icon aria-label="Создание нового клиента">assignment_ind</mat-icon>
         Новый клиент
       </button>
-  </div>
+  </div> -->
   
   <div class="filter-container">
       <mat-form-field class="client-filter">
@@ -76,12 +76,17 @@
   
       <!-- actions Column -->
       <ng-container matColumnDef="Actions">
-          <mat-header-cell *matHeaderCellDef>Действия</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef>
+            <button *ngIf="role=='admin'" class="client-create-button" mat-button color="primary" [routerLink]="['/client-create']">
+            <mat-icon aria-label="Создание нового клиента">assignment_ind</mat-icon>
+            Новый клиент
+          </button>
+        </mat-header-cell>
           <mat-cell *matCellDef="let element">
             <button mat-icon-button class="view-btn" [routerLink]="['/client-details', element.Address]">
               <mat-icon aria-label="Просмотр карточки клиента">pageview</mat-icon>
             </button>
-            <button mat-icon-button class="edit-btn" [routerLink]="['/client-edit', element.Address]">
+            <button mat-icon-button *ngIf="role=='admin'" class="edit-btn" [routerLink]="['/client-edit', element.Address]">
               <mat-icon aria-label="Редактирование клиента">mode_edit</mat-icon>
             </button>
             <!-- <button mat-icon-button color="warn" (click)="deleteClient(element.address)">

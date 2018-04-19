@@ -1,28 +1,30 @@
-<section class="login-form" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
-  <mat-list>
-    <mat-list-item>
-      <h1>{{'Вход в систему' | uppercase }}</h1>
-    </mat-list-item>
-    <mat-divider></mat-divider>
-  </mat-list>
-  <form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" #signupForm="ngForm" (submit)="onLoginSubmit()">
-    <mat-form-field hintLabel="Максимум 20 символов">
-      <input type="text" matInput placeholder="Введите Ваш логин" [(ngModel)]="username" name="username" required maxlength="20"
-        #usernameInput="ngModel">
-      <mat-icon matSuffix>contacts</mat-icon>
-      <mat-hint align="end">{{usernameInput.value?.length || 0}}/20</mat-hint>
-      <mat-error *ngIf="usernameInput.hasError('required')">Поле не должно быть пустым</mat-error>
-      <mat-error *ngIf="!usernameInput.hasError('required')">Неверный формат логина</mat-error>
-      <mat-error></mat-error>
-    </mat-form-field>
-    <mat-form-field hintLabel="Минимум 6 символов">
-      <input type="password" matInput placeholder="Введите Ваш пароль" [type]="hide ? 'password' : 'text'" [(ngModel)]="password"
-        name="password" required minlength="6" #pwInput="ngModel">
-      <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
-      <mat-hint align="end">{{ pwInput.value?.length}} / 6</mat-hint>
-      <mat-error>Пароль не может быть меньше 6 символов</mat-error>
-    </mat-form-field>
-    <mat-checkbox ngModel name="remember-me" value="remember-me" color="primary">Запомнить меня</mat-checkbox>
-    <button type="submit" mat-raised-button color="primary" [disabled]="signupForm.invalid">Войти</button>
-  </form>
-</section>
+<div class="login-container">
+  <section class="login-form" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
+    <mat-list>
+      <mat-list-item>
+        <h1>ВХОД В СИСТЕМУ</h1>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+    </mat-list>
+    <form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" #signupForm="ngForm" (submit)="onLoginSubmit()">
+      <mat-form-field hintLabel="Максимум 20 символов">
+        <input type="text" matInput placeholder="Введите Ваш логин" [(ngModel)]="username" name="username" required maxlength="20"
+          #usernameInput="ngModel">
+        <mat-icon matSuffix>contacts</mat-icon>
+        <mat-hint align="end">{{usernameInput.value?.length || 0}}/20</mat-hint>
+        <mat-error *ngIf="usernameInput.hasError('required')">Поле не должно быть пустым</mat-error>
+        <mat-error *ngIf="!usernameInput.hasError('required')">Неверный формат логина</mat-error>
+        <mat-error></mat-error>
+      </mat-form-field>
+      <mat-form-field hintLabel="Минимум 6 символов">
+        <input type="password" matInput placeholder="Введите Ваш пароль" [type]="hide ? 'password' : 'text'" [(ngModel)]="password"
+          name="password" required minlength="6" #pwInput="ngModel">
+        <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+        <mat-hint align="end">{{ pwInput.value?.length}} / 6</mat-hint>
+        <mat-error>Пароль не может быть меньше 6 символов</mat-error>
+      </mat-form-field>
+      <mat-checkbox ngModel name="remember-me" value="remember-me" color="primary">Запомнить меня</mat-checkbox>
+      <button type="submit" mat-raised-button color="primary" [disabled]="signupForm.invalid">Войти</button>
+    </form>
+  </section>
+</div>

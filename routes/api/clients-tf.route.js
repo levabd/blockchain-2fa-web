@@ -22,6 +22,8 @@ router.get('/state/log/', StateController.getLog);
 
 router.post('/', ClientController.createClient);//-
 
+router.post('/update/', ClientController.updateClient);//-
+
 // Export the Router
 
 module.exports = router;

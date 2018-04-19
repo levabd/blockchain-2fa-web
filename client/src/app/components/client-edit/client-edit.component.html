@@ -1,5 +1,5 @@
-<section class="edit-client">
-  <div class="edit-client-container">
+<div class="edit-client-container">
+  <div class="edit-client-card">
     <mat-card>
       <mat-card-title-group>
         <mat-card-title>Редактирование клиента 2FA</mat-card-title>
@@ -10,7 +10,7 @@
       </mat-card-footer>
     </mat-card>
     <section class="edit-client-form" fxLayout="column" fxLayoutAlign="center center">
-      <form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" (ngSubmit)="updateClient(client.address)" #clientForm="ngForm">
+      <form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" (ngSubmit)="updateClient()" #clientForm="ngForm">
         <mat-form-field hintLabel="Максимум 50 символов">
           <input required matInput type="text" placeholder="ФИО клиента" name="Name" [(ngModel)]="client.Name" #nameInput="ngModel"
             oninput="this.value=this.value.replace(/[^а-яА-Я\s]+/g,'');" maxlength="50">
@@ -38,7 +38,7 @@
           <mat-error *ngIf="!uinInput.hasError('required')">Неверный формат номера</mat-error>
           <mat-error></mat-error>
         </mat-form-field>
-
+  
         <mat-form-field hintLabel="Максимум 50 символов">
           <input required matInput type="email" placeholder="E-mail" name="Email" [(ngModel)]="client.Email" #emailInput="ngModel"
             maxlength="50" [disabled]="existingClient">
@@ -48,7 +48,7 @@
           <mat-error *ngIf="!emailInput.hasError('required')">Неверный формат email</mat-error>
           <mat-error></mat-error>
         </mat-form-field>
-
+  
         <mat-form-field>
           <mat-select required placeholder="Пол" name="Sex" [(ngModel)]="client.Sex" [disabled]="existingClient">
             <mat-option *ngFor="let sex of sexs" [value]="sex.value">
@@ -57,34 +57,33 @@
           </mat-select>
           <mat-icon matSuffix>wc</mat-icon>
         </mat-form-field>
-
+  
         <!-- <mat-form-field *ngIf="!existingClient">
-          <input disabled matInput [matDatepicker]="picker" placeholder="Дата рождения" name="Birthdate" [(ngModel)]="client.Birthdate"
-            [min]="minDate" [max]="maxDate">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker disabled="false"></mat-datepicker>
-        </mat-form-field> -->
-
-        <mat-form-field hintLabel="Формат даты ДД.ММ.ГГГ" *ngIf="!existingClient">
+            <input disabled matInput [matDatepicker]="picker" placeholder="Дата рождения" name="Birthdate" [(ngModel)]="client.Birthdate"
+              [min]="minDate" [max]="maxDate">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker disabled="false"></mat-datepicker>
+          </mat-form-field> -->
+  
+        <mat-form-field hintLabel="Формат даты ДД.ММ.ГГГГ" *ngIf="!existingClient">
           <input matInput placeholder="Дата рождения" name="Birthdate" [(ngModel)]="client.Birthdate" [disabled]="existingClient" onkeyup="var v = this.value;
-        if (v.match(/^\d{2}$/) !== null) {
-            if (!parseInt(this.value) || parseInt(this.value) > 31){
-              this.value = '';
+          if (v.match(/^\d{2}$/) !== null) {
+              if (!parseInt(this.value) || parseInt(this.value) > 31){
+                this.value = '';
+              } else {
+                this.value = v + '.';
+              }
+          } else if (v.match(/^\d{2}\.\d{2}$/) !== null) {
+            if (!parseInt(this.value.slice(3)) || parseInt(this.value.slice(3)) > 12){
+              this.value = v.slice(0, -2);
             } else {
               this.value = v + '.';
             }
-        } else if (v.match(/^\d{2}\.\d{2}$/) !== null) {
-          if (!parseInt(this.value.slice(3)) || parseInt(this.value.slice(3)) > 12){
-            this.value = v.slice(0, -2);
-          } else {
-            this.value = v + '.';
-          }
-         }else if (v.match(/^\d{2}\.\d{2}\.\d{4}$/) !== null) {
-          if (!parseInt(this.value.slice(6)) || parseInt(this.value.slice(6)) > 2000 || parseInt(this.value.slice(6)) < 1910){
-            this.value = v.slice(0, -4);
-          }
-        }" maxlength="10" type="text"
-        oninput="this.value=this.value.replace(/[^0-9]|[.]/g,'');">
+           }else if (v.match(/^\d{2}\.\d{2}\.\d{4}$/) !== null) {
+            if (!parseInt(this.value.slice(6)) || parseInt(this.value.slice(6)) > 2000 || parseInt(this.value.slice(6)) < 1910){
+              this.value = v.slice(0, -4);
+            }
+          }" maxlength="10" type="text">
           <mat-icon matSuffix>date_range</mat-icon>
         </mat-form-field>
         <mat-form-field hintLabel="Максимум 6 цифр" *ngIf="role=='admin' && client.AdditionalData">
@@ -96,7 +95,7 @@
           <mat-error *ngIf="!personalAccountInput.hasError('required')">Неверный формат номера</mat-error>
           <mat-error></mat-error>
         </mat-form-field>
-
+  
         <mat-form-field *ngIf="role=='admin' && client.AdditionalData">
           <mat-select required placeholder="Регион" name="Region" [(ngModel)]="client.AdditionalData.Region">
             <mat-option *ngFor="let region of regionsRu" [value]="region.value">
@@ -105,7 +104,7 @@
           </mat-select>
           <mat-icon matSuffix>edit_location</mat-icon>
         </mat-form-field>
-
+  
         <div>
           <button mat-raised-button [routerLink]="['/dashboard']">Отмена</button>
           <button mat-raised-button type="submit" color="primary" [disabled]="!clientForm.form.valid">Применить</button>
@@ -113,4 +112,4 @@
       </form>
     </section>
   </div>
-</section>
+</div>

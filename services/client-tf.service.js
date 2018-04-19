@@ -56,6 +56,7 @@ exports.getState = (options, method, service) => {
                 //  console.log(decodeDataBase64);
                 if (method === 'one') {
                     const messages = protobufLib(fs.readFileSync(`/home/vasiliy/workdirs/2fa-cabinet-git/models/proto/${service}.proto`));
+                    // const messages = protobufLib(fs.readFileSync(`../models/proto/${service}.proto`));
                     var decodeDataBase64 = messages.User.decode(new Buffer(dataBase64, 'base64'));
                     if (decodeDataBase64.AdditionalData) {
                         decodeDataBase64.AdditionalData = JSON.parse(JSON.parse(decodeDataBase64.AdditionalData));
@@ -84,11 +85,11 @@ exports.addressHashCreate = (service, phoneNumber) => {
     });
 }
 
-exports.payloadCreate = (body) => {
+exports.payloadCreate = (body, action) => {
 
     if (body.service == 'tfa') {
         payload = {
-            Action: 0, // create | update | delete
+            Action: action, // create | update | delete
             PhoneNumber: body.PhoneNumber,
             PayloadUser: {
                 PhoneNumber: body.PhoneNumber,
@@ -105,7 +106,7 @@ exports.payloadCreate = (body) => {
         
     if (body.service == 'kaztel') {
         payload = {
-            Action: 0, // create | update | delete
+            Action: action, // create | update | delete
             PhoneNumber: body.PhoneNumber,
             PayloadUser: {
                 PhoneNumber: body.PhoneNumber,
@@ -132,7 +133,7 @@ exports.batchListBytesCreate = (payload, service, address) => {
         console.log(`Into batchListBytesCreate | payload = ${JSON.stringify(payload)} | service = ${service} | address = ${address} |`);
         // const payloadBytes = cbor.encode(payload);
         const messages = protobufLib(fs.readFileSync(`/home/vasiliy/workdirs/2fa-cabinet-git/models/proto/${service}.proto`));
-
+        // const messages = protobufLib(fs.readFileSync(`../models/proto/${service}.proto`));
         const payloadBytes = messages.SCPayload.encode(payload);
 
         console.log('payloadBytes.length.', payloadBytes);

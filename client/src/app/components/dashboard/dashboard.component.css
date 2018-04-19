@@ -22,17 +22,74 @@
   grid-column: span 12;
 }
 
-/* .mat-form-field {
-  font-size: 14px;
-  width: 100%;
-} */
-
-.mat-table {
-  overflow: auto;
-  max-height: 600px;
+.admin-tools-container {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  min-width: 900px;
 }
 
-.btn-container button {
+.admin-role-container,
+.admin-state-update-container,
+.admin-delete-dbstate-container {
+  grid-column: span 4;
+  padding: 10px;
+  border: solid 1px #00000036;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 10px;
+  align-items: center;
+   /* justify-content: center; */
+  justify-content: space-around;
+}
+
+.admin-role-container img {
+  width: 128px;  
+}
+
+.admin-logs-container {
+  grid-column: span 12;
+  border: solid 1px #00000036;
+  padding: 10px 50px;
+}
+
+.admin-logs-header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  padding-left: 20px;
+  /* box-shadow: 0px -1px 5px 0px black; */
+  box-shadow: 0px -1px 5px 0px rgba(0, 0, 0, 0.4);
+  margin-bottom: 5px;
+}
+
+.logs-view-container {
+  height: 500px;
+  overflow: auto;
+}
+
+.state-update-button {
+  width: 50%;
+  margin-top: 10px;
+  box-shadow: 0px -1px 3px 0px rgba(0, 0, 0, 0.4);
+}
+
+.logs-view-container pre {
+  background-color: #080808;
+  padding: 10px;
+  color: gainsboro;
+  font-family: monospace;
+  white-space: pre-line;
+}
+
+/* .mat-table {
+  overflow: auto;
+  max-height: 600px;
+} */
+
+/* .btn-container button {
   width: 150px;
   padding: 5px;
   margin: 5px;
@@ -71,4 +128,4 @@ pre {
   background-color: #ffffff;
   border: 1px solid #898989;
   padding: 5px;
-}
+} */

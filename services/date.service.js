@@ -5,8 +5,6 @@ exports.getDate = () => {
     let month = months[moment.getMonth()];
     let date = moment.getDate();
     let hour = moment.getHours();
-    // var min = a.getMinutes();
-    // var sec = a.getSeconds();
     let min = moment.getMinutes() < 10 ? '0' + moment.getMinutes() : moment.getMinutes();
     let sec = moment.getSeconds() < 10 ? '0' + moment.getSeconds() : moment.getSeconds();
     let time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;

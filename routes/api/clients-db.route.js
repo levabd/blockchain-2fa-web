@@ -7,7 +7,7 @@ var router = express.Router()
 var ClientController = require('../../controllers/clients-db.controller');
 
 
-// Map each API to the Controller FUnctions
+// Map each API to the Controller Functions
 
 router.get('/', ClientController.getClients);
 

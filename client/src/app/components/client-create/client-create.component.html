@@ -1,7 +1,7 @@
 
 
 <div class="check-client-container" *ngIf="checkForm">
-  <div class="create-client-form check-client-form">
+  <div class="create-client-form check-client-form" *ngIf="!Loading">
     <form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" (ngSubmit)="checkClients();" #checkForm="ngForm">
       <mat-form-field hintLabel="Формат номера +77XXXXXXXXX">
         <span matPrefix>+7&nbsp;7</span>
@@ -15,12 +15,14 @@
       </mat-form-field>
       <button type="submit" mat-raised-button color="primary" [disabled]="!checkForm.form.valid">Проверить номер</button>
     </form>
+    <mat-spinner *ngIf="Loading"></mat-spinner>
   </div>
 </div>
 
 
+
 <div class="create-client-container" *ngIf="!checkForm">
-  <section class="create-client">
+  <section class="create-client-card">
     <mat-card>
       <mat-card-title-group>
         <mat-card-title>Новый клиент 2FA</mat-card-title>

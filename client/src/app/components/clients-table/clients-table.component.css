@@ -1,29 +1,38 @@
 .clients-container {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
+    background: url(https://liter.kz/image/s/w/976/13966-6-kazahtelekom_predostav_ru.png) no-repeat center top;
+    background-size: 500px 250px;
 }
 
 /* Action Buttons */
 
-.clients-container .button-container {
+/* .clients-container .button-container {
     grid-column: span 8;
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     justify-items: start;
     align-items: center;
-}
+} */
 
-.clients-container .button-container .client-create-button {
+/* .clients-container .button-container .client-create-button {
     grid-column: span 1;
     grid-column-start: 2;
     background-color: #3c4db0cf;
     color: white;
+} */
+
+.clients-table-container .client-create-button {
+    background-color: #f3df48d9;
+    color: #3754f1;
+    text-transform: uppercase;
+    font-size: 10px;
 }
 
 /* Filter */
 
 .clients-container .filter-container {
-    grid-column: span 4;
+    grid-column: span 12;
     padding-right: 20px;
     padding-left: 20px;
     grid-template-columns: repeat(6, 1fr);
@@ -55,7 +64,7 @@
 }
 
 .clients-table-container .mat-table {
-    margin: 0 0 40px 0;
+    /* margin: 0 0 40px 0; */
     width: 100%;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }

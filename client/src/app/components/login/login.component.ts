@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
-import { FlashMessagesService } from 'angular2-flash-messages';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-login',
@@ -17,9 +17,15 @@ export class LoginComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private flashMessage: FlashMessagesService) { }
+    public snackBar: MatSnackBar) { }
 
   ngOnInit() {
+  }
+
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 5000,
+    });
   }
 
   onLoginSubmit() {
@@ -32,10 +38,10 @@ export class LoginComponent implements OnInit {
     this.authService.authenticateUser(user).subscribe(data => {
       if (data.success) {
         this.authService.storeUserData(data.token, data.user);
-        this.flashMessage.show('Вы успешно авторизовались в системе', { cssClass: 'alert-success', timeout: 5000 });
+        this.openSnackBar('Вы успешно авторизовались в системе', 'OK');
         this.router.navigate(['dashboard']);
       } else {
-        this.flashMessage.show(data.msg, { cssClass: 'alert-danger', timeout: 5000 });
+        this.openSnackBar(data.msg, 'OK');
         this.router.navigate(['login']);
       }
     });

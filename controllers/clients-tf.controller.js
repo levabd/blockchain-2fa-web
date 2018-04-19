@@ -134,10 +134,32 @@ exports.checkClientNumber = async function (req, res, next) {
 exports.createClient = async function (req, res, next) {
 
     //Create Payload
-    let payload = await ClientTFService.payloadCreate(req.body);
+    let payload = await ClientTFService.payloadCreate(req.body, 0);
 
     // Create Address
     let address = await ClientTFService.addressHashCreate(req.body.service, req.body.PhoneNumber);
+
+    // Create Batch List of Bytes
+    let batchListBytes = await ClientTFService.batchListBytesCreate(payload, req.body.service, address);
+
+    // Try Create Client & Get Batch Status Link
+    let batchStatusesLink = await ClientTFService.createClient(batchListBytes);
+
+    // Check Batch State Status & Response
+    let checkBatchStatus = await ClientTFService.checkBatchStatus(res, batchStatusesLink, address);
+
+    return res;
+}
+
+// Create Client in State
+exports.updateClient = async function (req, res, next) {
+
+    //Create Payload
+    let payload = await ClientTFService.payloadCreate(req.body, 1);
+
+    // Create Address
+    let address = await ClientTFService.addressHashCreate(req.body.service, req.body.PhoneNumber);
+    // let address = req.body.address;
 
     // Create Batch List of Bytes
     let batchListBytes = await ClientTFService.batchListBytesCreate(payload, req.body.service, address);

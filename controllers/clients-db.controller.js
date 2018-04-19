@@ -144,7 +144,8 @@ exports.dropCollectionClients = async function (req, res, next) {
         console.log('Succesfully Clients Collection Dropped');
         return res.status(204).json({
             status: 204,
-            message: "Succesfully Clients Collection Dropped"
+            message: "Succesfully Clients Collection Dropped",
+            data: dropClients
         })
     } catch (e) {
         return res.status(400).json({

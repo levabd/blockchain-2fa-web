@@ -1,3 +1,13 @@
+.edit-client-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.edit-client-card {
+    grid-column: span 1;
+    grid-column-start: 2;
+}
+
 .edit-client-form {
     box-shadow: 0 0 5px 0px black;
     padding: 50px;

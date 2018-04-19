@@ -106,71 +106,19 @@ export class ClientEditComponent implements OnInit {
     const date = moment.getDate() < 10 ? '0' + moment.getDate() : moment.getDate();
     const time = date + '.' + month + '.' + year;
     return time;
-}
-  updateClient(id) {
-    this.http.put('http://localhost:8080/api/clients/' + id, this.client)
+  }
+
+
+  updateClient() {
+    this.setService();
+    this.http.post('http://localhost:8080/api/clients/update/', this.client)
       .subscribe(res => {
-        this.router.navigate(['/client-details', res['address']]);
+        if (res['success']) { this.openSnackBar(res['message']); this.router.navigate(['/client-details', res['address']]); }
+        if (!res['success']) { this.openSnackBar(res['message'] + ' ' + res['error']); this.router.navigate(['/dashboard']); }
       }, (err) => {
         console.log(err);
       }
       );
-  }
-
-  checkClients() {
-    this.client['CheckPhoneNumber'] = `77${this.client['CheckPhoneNumber']}`;
-    this.checkInAllServices(this.client['CheckPhoneNumber']).subscribe(
-      data => {
-        // if TFA admin ->
-        // if return data[0] has not error then client equal data[0] and route to link /client-details->
-        // if return data[0] has error then open NewClient form
-        if (this.role === 'superadmin') {
-          if (!data[0]['error']) {
-            this.client = data[0];
-            this.openSnackBar('Пользователь с таким номером телефона уже существует в сети TFA');
-            this.router.navigate(['/client-details', this.client['address']]);
-            this.existingClient = true;
-          }
-          if (data[0]['error']) {
-            this.openSnackBar('Номер проверен - вы можете добавить пользователя в сеть TFA');
-            this.client['PhoneNumber'] = this.client['CheckPhoneNumber'];
-            this.checkForm = false;
-          }
-        }
-        if (this.role === 'admin') {
-          if (!data[1]['error']) {
-            this.client = data[0];
-            this.openSnackBar('Пользователь с таким номером телефона уже существует в сети Kaztel');
-            this.router.navigate(['/client-details', this.client['address']]);
-            this.existingClient = true;
-          }
-          if (data[1]['error']) {
-            if (!data[0]['error']) {
-              this.client = data[0];
-              this.client['AdditionalData'] = {};
-              this.openSnackBar('Пользователь с таким номером телефона существует в сети TFA. Загружаем ...');
-              this.checkForm = false;
-              this.existingClient = true;
-            }
-            if (data[0]['error']) {
-              this.client['AdditionalData'] = {};
-              this.openSnackBar('Номер проверен - вы можете добавить пользователя в сеть Kaztel');
-              this.client['PhoneNumber'] = this.client['CheckPhoneNumber'];
-              this.checkForm = false;
-              this.existingClient = false;
-            }
-          }
-        }
-      }
-    );
-  }
-
-
-  checkInAllServices(phoneNumber) {
-    return Observable.forkJoin(
-      this.http.get('http://localhost:8080/api/clients/check/tfa/' + phoneNumber),
-      this.http.get('http://localhost:8080/api/clients/check/kaztel/' + phoneNumber)
-    );
   }
 
   setService() {
@@ -183,18 +131,5 @@ export class ClientEditComponent implements OnInit {
     }
   }
 
-  saveClient() {
-    this.setService();
-    this.client['IsVerified'] = false;
-
-    this.http.post('http://localhost:8080/api/clients/', this.client)
-      .subscribe(res => {
-        if (res['success']) { this.openSnackBar(res['message']); this.router.navigate(['/client-details', res['address']]); }
-        if (!res['success']) { this.openSnackBar(res['message'] + ' ' + res['error']); this.router.navigate(['/dashboard']); }
-      }, (err) => {
-        console.log(err);
-      }
-      );
-  }
 
 }
