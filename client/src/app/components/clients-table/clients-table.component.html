@@ -1,0 +1,99 @@
+<div class="clients-container">
+  <div class="button-container">
+      <button *ngIf="role=='admin'" class="client-create-button" mat-icon-button color="primary" [routerLink]="['/client-create']">
+        <mat-icon aria-label="Создание нового клиента">assignment_ind</mat-icon>
+        Новый клиент
+      </button>
+  </div>
+  
+  <div class="filter-container">
+      <mat-form-field class="client-filter">
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Поиск клиента">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+  </div>
+  
+  <div class="clients-table-container">
+    <mat-table #table [dataSource]="dataSource">
+  
+      <!-- phoneNumber Column -->
+      <ng-container matColumnDef="PhoneNumber">
+        <mat-header-cell *matHeaderCellDef>Номер телефона</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.PhoneNumber}} </mat-cell>
+      </ng-container>
+  
+      <!-- uin Column -->
+      <ng-container matColumnDef="Uin">
+        <mat-header-cell *matHeaderCellDef>ИИН</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.Uin}} </mat-cell>
+      </ng-container>
+  
+      <!-- Name Column -->
+      <ng-container matColumnDef="Name">
+        <mat-header-cell *matHeaderCellDef>ФИО</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.Name}} </mat-cell>
+      </ng-container>
+  
+      <!-- isVerified Column -->
+      <ng-container matColumnDef="IsVerified">
+        <mat-header-cell *matHeaderCellDef>Подтвержден</mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <div *ngIf="element.IsVerified; then thenBlock; else elseBlock"> </div>
+          <ng-template #thenBlock>
+            <div> Да </div>
+          </ng-template>
+          <ng-template #elseBlock>
+            <div> Нет </div>
+          </ng-template>
+        </mat-cell>
+      </ng-container>
+  
+      <!-- email Column -->
+      <ng-container matColumnDef="Email">
+        <mat-header-cell *matHeaderCellDef>Почтовый адрес</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.Email}} </mat-cell>
+      </ng-container>
+  
+      <!-- sex Column -->
+      <ng-container matColumnDef="Sex">
+        <mat-header-cell *matHeaderCellDef>Пол</mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <div *ngIf="element.Sex=='male'; then thenBlock; else elseBlock"> </div>
+          <ng-template #thenBlock>
+            <div> Мужской </div>
+          </ng-template>
+          <ng-template #elseBlock>
+            <div> Женский </div>
+          </ng-template>
+        </mat-cell>
+      </ng-container>
+  
+      <!-- birthDate Column -->
+      <ng-container matColumnDef="BirthDate">
+        <mat-header-cell *matHeaderCellDef>Дата рождения</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.Birthdate | date: 'dd.MM.yyyy'}} </mat-cell>
+      </ng-container>
+  
+      <!-- actions Column -->
+      <ng-container matColumnDef="Actions">
+          <mat-header-cell *matHeaderCellDef>Действия</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <button mat-icon-button class="view-btn" [routerLink]="['/client-details', element.Address]">
+              <mat-icon aria-label="Просмотр карточки клиента">pageview</mat-icon>
+            </button>
+            <button mat-icon-button class="edit-btn" [routerLink]="['/client-edit', element.Address]">
+              <mat-icon aria-label="Редактирование клиента">mode_edit</mat-icon>
+            </button>
+            <!-- <button mat-icon-button color="warn" (click)="deleteClient(element.address)">
+              <mat-icon aria-label="Удаление клиента">delete</mat-icon>
+            </button> -->
+          </mat-cell>
+        </ng-container>
+  
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true"></mat-paginator>
+  </div>
+  
+</div>

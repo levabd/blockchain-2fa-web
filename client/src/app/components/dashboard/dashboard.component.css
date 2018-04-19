@@ -1,21 +1,74 @@
 /* Structure */
-.example-container {
-    display: flex;
-    flex-direction: column;
-    min-width: 300px;
-  }
-  
-  .example-header {
-    min-height: 64px;
-    padding: 8px 24px 0;
-  }
-  
-  .mat-form-field {
-    font-size: 14px;
-    width: 100%;
-  }
-  
-  .mat-table {
-    overflow: auto;
-    max-height: 600px;
-  }
+
+.dashboard-container {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+}
+
+/* Dashboard Header */
+
+.dashboard-header {
+  grid-column: span 12;
+}
+
+.dashboard-header .mat-card-subtitle {
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* Dashboard Content */
+
+.dashboard-content {
+  grid-column: span 12;
+}
+
+/* .mat-form-field {
+  font-size: 14px;
+  width: 100%;
+} */
+
+.mat-table {
+  overflow: auto;
+  max-height: 600px;
+}
+
+.btn-container button {
+  width: 150px;
+  padding: 5px;
+  margin: 5px;
+}
+
+.admin-btn-container button {
+  width: 150px;
+  padding: 5px;
+  margin: 5px;
+}
+
+.admin-btn-container,
+.admin-role-container {
+  box-shadow: 0 0 5px 0px black;
+  padding: 10px;
+  margin: 10px;
+  height: auto;
+  width: 400px;
+}
+
+.admin-logs-container {
+  box-shadow: 0 0 5px 0px black;
+  padding: 10px;
+  margin: 10px;
+  height: 600px;
+  width: 800px;
+}
+
+pre {
+  display: inline-block;
+  font-family: monospace;
+  white-space: pre;
+  word-wrap: normal;
+  margin: 30px 15px;
+  overflow: auto;
+  background-color: #ffffff;
+  border: 1px solid #898989;
+  padding: 5px;
+}

@@ -1,71 +1,225 @@
-<section class="detail-client" fxLayout="row" fxLayoutAlign="center center">
-  <div class="detail-client-container">
-    <mat-card>
-      <mat-card-title-group fxLayout="row" fxLayoutAlign="center center">
-        <mat-card-title>Подробные сведения о клиенте</mat-card-title>
-        <button mat-raised-button class="btn-all-clients" color="primary" [routerLink]="['/dashboard']">
-          <mat-icon aria-label="Все клиенты">assignment_ind</mat-icon>
-          {{ '  Все клиенты' | uppercase }}</button>
-        <!-- <i class="material-icons icon-head">assignment_ind</i> -->
-      </mat-card-title-group>
-      <mat-card-footer>
-        <mat-progress-bar mode="determinate" value="100"></mat-progress-bar>
-      </mat-card-footer>
-    </mat-card>
-    <div>
+<!-- <div class="detail-client-container">
+  <section class="detail-client" fxLayout="row" fxLayoutAlign="center center">
+    <div class="detail-client-card">
       <mat-card>
-        <mat-card-title-group>
-          <mat-divider></mat-divider>
-          <mat-card-subtitle>ФИО</mat-card-subtitle>
-          <mat-card-title>{{ client.Name }}</mat-card-title>
-          <i class="material-icons">perm_identity</i>
-        </mat-card-title-group>
-        <mat-divider></mat-divider>
-        <mat-card-title-group>
-          <mat-card-subtitle>НОМЕР ТЕЛЕФОНА</mat-card-subtitle>
-          <mat-card-title>{{ client.PhoneNumber }}</mat-card-title>
-          <i class="material-icons">phone</i>
-        </mat-card-title-group>
-        <mat-divider></mat-divider>
-        <mat-card-title-group>
-          <mat-card-subtitle>ИИН</mat-card-subtitle>
-          <mat-card-title>{{ client.Uin }}</mat-card-title>
-          <i class="material-icons">recent_actors</i>
-        </mat-card-title-group>
-        <mat-divider></mat-divider>
-        <mat-card-title-group>
-          <mat-card-subtitle>EMAIL</mat-card-subtitle>
-          <mat-card-title>{{ client.Email }}</mat-card-title>
-          <i class="material-icons">email</i>
-        </mat-card-title-group>
-        <mat-divider></mat-divider>
-        <mat-card-title-group>
-          <mat-card-subtitle>ПОЛ</mat-card-subtitle>
-          <mat-card-title>{{ client.Sex }}</mat-card-title>
-          <i class="material-icons">wc</i>
-        </mat-card-title-group>
-        <mat-divider></mat-divider>
-        <mat-card-title-group>
-          <mat-card-subtitle>ДАТА РОЖДЕНИЯ</mat-card-subtitle>
-          <mat-card-title>{{ client.Birthdate | date: 'd.MM.yyyy' }}</mat-card-title>
-          <i class="material-icons">date_range</i>
-        </mat-card-title-group>
-        <mat-card-title-group>
-          <mat-card-subtitle>ПОДТВЕРЖДЕН В СИСТЕМЕ</mat-card-subtitle>
-          <mat-card-title *ngIf="client.IsVerified;else notVerified">Да</mat-card-title>
-          <ng-template #notVerified>
-            <mat-card-title>Нет</mat-card-title>
-          </ng-template>
-          <i class="material-icons">verified_user</i>
-        </mat-card-title-group>
+        <mat-card-title-group fxLayout="row" fxLayoutAlign="center center">
+          <mat-card-title>Подробные сведения о клиенте</mat-card-title>
+          <button mat-raised-button class="btn-all-clients" color="primary" [routerLink]="['/dashboard']">
+            <mat-icon aria-label="Все клиенты">assignment_ind</mat-icon>
+            {{ ' Все клиенты' | uppercase }}</button> -->
+<!-- <i class="material-icons icon-head">assignment_ind</i> -->
+<!-- </mat-card-title-group>
         <mat-card-footer>
           <mat-progress-bar mode="determinate" value="100"></mat-progress-bar>
-          <mat-card-actions fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
-            <button mat-raised-button color="primary" [routerLink]="['/client-edit', client._id]">{{ 'Редактировать' | uppercase }}</button>
-            <!-- <button mat-raised-button color="warn" (click)="deleteClient(client._id)">{{ 'Удалить' | uppercase }}</button> -->
-          </mat-card-actions>
         </mat-card-footer>
       </mat-card>
+      <div>
+        <mat-card>
+          <mat-card-title-group>
+            <mat-divider></mat-divider>
+            <mat-card-subtitle>ФИО</mat-card-subtitle>
+            <mat-card-title>{{ client.Name }}</mat-card-title>
+            <i class="material-icons">perm_identity</i>
+          </mat-card-title-group>
+          <mat-divider></mat-divider>
+          <mat-card-title-group>
+            <mat-card-subtitle>НОМЕР ТЕЛЕФОНА</mat-card-subtitle>
+            <mat-card-title>{{ client.PhoneNumber }}</mat-card-title>
+            <i class="material-icons">phone</i>
+          </mat-card-title-group>
+          <mat-divider></mat-divider>
+          <mat-card-title-group>
+            <mat-card-subtitle>ИИН</mat-card-subtitle>
+            <mat-card-title>{{ client.Uin }}</mat-card-title>
+            <i class="material-icons">recent_actors</i>
+          </mat-card-title-group>
+          <mat-divider></mat-divider>
+          <mat-card-title-group>
+            <mat-card-subtitle>EMAIL</mat-card-subtitle>
+            <mat-card-title>{{ client.Email }}</mat-card-title>
+            <i class="material-icons">email</i>
+          </mat-card-title-group>
+          <mat-divider></mat-divider>
+          <mat-card-title-group>
+            <mat-card-subtitle>ПОЛ</mat-card-subtitle>
+            <mat-card-title>{{ client.Sex }}</mat-card-title>
+            <i class="material-icons">wc</i>
+          </mat-card-title-group>
+          <mat-divider></mat-divider>
+          <mat-card-title-group>
+            <mat-card-subtitle>ДАТА РОЖДЕНИЯ</mat-card-subtitle>
+            <mat-card-title>{{ client.Birthdate | date: 'd.MM.yyyy' }}</mat-card-title>
+            <i class="material-icons">date_range</i>
+          </mat-card-title-group>
+          <mat-card-title-group>
+            <mat-card-subtitle>ПОДТВЕРЖДЕН В СИСТЕМЕ</mat-card-subtitle>
+            <mat-card-title *ngIf="client.IsVerified;else notVerified">Да</mat-card-title>
+            <ng-template #notVerified>
+              <mat-card-title>Нет</mat-card-title>
+            </ng-template>
+            <i class="material-icons">verified_user</i>
+          </mat-card-title-group>
+          <mat-card-footer>
+            <mat-progress-bar mode="determinate" value="100"></mat-progress-bar>
+            <mat-card-actions fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+              <button mat-raised-button color="primary" [routerLink]="['/client-edit', client._id]">{{ 'Редактировать' | uppercase }}</button>
+              <!-- <button mat-raised-button color="warn" (click)="deleteClient(client._id)">{{ 'Удалить' | uppercase }}</button> -->
+<!-- </mat-card-actions>
+          </mat-card-footer>
+        </mat-card>
+      </div>
     </div>
+  </section>
+</div> -->
+<div class="detail-client-container" fxLayout="row" fxLayoutAlign="center top">
+  <div class="client-detail-container">
+    <mat-list dense>
+      <h2 mat-subheader>Пользователь сети</h2>
+      <mat-divider></mat-divider>
+      <mat-list-item>
+        <mat-icon mat-list-icon>perm_identity</mat-icon>
+        <h4 mat-line>ФИО</h4>
+        <p mat-line> {{client.Name}} </p>
+      </mat-list-item>
+
+      <mat-list-item>
+        <mat-icon mat-list-icon>phone</mat-icon>
+        <h4 mat-line>Номер телефона</h4>
+        <p mat-line> {{client.PhoneNumber}} </p>
+      </mat-list-item>
+
+      <mat-list-item>
+        <mat-icon mat-list-icon>recent_actors</mat-icon>
+        <h4 mat-line>ИИН</h4>
+        <p mat-line> {{ client.Uin }} </p>
+      </mat-list-item>
+
+      <mat-list-item>
+        <mat-icon mat-list-icon>email</mat-icon>
+        <h4 mat-line>Email</h4>
+        <p mat-line> {{ client.Email }} </p>
+      </mat-list-item>
+
+      <mat-list-item>
+        <mat-icon mat-list-icon>wc</mat-icon>
+        <h4 mat-line>Пол</h4>
+        <p mat-line *ngIf="client.Sex=='male'; then thenBlock; else elseBlock"></p>
+        <ng-template #thenBlock>
+          <p mat-line>Мужской</p>
+        </ng-template>
+        <ng-template #elseBlock>
+          <p mat-line> Женский</p>
+        </ng-template>
+      </mat-list-item>
+
+      <mat-list-item>
+        <mat-icon mat-list-icon>date_range</mat-icon>
+        <h4 mat-line>Дата рождения</h4>
+        <p mat-line> {{ client.Birthdate | date: 'd.MM.yyyy' }} </p>
+      </mat-list-item>
+
+      <mat-list-item>
+        <mat-icon mat-list-icon>verified_user</mat-icon>
+        <h4 mat-line>Подтвержден в системе</h4>
+        <p mat-line *ngIf="client.IsVerified;else notVerified"> Да </p>
+        <ng-template #notVerified>
+          <p mat-line> Нет </p>
+        </ng-template>
+      </mat-list-item>
+
+      <mat-list-item *ngIf="client.AdditionalData">
+        <mat-icon mat-list-icon>account_box</mat-icon>
+        <h4 mat-line>Персональный аккаунт</h4>
+        <p mat-line> {{ client.AdditionalData.PersonalAccount }} </p>
+      </mat-list-item>
+
+      <mat-list-item *ngIf="client.AdditionalData">
+        <mat-icon mat-list-icon>person_pin_circle</mat-icon>
+        <h4 mat-line>Регион</h4>
+        <p mat-line> {{ client.AdditionalData.Region }} </p>
+      </mat-list-item>
+
+      <mat-list-item>
+        <button mat-raised-button class="editbtn" color="primary" [routerLink]="['/client-edit', client._id]">{{ 'Редактировать' | uppercase }}</button>
+      </mat-list-item>
+
+      <mat-list-item>
+        <button mat-raised-button class="editbtn" color="primary" [routerLink]="['/client-create']">{{ 'Новый пользователь' | uppercase }}</button>
+      </mat-list-item>
+
+    </mat-list>
   </div>
-</section>
+
+
+  <div class="log-table-container" *ngIf="client.Logs">
+    <mat-list dense>
+      <h2 mat-subheader>История действий пользователя</h2>
+      <mat-divider></mat-divider>
+    </mat-list>
+    <div class="log-table-filter">
+      <mat-form-field>
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Фильтр событий">
+      </mat-form-field>
+    </div>
+
+    <mat-table #table [dataSource]="dataSource">
+
+      <!-- Event Column -->
+      <ng-container matColumnDef="Event">
+        <mat-header-cell *matHeaderCellDef> Событие </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.Event}} </mat-cell>
+      </ng-container>
+
+      <!-- Status Column -->
+      <ng-container matColumnDef="Status">
+        <mat-header-cell *matHeaderCellDef> Статус </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.Status}} </mat-cell>
+      </ng-container>
+
+      <!-- Code Column -->
+      <ng-container matColumnDef="Code">
+        <mat-header-cell *matHeaderCellDef> Код </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.Code}} </mat-cell>
+      </ng-container>
+
+      <!-- ExpiredAt Column -->
+      <ng-container matColumnDef="ExpiredAt">
+        <mat-header-cell *matHeaderCellDef> Истекает </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.ExpiredAt | date: 'dd.MM.yyyy'}} </mat-cell>
+      </ng-container>
+
+      <!-- Embeded Column -->
+      <ng-container matColumnDef="Embeded">
+        <mat-header-cell *matHeaderCellDef> Прикреплен </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.Embeded}} </mat-cell>
+      </ng-container>
+
+      <!-- ActionTime Column -->
+      <ng-container matColumnDef="ActionTime">
+        <mat-header-cell *matHeaderCellDef> Время действия </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.ActionTime | date: 'dd.MM.yyyy'}} </mat-cell>
+      </ng-container>
+
+      <!-- Method Column -->
+      <ng-container matColumnDef="Method">
+        <mat-header-cell *matHeaderCellDef> Метод </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.Method}} </mat-cell>
+      </ng-container>
+
+      <!-- Cert Column -->
+      <ng-container matColumnDef="Cert">
+        <mat-header-cell *matHeaderCellDef> Сертификат </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.Cert}} </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+    <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true">
+    </mat-paginator>
+  </div>
+
+
+
+</div>

@@ -27,6 +27,8 @@ import { MatPaginatorIntlRu } from 'app/components/dashboard/matPaginatorIntlRu.
 import { HttpClientModule } from '@angular/common/http';
 import { ClientsDataComponent } from './components/clients-data/clients-data.component';
 import {FlexLayoutModule} from '@angular/flex-layout';
+import { ClientsTableComponent } from './components/clients-table/clients-table.component';
+import { ServiceClientsTableComponent } from './components/service-clients-table/service-clients-table.component';
 
 const appRoutes: Routes =  [
   {path: '', component: HomeComponent},
@@ -52,8 +54,10 @@ const appRoutes: Routes =  [
     ClientComponent,
     ClientDetailComponent,
     ClientsDataComponent,
+    ClientsTableComponent,
     ClientCreateComponent,
-    ClientEditComponent
+    ClientEditComponent,
+    ServiceClientsTableComponent
   ],
   imports: [
     BrowserModule,

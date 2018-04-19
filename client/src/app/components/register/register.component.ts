@@ -19,6 +19,10 @@ export class RegisterComponent implements OnInit {
   role: String;
   hide = true;
   emailError = false;
+  roles = [
+    { value: 'admin', viewValue: 'Администратор Казтел' },
+    { value: 'superadmin', viewValue: 'Администратор TFA' }
+  ];
   constructor(
     private validateService: ValidateService,
     private authService: AuthService,

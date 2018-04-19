@@ -2,54 +2,111 @@
     margin-left: 30px;
 }
 
-.detail-client-container {
+.editbtn {
+    margin: 0 auto;
+}
+
+* {
+    box-sizing: border-box
+  }
+
+/* .detail-client-card {
     box-shadow: 0 0 5px 0px black;
     padding: 50px;
     margin: 20px;
-    height: 700px;
-    width: 600px;
-}   
+    height: 500px;
+    width: 400px;
+} */
 
-.detail-client-container mat-card {
-    width: 550px;
+mat-list h4 {
+    color: gray;
+    padding-bottom: 5px!important;
 }
 
-.detail-client-container mat-card-subtitle{
+mat-list h2 {
+    color: rgb(12, 5, 5)!important;
+    font-size: 1.02em!important;
+}
+
+.log-table-container  {
+    box-shadow: 0 0 5px 0px black;
+    width: 100%;
+    padding: 10px;
+    margin: 10px;
+}
+
+
+
+.log-table-filter .mat-form-field {
+    display: block;
+    margin-left: 15px;
+    margin-right: 15px;
+    font-size: 0.8em;
+}
+
+.client-detail-container {
+    box-shadow: 0 0 5px 0px black;
+    padding: 10px;
+    margin: 10px;
+    height: auto;
+    width: 400px;
+}
+
+.detail-client-container {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    overflow: auto;
+    margin-top: 65px;
+}
+
+
+/* .detail-client-card mat-card {
+    width: 550px;
+} */
+
+.detail-client-card mat-card-subtitle{
     padding: 5px;
 }
 
-.detail-client-container .material-icons i.icon-head{
+/* .detail-client-card .material-icons i.icon-head{
     font-size: 1.99em;
 }
-.detail-client-container .material-icons{
+.detail-client-card .material-icons{
     font-size: 1.99em;
-}
+} */
 
 
 
 
-@media (max-width: 750px) {
-    .detail-client-container mat-card, {
+/* @media (max-width: 750px) {
+    .detail-client-card mat-card, {
         width: 300px;
         font-size: .99em;
     }
-    .detail-client-container h1 {
+    .detail-client-card h1 {
         font-size: .99em;
     }
-    .detail-client-container mat-checkbox {
+    .detail-client-card mat-checkbox {
         font-size: .8em;
     }
 }
 
 @media (max-width: 450px) {
-    .detail-client-container mat-card, {
+    .detail-client-card mat-card, {
         width: 200px;
         font-size: .95em;
     }
-    .detail-client-container h1 {
+    .detail-client-card h1 {
         font-size: .95em;
     }
-    .detail-client-container mat-checkbox {
+    .detail-client-card mat-checkbox {
         font-size: .7em;
     }
-}
+} */

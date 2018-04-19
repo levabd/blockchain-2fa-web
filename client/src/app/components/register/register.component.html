@@ -38,13 +38,14 @@
       <mat-hint align="end">{{ pwInput.value?.length}} / 6</mat-hint>
       <mat-error>Пароль не может быть меньше 6 символов</mat-error>
     </mat-form-field>
-    <!-- <mat-form-field>
-      <mat-select [(ngModel)]="role" name="role" required placeholder="Роль" required>
-        <mat-option [value]="option1">superadmin</mat-option>
-        <mat-option [value]="option2">admin</mat-option>
-      </mat-select>
+    <mat-form-field>
+      <mat-select [(ngModel)]="role" name="role" placeholder="Роль" required>
+          <mat-option *ngFor="let role of roles" [value]="role.value">
+            {{role.viewValue}}
+          </mat-option>
+        </mat-select>
       <mat-icon matSuffix>supervisor_account</mat-icon>
-    </mat-form-field> -->
+    </mat-form-field>
     <mat-checkbox ngModel name="agree" required color="primary">Я принимаю условия соглашения</mat-checkbox>
     <button type="submit" mat-raised-button color="primary" [disabled]="signupForm.invalid">Зарегистрироваться</button>
   </form>

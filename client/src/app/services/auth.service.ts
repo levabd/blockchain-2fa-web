@@ -18,14 +18,14 @@ export class AuthService {
   registerUser(user) {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    return this.http.post('http://176.36.70.236:3002/users/register', user, { headers: headers })
+    return this.http.post('http://localhost:8080/users/register', user, { headers: headers })
       .map(res => res.json());
   }
 
   authenticateUser(user) {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    return this.http.post('http://176.36.70.236:3002/users/authenticate', user, { headers: headers })
+    return this.http.post('http://localhost:8080/users/authenticate', user, { headers: headers })
       .map(res => res.json());
   }
 
@@ -34,7 +34,7 @@ export class AuthService {
     this.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type', 'application/json');
-    return this.http.get('http://176.36.70.236:3002/users/profile', { headers: headers })
+    return this.http.get('http://localhost:8080/users/profile', { headers: headers })
       .map(res => res.json());
   }
 
@@ -45,19 +45,19 @@ export class AuthService {
     this.user = user;
   }
 
-  isAdmin() {
-    this.loadRole();
-    if (this.role === 'superadmin') {
+  isAdmin(user) {
+    if (user.role === 'superadmin') {
       return 'superadmin';
     }
-    if (this.role === 'admin') {
+    if (user.role === 'admin') {
       return 'admin';
+    } else {
+      return user.role + ' role access denied';
     }
   }
 
-  loadRole() {
-    const role = localStorage.getItem('user.role');
-    this.role = role;
+  loadUser() {
+    return JSON.parse(localStorage.getItem('user'));
   }
 
   loadToken() {

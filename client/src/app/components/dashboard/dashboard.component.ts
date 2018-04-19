@@ -3,7 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from '@angular/router';
-// import { ClientDetailComponent } from '../client-detail/client-detail.component';
+import { AuthService } from '../../services/auth.service';
+import { ClientsTableComponent } from '../clients-table/clients-table.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,46 +13,92 @@ import { ActivatedRoute, Router } from '@angular/router';
   encapsulation: ViewEncapsulation.None
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
-  clients: any;
-  constructor(private http: HttpClient, private router: Router, private route: ActivatedRoute, ) { }
+  clientsTFA: any;
+  clientsKaztel: any;
+  role: any;
+  stateUploadStatus: any;
+  allLogs: any;
+  constructor(private http: HttpClient, private authService: AuthService, private router: Router, private route: ActivatedRoute, ) { }
 
-  // ngOnInit() {
-  // }
-  displayedColumns = ['phoneNumber', 'uin', 'name', 'isVerified', 'email', 'sex', 'birthDate', 'actions'];
-  dataSource = new MatTableDataSource<Element>(this.clients);
+  // displayedColumns = ['PhoneNumber', 'Uin', 'Name', 'IsVerified', 'Email', 'Sex', 'BirthDate', 'Actions'];
+  // dataSourceTFA = new MatTableDataSource<Element>(this.clientsTFA);
+  // dataSourceKaztel = new MatTableDataSource<Element>(this.clientsKaztel);
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  // @ViewChild(MatPaginator) paginatorTFA: MatPaginator;
+  // @ViewChild(MatPaginator) paginatorKaztel: MatPaginator;
 
   /**
    * Set the paginator after the view init since this component will
    * be able to query its view for the initialized paginator.
    */
-  applyFilter(filterValue: string) {
-    filterValue = filterValue.trim(); // Remove whitespace
-    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
-    this.dataSource.filter = filterValue;
-  }
+  // applyFilter(filterValue: string, service) {
+  //   filterValue = filterValue.trim(); // Remove whitespace
+  //   filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
+  //   if (service === 'tfa') {
+  //     this.dataSourceTFA.filter = filterValue;
+  //   }
+  //   if (service === 'kaztel') {
+  //     this.dataSourceKaztel.filter = filterValue;
+  //   }
+  // }
+
   ngOnInit() {
-    this.http.get('http://176.36.70.236:3002/clients').subscribe(data => {
-      console.log(data);
-      this.clients = data;
-      this.dataSource = new MatTableDataSource<Element>(this.clients);
-      this.dataSource.paginator = this.paginator;
+    // this.getClients('tfa');
+    // this.getClients('kaztel');
+    this.role = this.authService.isAdmin(this.authService.loadUser());
+  }
+
+  ngAfterViewInit() {
+    // this.dataSourceTFA.paginator = this.paginatorTFA;
+    // this.dataSourceKaztel.paginator = this.paginatorTFA;
+  }
+
+  loadRole() {
+    return localStorage.getItem('user.role');
+  }
+
+  uploadState(service) {
+    this.http.get(`http://localhost:8080/api/clients/state/update?service=${service}`).subscribe(data => {
+     this.stateUploadStatus = JSON.stringify(data);
     });
   }
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
+
+  uploadLog() {
+    this.http.get(`http://localhost:8080/api/clients/state/log`).subscribe(data => {
+      this.allLogs = data['data'];
+    });
   }
-  deleteClient(id) {
-    this.http.delete('http://176.36.70.236:3002/clients/' + id)
-      .subscribe(res => {
-        // this.router.navigate(['/clients']);
-        this.ngOnInit();
-      }, (err) => {
-        console.log(err);
-      }
-      );
-  }
+
+  // getClients(service) {
+  //   this.http.get(`http://localhost:8080/api/clientsdb?service=${service}`).subscribe(data => {
+  //     switch (service) {
+  //       case 'tfa':
+  //         this.clientsTFA = data['data']['docs'];
+  //         this.dataSourceTFA = new MatTableDataSource<Element>(this.clientsTFA);
+  //         this.dataSourceTFA.paginator = this.paginatorTFA;
+  //         break;
+  //       case 'kaztel':
+  //         this.clientsKaztel = data['data']['docs'];
+  //         this.dataSourceKaztel = new MatTableDataSource<Element>(this.clientsKaztel);
+  //         this.dataSourceKaztel.paginator = this.paginatorTFA;
+  //         break;
+  //       default:
+  //         break;
+  //     }
+  //   });
+  // }
+
+
+  // deleteClient(id) {
+  //   this.http.delete('http://localhost:8080/clients/' + id)
+  //     .subscribe(res => {
+  //       // this.router.navigate(['/clients']);
+  //       this.ngOnInit();
+  //     }, (err) => {
+  //       console.log(err);
+  //     }
+  //     );
+  // }
 }
 
 export interface Element {
@@ -62,6 +109,7 @@ export interface Element {
   email: string;
   sex: string;
   birthDate: string;
+  address: string;
 }
 // const ELEMENT_DATA: Element[] = this.clients;
 // const ELEMENT_DATA: Element[] = [
@@ -78,60 +126,5 @@ export interface Element {
 //     //     this.clientDetail.getClientDetail(this.route.snapshot.params['id']);
 //     //   },
 //     // }
-  // },
-  // {
-  //   "phoneNumber": "+770544521452",
-  //   "uin": "820145211452145",
-  //   "name": "Велимир Фомин",
-  //   "isVerified": "true",
-  //   "email": "hilanennam-9669@yopmail.com",
-  //   "sex": "Мужской",
-  //   "birthDate": "2012-04-23T18:25:43.511Z"
-  // },
-  // {
-  //   "phoneNumber": "+770544521452",
-  //   "uin": "820145211452145",
-  //   "name": "Владлен Тимофеев",
-  //   "isVerified": "true",
-  //   "email": "yrepucerre-1834@yopmail.com",
-  //   "sex": "Мужской",
-  //   "birthDate": "2012-04-23T18:25:43.511Z"
-  // },
-  // {
-  //   "phoneNumber": "+770544521452",
-  //   "uin": "820145211452145",
-  //   "name": "Трофим Зюганов",
-  //   "isVerified": "true",
-  //   "email": "xyqicera-8296@yopmail.com",
-  //   "sex": "Мужской",
-  //   "birthDate": "2012-04-23T18:25:43.511Z"
-  // },
-  // {
-  //   "phoneNumber": "+770544521452",
-  //   "uin": "820145211452145",
-  //   "name": "Александр Гуляев",
-  //   "isVerified": "true",
-  //   "email": "acaffuce-0074@yopmail.com",
-  //   "sex": "Мужской",
-  //   "birthDate": "2012-04-23T18:25:43.511Z"
-  // },
-  // {
-  //   "phoneNumber": "+770544521452",
-  //   "uin": "820145211452145",
-  //   "name": "Альфред Алексеев",
-  //   "isVerified": "true",
-  //   "email": "worrofynny-2280@yopmail.com",
-  //   "sex": "Мужской",
-  //   "birthDate": "2012-04-23T18:25:43.511Z"
-  // },
-  // {
-  //   "phoneNumber": "+770544521452",
-  //   "uin": "820145211452145",
-  //   "name": "Динар Селиверстов",
-  //   "isVerified": "true",
-  //   "email": "koganicame-4391@yopmail.com",
-  //   "sex": "Мужской",
-  //   "birthDate": "2012-04-23T18:25:43.511Z"
   // }
-
 // ];
