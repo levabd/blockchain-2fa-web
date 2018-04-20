@@ -1,8 +1,9 @@
+const ENV = require('../config/environment');
+
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
-const config = require('../config/database');
 const User = require('../models/user');
 
 // Register
@@ -49,7 +50,7 @@ router.post('/authenticate', (req, res, next) => {
       if (isMatch) {
         const token = jwt.sign({
           data: user
-        }, config.secret, {
+        }, ENV.AUTH_ADMIN_SECRET, {
           expiresIn: 604800 // 1 week
         });
         res.json({

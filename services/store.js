@@ -4,16 +4,15 @@ const context = createContext('secp256k1')
 const privateKey = context.newRandomPrivateKey()
 const signer = new CryptoFactory(context).newSigner(privateKey)
 const crypto = require('crypto')
-
 const _hash = (x) => crypto.createHash('sha512').update(x).digest('hex').toLowerCase()
 const cbor = require('cbor')
-// const FAMILY_NAME = 'tfa';
-const FAMILY_NAME = 'kaztel';
+const FAMILY_NAME = 'tfa';
+// const FAMILY_NAME = 'kaztel';
 const FAMILY_NAMESPACE = _hash(FAMILY_NAME).substring(0, 6)
 const FAMILY_VERSION = '0.1';
 const PORT = '8008';
 const {createHash} = require('crypto')
-const {protobuf } = require( 'sawtooth-sdk')
+const {protobuf} = require('sawtooth-sdk')
 const faker = require('faker')
 faker.locale = "ru";
 const request = require('request')
@@ -21,12 +20,13 @@ const fs = require('fs')
 const WebSocket = require('ws')
 
 var protobufLib = require('protocol-buffers')
+var SocksProxyAgent = require('socks-proxy-agent');
 
 // pass a proto file as a buffer/string or pass a parsed protobuf-schema object
-var messages = protobufLib(fs.readFileSync('../go/src/tfa/service_client/service_client.proto'))
-// var messages = protobufLib(fs.readFileSync('go/src/tfa/service/service.proto'))
+// var messages = protobufLib(fs.readFileSync('go/src/tfa/service_client/service_client.proto'))
+var messages = protobufLib(fs.readFileSync('go/src/tfa/service/service.proto'))
 
-const RECORd_NUMBER = 100
+const RECORd_NUMBER = 1
 let c = 0
 let e = 0
 const makeRequest = (data) => {
@@ -72,11 +72,16 @@ const handle = function (transactions, i) {
 
     const randomPort = APIs[Math.floor(Math.random() * APIs.length)];
     request.post({
-        url: `http://127.0.0.1:${PORT}/batches`,
+        url: `http://127.0.0.1:${PORT}/sawtooth/batches`,
         body: batchListBytes,
+        auth: {
+            user: 'sawtooth',
+            pass: 'z92aGlTdLVYk6mR',
+            sendImmediately: true
+        },
         headers: {'Content-Type': 'application/octet-stream'}
     }, (err, response) => {
-
+        console.log('err', err);
         c++
         console.log('response', typeof response.body);
         if (response.body['error'] !== undefined) {
@@ -94,24 +99,69 @@ const handle = function (transactions, i) {
     })
 }
 
+// let ws = new WebSocket(`ws:localhost:8008/subscriptions`)
+// ws.onopen = () => {
+//     ws.send(JSON.stringify({
+//         'action': 'subscribe',
+//         'address_prefixes': [
+//             _hash(FAMILY_NAME).substring(0, 6),
+//         ]
+//     }));
+// }
+let start = new Date().getTime();
+let recordsAdded = 0
+// ws.onmessage = (mess) => {
+//     try {
+//         const data = JSON.parse(mess.data)
+//         if (data.state_changes.length) {
+//             var end = new Date().getTime();
+//             recordsAdded+=data.state_changes.length
+//             console.log('8000 mess length', recordsAdded);
+//             console.log("8000 Call to onmessage took " + (end - start) + " milliseconds.")
+//         } else {
+//             console.log('no changes');
+//         }
+//
+//     } catch (e) {
+//         console.log('error'), e;
+//     }
+// }
+//
+// ws.onclose = () => {
+//     ws.send(JSON.stringify({'action': 'unsubscribe'}));
+// }
+var SocksProxyAgent = require('socks-proxy-agent');
 
-let ws = new WebSocket(`ws:127.0.0.1:${PORT}/subscriptions`)
-ws.onopen = () => {
-    ws.send(JSON.stringify({
+// SOCKS proxy to connect to
+var proxy = 'socks://sawtooth:z92aGlTdLVYk6mR@127.0.0.1:8008/sawtooth-ws';
+console.log('using proxy server %j', proxy);
+
+// WebSocket endpoint for the proxy to connect to
+var endpoint = 'ws://sawtooth:z92aGlTdLVYk6mR@127.0.0.1:8008/sawtooth-ws/subscriptions';
+console.log('attempting to connect to WebSocket %j', endpoint);
+
+// create an instance of the `SocksProxyAgent` class with the proxy server information
+var agent = new SocksProxyAgent(proxy);
+
+// initiate the WebSocket connection
+var socket = new WebSocket(endpoint);
+
+socket.on('open', function () {
+    console.log('"open" event!');
+    socket.send(JSON.stringify({
         'action': 'subscribe',
         'address_prefixes': [
             _hash(FAMILY_NAME).substring(0, 6),
         ]
     }));
-}
-let start = new Date().getTime();
-let recordsAdded = 0
-ws.onmessage = (mess) => {
+});
+
+socket.on('message', function (data, flags) {
     try {
-        const data = JSON.parse(mess.data)
-        if (data.state_changes.length) {
+        const _data = JSON.parse(data)
+        if (_data.state_changes.length) {
             var end = new Date().getTime();
-            recordsAdded+=data.state_changes.length
+            recordsAdded += _data.state_changes.length
             console.log('8000 mess length', recordsAdded);
             console.log("8000 Call to onmessage took " + (end - start) + " milliseconds.")
         } else {
@@ -119,27 +169,65 @@ ws.onmessage = (mess) => {
         }
 
     } catch (e) {
-        console.log('error'), e;
+        console.log('error');
     }
-}
+});
 
-ws.onclose = () => {
-    ws.send(JSON.stringify({'action': 'unsubscribe'}));
-}
+// var WebSocketClient = require('websocket').client;
+// var client = new WebSocketClient();
+// var tunnel = require('tunnel');
+//
+// var tunnelingAgent = tunnel.httpOverHttp({
+//     proxy: {
+//         host: 'localhost',
+//         port: 80
+//     }
+// });
+//
+// var requestOptions = {
+//     agent: tunnelingAgent
+// };
+// client.on('connectFailed', function(error) {
+//     console.log('Connect Error: ' + error.toString());
+// });
+//
+// client.on('connect', function(connection) {
+//     console.log('WebSocket Client Connected');
+//     connection.on('error', function(error) {
+//         console.log("Connection Error: " + error.toString());
+//     });
+//     connection.on('close', function() {
+//         console.log('echo-protocol Connection Closed');
+//     });
+//     connection.on('message', function(message) {
+//         if (message.type === 'utf8') {
+//             console.log("Received: '" + message.utf8Data + "'");
+//         }
+//     });
+//
+//     function sendNumber() {
+//         if (connection.connected) {
+//             var number = Math.round(Math.random() * 0xFFFFFF);
+//             connection.sendUTF(number.toString());
+//             setTimeout(sendNumber, 1000);
+//         }
+//     }
+//     sendNumber();
+// });
+// client.connect('ws://localhost/sawtooth/subscriptions', null, null, null, requestOptions);
 
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 var tlist = []
-for (let i = 0; i <= RECORd_NUMBER; i++) {
+for (let i = 0; i < RECORd_NUMBER; i++) {
     (function (cntr) {
 
-        var pn = '7705' + getRandomInt(999999, 9999999)
+        //var pn = '7705' + getRandomInt(999999, 9999999)
         // var pn =  '77053237001'
-        // var pn =  '77059127941'
+        var pn = '77059124191'
         var uin = getRandomInt(99999999999, 999999999999)
-
         const payload = {
             Action: 0, // create | update | delete
             PhoneNumber: pn,

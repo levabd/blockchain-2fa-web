@@ -10,19 +10,19 @@ var StateController = require('../../controllers/state.controller');
 
 // Map each API to the Controller Functions
 
-router.get('/:address', ClientController.getClient);//+
+router.get('/:address', ClientController.getClient);
 
-router.get('/all/:service', ClientController.getAllClients);//+
+router.get('/all/:service', ClientController.getAllClients);
 
-router.get('/check/:service/:phoneNumber', ClientController.checkClientNumber);//+
+router.get('/check/:service/:phoneNumber', ClientController.checkClientNumber);
 
 router.get('/state/update', StateController.updateUsersData);
 
 router.get('/state/log/', StateController.getLog);
 
-router.post('/', ClientController.createClient);//-
+router.post('/', ClientController.createClient);
 
-router.post('/update/', ClientController.updateClient);//-
+router.post('/update/', ClientController.updateClient);
 
 // Export the Router
 

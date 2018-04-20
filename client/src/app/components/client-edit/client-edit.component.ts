@@ -7,6 +7,8 @@ import { AuthService } from '../../services/auth.service';
 import { MatSnackBar } from '@angular/material';
 import { DatePipe } from '@angular/common';
 
+import { environment } from '../../../environments/environment';
+
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/operator/map';
@@ -17,13 +19,7 @@ import 'rxjs/add/operator/map';
   styleUrls: ['./client-edit.component.css'],
   encapsulation: ViewEncapsulation.None,
   providers: [
-    // The locale would typically be provided on the root module of your application. We do it at
-    // the component level here, due to limitations of our example generation script.
     { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
-
-    // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
-    // `MatMomentDateModule` in your applications root module. We provide it at the component level
-    // here, due to limitations of our example generation script.
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
     { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
   ],
@@ -76,14 +72,11 @@ export class ClientEditComponent implements OnInit {
   }
 
   openSnackBar(message: string) {
-    this.snackBar.open(message, '', {
-      duration: 7000,
-    });
+    this.snackBar.open(message, '', { duration: 7000, });
   }
 
   getClient(id) {
-    this.http.get('http://localhost:8080/api/clients/' + id).subscribe(data => {
-
+    this.http.get(`${environment.apiUrl}api/clients/${id}`).subscribe(data => {
       if (this.role === 'superadmin') {
         this.client = data;
         this.client['Birthdate'] = this.getDate(data['Birthdate']);
@@ -91,9 +84,7 @@ export class ClientEditComponent implements OnInit {
       if (this.role === 'admin') {
         this.client = data;
         this.client['Birthdate'] = this.getDate(data['Birthdate']);
-        if (!this.client['AdditionalData']) {
-          this.client['AdditionalData'] = {};
-        }
+        if (!this.client['AdditionalData']) { this.client['AdditionalData'] = {}; }
       }
     });
   }
@@ -111,25 +102,18 @@ export class ClientEditComponent implements OnInit {
 
   updateClient() {
     this.setService();
-    this.http.post('http://localhost:8080/api/clients/update/', this.client)
+    this.http.post(`${environment.apiUrl}api/clients/update/`, this.client)
       .subscribe(res => {
         if (res['success']) { this.openSnackBar(res['message']); this.router.navigate(['/client-details', res['address']]); }
         if (!res['success']) { this.openSnackBar(res['message'] + ' ' + res['error']); this.router.navigate(['/dashboard']); }
       }, (err) => {
         console.log(err);
-      }
-      );
+      });
   }
 
   setService() {
-    if (this.role === 'superadmin') {
-      this.client['service'] = 'tfa';
-    }
-
-    if (this.role === 'admin') {
-      this.client['service'] = 'kaztel';
-    }
+    if (this.role === 'superadmin') { this.client['service'] = 'tfa'; }
+    if (this.role === 'admin') { this.client['service'] = 'kaztel'; }
   }
-
 
 }

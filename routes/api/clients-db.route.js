@@ -13,12 +13,6 @@ router.get('/', ClientController.getClients);
 
 router.get('/drop', ClientController.dropCollectionClients);
 
-// router.post('/', ClientController.createClient)
-
-// router.put('/', ClientController.updateClient)
-
-// router.delete('/:id',ClientController.removeClient)
-
 
 // Export the Router
 

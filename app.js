@@ -1,26 +1,31 @@
+const ENV = require('./config/environment');
+
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const passport = require('passport');
 const mongoose = require('mongoose');
-const config = require('./config/database');
 
 // Connect To Database
 mongoose.Promise = require('bluebird');
-mongoose.connect(config.database, {
+mongoose.connect(ENV.DATABASE, {
     useMongoClient: true,
     promiseLibrary: require('bluebird')
   })
-  .then(() => console.log(`Connected to database ${config.database}`))
+  .then(() => console.log(`Connected to database ${ENV.DATABASE}`))
   .catch((err) => console.log(`Database error: ${err}`));
 
 const app = express();
 
 const users = require('./routes/users.route');
 const api = require('./routes/api.route');
-// Port Number
-const port = process.env.PORT || 8080;
+
+
+
+var logFilePath = path.join(__dirname, `./logs/file.log`);
+require('./middleware/console-log2file');
+console.file(logFilePath);
 
 // CORS Middleware
 app.use(cors());
@@ -50,6 +55,8 @@ app.get('*', (req, res) => {
 });
 
 // Start Server
-app.listen(port, () => {
-  console.log('Server started on port ' + port);
+app.listen(ENV.PORT, () => {
+  console.log('Server started on port ' + ENV.PORT);
 });
+
+//  console.file(); // go back to writing to stdout

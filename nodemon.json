@@ -1,6 +1,5 @@
 {
     "ignore": [
-      "client/*",
       "logs/*",
       "oldm/*",
       "public_old/*",    

@@ -1,4 +1,4 @@
-// import { modelNames } from 'mongoose';
+const ENV = require('../config/environment');
 
 var express = require('express');
 var router = express.Router();
@@ -21,8 +21,6 @@ const {
 
 const cbor = require('cbor');
 const protobuf = require('protobufjs');
-// const atob = require('atob');
-// const btoa = require('btoa');
 const context = createContext('secp256k1');
 const privateKey = context.newRandomPrivateKey();
 const signer = new CryptoFactory(context).newSigner(privateKey);
@@ -38,7 +36,7 @@ const protobufLib = require('protocol-buffers');
 // Get All Clients from State 
 exports.getAllClients = async function (req, res, next) {
 
-    let userState = 'http://localhost:8008/state?limit=1000';
+    let userState = `${ENV.VALIDATOR_REST_API_HTTP}/state?limit=1000`;
 
     let headers = {
         'Content-Type': 'application/octet-stream'
@@ -54,16 +52,15 @@ exports.getAllClients = async function (req, res, next) {
     // console.log(genOptions);
     let serviceNameHash = _hash(req.params.service).substring(0, 6);
 
-    try {
-        // let genOptions = await ClientTFService.generateOptions(userState, headers);        
+    try {               
         var AllUsersData = await ClientTFService.getState(genOptions, 'all');
     } catch (e) {
         console.log(`Error in get state: ${e}`);
     }
-    // console.log(AllUsersData);
-    // pass a proto file as a buffer/string or pass a parsed protobuf-schema object
     
-    var messages = protobufLib(fs.readFileSync(`/home/vasiliy/workdirs/2fa-cabinet-git/models/proto/${req.params.service}.proto`));
+    var path = require('path');
+    var filePath = path.join(__dirname, `../models/proto/${req.params.service}.proto`);
+    var messages = protobufLib(fs.readFileSync(filePath));
 
     let users = [];
     for (let i = 0; i < AllUsersData.length; i++) {
@@ -74,14 +71,13 @@ exports.getAllClients = async function (req, res, next) {
             users.push(decodeDataBase64);
         }
     }
-    // console.log(users);
     return res.json(users);
 }
 
 // Get One Client from State
 exports.getClient = async function (req, res, next) {
 
-    let userStateAddress = 'http://localhost:8008/state/' + req.params.address;
+    let userStateAddress = `${ENV.VALIDATOR_REST_API_HTTP}/state/${req.params.address}`;
     var service; 
     if (req.params.address.includes('cd242e')) {
         service = 'kaztel';
@@ -105,7 +101,7 @@ exports.checkClientNumber = async function (req, res, next) {
 
     let address = await ClientTFService.addressHashCreate(req.params.service, req.params.phoneNumber);
 
-    let userStateAddress = 'http://localhost:8008/state/' + address;
+    let userStateAddress = `${ENV.VALIDATOR_REST_API_HTTP}/state/${address}`;
 
     let headers = {
         'Content-Type': 'application/octet-stream'
@@ -172,34 +168,3 @@ exports.updateClient = async function (req, res, next) {
 
     return res;
 }
-
-// // module.exports.getUsersData = getUsersData;
-
-
-// //src/modules/api/controllsers/user.controller.ts
-// // начинаем слушать изменения адресов
-// //     let ws = new WebSocket('ws:localhost:8008/subscriptions');
-// //     ws.onopen = () => {
-// //         ws.send(JSON.stringify({
-// //             'action': 'subscribe',
-// //             'address_prefixes': addresses
-// //         }));
-// //     };
-// //     ws.onmessage = mess => {
-// //         const data = JSON.parse(mess.data);
-// //         let responseSend = false;
-
-// //         for (let i = 0; i < data.state_changes.length; i++) {
-// //             const stateChange = data.state_changes[i];
-// //             if (addresses.indexOf(stateChange.address) !== -1) {
-// //                 const _user = messagesService.User.decode(new Buffer(stateChange.value, 'base64'));                
-// //                 
-// //             }
-// //         }
-// //     };
-// //     ws.onclose = () => {
-// //         ws.send(JSON.stringify({
-// //             'action': 'unsubscribe'
-// //         }));
-// //     };
-// //  }

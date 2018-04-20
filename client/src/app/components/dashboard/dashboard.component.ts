@@ -5,6 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,7 +19,10 @@ export class DashboardComponent implements OnInit {
   dbClearStatus: any;
   allLogs: any;
 
-  constructor(private http: HttpClient, private authService: AuthService, private router: Router, private route: ActivatedRoute,
+  constructor(private http: HttpClient,
+    private authService: AuthService,
+    private router: Router,
+    private route: ActivatedRoute,
     public snackBar: MatSnackBar) { }
 
 
@@ -27,13 +31,11 @@ export class DashboardComponent implements OnInit {
   }
 
   openSnackBar(message: string) {
-    this.snackBar.open(message, '', {
-      duration: 7000,
-    });
+    this.snackBar.open(message, '', { duration: 7000, });
   }
 
   uploadState(service) {
-    this.http.get(`http://localhost:8080/api/clients/state/update?service=${service}`).subscribe(data => {
+    this.http.get(`${environment.apiUrl}api/clients/state/update?service=${service}`).subscribe(data => {
       if (data['status'] === 200) {
         this.openSnackBar('Состояние блокчейн успешно загружено в БД.');
         this.router.navigate(['/dashboard']);
@@ -42,14 +44,13 @@ export class DashboardComponent implements OnInit {
   }
 
   uploadLog() {
-    this.http.get(`http://localhost:8080/api/clients/state/log`).subscribe(data => {
+    this.http.get(`${environment.apiUrl}api/clients/state/log`).subscribe(data => {
       this.allLogs = data['data'];
     });
   }
 
   dbClear() {
-    this.http.get(`http://localhost:8080/api/clientsdb/drop`).subscribe(data => {
-
+    this.http.get(`${environment.apiUrl}api/clientsdb/drop`).subscribe(data => {
       if (data['status'] && data['status'] === 400) {
         this.openSnackBar('Ошибка удаления коллекции блокчейн из БД! Проверьте наполнение таблицы.');
       } else {
@@ -58,5 +59,4 @@ export class DashboardComponent implements OnInit {
       }
     });
   }
-
 }

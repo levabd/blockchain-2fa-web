@@ -4,6 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-service-clients-table',
@@ -47,7 +48,7 @@ export class ServiceClientsTableComponent implements OnInit, AfterViewInit {
   }
 
   getClients(service) {
-    this.http.get(`http://localhost:8080/api/clientsdb?service=${service}`).subscribe(data => {
+    this.http.get(`${environment.apiUrl}api/clientsdb?service=${service}`).subscribe(data => {
       this.clients = data['data']['docs'];
       this.dataSource = new MatTableDataSource<Element>(this.clients);
       this.dataSource.paginator = this.paginator;

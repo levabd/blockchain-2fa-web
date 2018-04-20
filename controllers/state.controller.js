@@ -1,3 +1,5 @@
+const ENV = require('../config/environment');
+
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
@@ -13,9 +15,6 @@ const _hash = (x) => crypto.createHash('sha512').update(x).digest('hex').toLower
 
 const fs = require('fs');
 const protobufLib = require('protocol-buffers');
-require('../middleware/console-log2file');
-console.file('/home/vasiliy/workdirs/2fa-cabinet-git/logs/file.log');
-
 
 
 const getState = (options) => {
@@ -55,9 +54,11 @@ let stackUsers = async function (state, serviceNameHash) {
     if (serviceNameHash == '5f1db9') {
         service = 'tfa';
     }
-
-    console.log(`${DateService.getDate()} | Download State Message: Загружены данные из блокчейн | Поиск соответствия: state.Address.contains  (${service}| hash = ${serviceNameHash})`);
-    var messages = protobufLib(fs.readFileSync(`/home/vasiliy/workdirs/2fa-cabinet-git/models/proto/${service}.proto`));
+    
+    var path = require('path');    
+    var filePath = path.join(__dirname, `../models/proto/${service}.proto`);
+    console.log(`${DateService.getDate()} | Download State Message: Загружены данные из блокчейн | Поиск соответствия: state.Address.contains  (${service}| hash = ${serviceNameHash})`);    
+    var messages = protobufLib(fs.readFileSync(filePath));
 
     for (let i = 0; i < state.data.length; i++) {
         if (state.data[i].address.includes(serviceNameHash)) {
@@ -152,7 +153,7 @@ exports.updateUsersData = async function (req, res, next) {
 
     var limit = req.query.limit ? req.query.limit : 100;
 
-    let userState = `http://localhost:8008/state?limit=${limit}`;
+    let userState = `${ENV.VALIDATOR_REST_API_HTTP}/state?limit=${limit}`;
     let headers = {
         'Content-Type': 'application/octet-stream'
     }
@@ -160,7 +161,7 @@ exports.updateUsersData = async function (req, res, next) {
     let genOptions = ClientTFService.generateOptions(userState, headers);
 
     let stateResult = await getAllUsersData(genOptions, serviceNameHash, headers);
-    console.file(); // go back to writing to stdout
+    
     return res.status(200).json({
         status: 200,
         result: `Finish! Downloaded all pages from state to database`,
@@ -186,108 +187,3 @@ exports.getLog = async function (req, res, next) {
     //     if (err) throw err;
     // });
 }
-
-// function(req, res, next) {
-//     if(req.url==="somethingorAnother") {
-//       res.setHeader("content-type", "some/type");
-//       fs.createReadStream("./toSomeFile").pipe(res);
-//     } else {
-//       next(); // not our concern, pass along to next middleware function
-//     }
-//   }
-
-// createClient = async function (client) {
-//     // Creating a new Mongoose Object by using the new keyword
-//     var newClient = new Client({
-//         PhoneNumber: client.PhoneNumber,
-//         Uin: client.Uin,
-//         Name: client.Name,
-//         IsVerified: client.IsVerified,
-//         Email: client.Email,
-//         Sex: client.Sex,
-//         BirthDate: client.BirthDate,
-//         Logs: client.Logs,
-//         address: client.address
-//     })
-
-//     try {
-
-//         // Saving the Client 
-//         var savedClient = await newClient.save();
-
-//         return savedClient;
-//     } catch (e) {
-
-//         // return a Error message describing the reason     
-//         throw Error("Error while Creating Client")
-//     }
-// }
-
-// let client = {
-//     PhoneNumber: '77281482201',
-//     Uin: 225468416843,
-//     Name: 'James Bond 0',
-//     IsVerified: false,
-//     Email: 'jb@ee.ru',
-//     Sex: 'male',
-//     Birthdate: 2012554112,
-//     Logs: [],
-//     address: '5f1db9350ace3e0da347015ba4e274bd50a6d62fe93c46e722a8d7cee43155451680f3'
-// }
-
-// createClient(client);
-
-
-
-
-
-
-// /* SAVE client */
-// router.post('/', function (req, res, next) {
-//     Client.create(req.body, function (err, post) {
-//         if (err) return next(err);
-//         res.json(post);
-//     });
-// });
-
-
-// function checkClient(user, cb) {
-//     Client.find({
-//         PhoneNumber: user.PhoneNumber
-//     }, function (docs) {
-//         if (docs.length) {
-//             cb('false');
-//         } else {
-//             cb('true');
-//         }
-//     });
-// }
-
-// function createClient(_client) {
-//     return new Promise(function (resolve, reject) {
-//         var client = new Client();
-//         client.PhoneNumber = _client.PhoneNumber;
-//         client.Uin = _client.Uin;
-//         client.Name = _client.Name;
-//         client.IsVerified = _client.IsVerified;
-//         client.Email = _client.Email;
-//         client.Sex = _client.Sex;
-//         client.BirthDate = _client.BirthDate;
-//         client.Logs = _client.Logs;
-//         client.address = _client.address;
-//         resolve(client);
-//     })
-// }
-
-// function checkClient(_client, match) {
-//     return new Promise(function (resolve, reject) {
-//         Client.find(match, function (err, docs) {
-//             if (!docs.length) {
-//                 resolve(_client);
-//             } else {
-//                 // console.log(`User with ${self.PhoneNumber} already exists`);
-//                 reject(new Error(`User with phone number ${_client.PhoneNumber} already exists`));
-//             }
-//         });
-//     });
-// }

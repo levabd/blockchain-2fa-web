@@ -6,6 +6,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import { AuthService } from '../../services/auth.service';
 import { MatSnackBar } from '@angular/material';
 import { DatePipe } from '@angular/common';
+import { environment } from '../../../environments/environment';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/forkJoin';
@@ -17,13 +18,7 @@ import 'rxjs/add/operator/map';
   styleUrls: ['./client-create.component.css'],
   encapsulation: ViewEncapsulation.None,
   providers: [
-    // The locale would typically be provided on the root module of your application. We do it at
-    // the component level here, due to limitations of our example generation script.
     { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
-
-    // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
-    // `MatMomentDateModule` in your applications root module. We provide it at the component level
-    // here, due to limitations of our example generation script.
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
     { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
   ],
@@ -62,6 +57,7 @@ export class ClientCreateComponent implements OnInit {
   datePipe: DatePipe = new DatePipe('en-US');
   service: any;
   Loading: any = false;
+
   constructor(
     private http: HttpClient,
     private authService: AuthService,
@@ -75,9 +71,7 @@ export class ClientCreateComponent implements OnInit {
   }
 
   openSnackBar(message: string) {
-    this.snackBar.open(message, '', {
-      duration: 7000,
-    });
+    this.snackBar.open(message, '', { duration: 7000, });
   }
 
   checkClients() {
@@ -131,8 +125,8 @@ export class ClientCreateComponent implements OnInit {
 
   checkInAllServices(phoneNumber) {
     return Observable.forkJoin(
-      this.http.get('http://localhost:8080/api/clients/check/tfa/' + phoneNumber),
-      this.http.get('http://localhost:8080/api/clients/check/kaztel/' + phoneNumber)
+      this.http.get(`${environment.apiUrl}api/clients/check/tfa/${phoneNumber}`),
+      this.http.get(`${environment.apiUrl}api/clients/check/kaztel/${phoneNumber}`)
     );
   }
 
@@ -152,12 +146,9 @@ export class ClientCreateComponent implements OnInit {
   }
 
   postClient(service, route = true) {
-    // let serviceName: any;
-    // if (service === 'tfa') { serviceName = 'TFA'; }
-    // if (service === 'kaztel') { serviceName = 'Казахтелеком'; }
     this.client['service'] = service;
     this.client['IsVerified'] = false;
-    this.http.post('http://localhost:8080/api/clients/', this.client)
+    this.http.post(`${environment.apiUrl}api/clients/`, this.client)
       .subscribe(res => {
         if (res['success']) {
           this.openSnackBar(res['message'] + ' в сети ');
@@ -166,7 +157,6 @@ export class ClientCreateComponent implements OnInit {
         if (!res['success']) { this.openSnackBar(res['message'] + ' ' + res['error']); this.router.navigate(['/dashboard']); }
       }, (err) => {
         console.log(err);
-      }
-      );
+      });
   }
 }

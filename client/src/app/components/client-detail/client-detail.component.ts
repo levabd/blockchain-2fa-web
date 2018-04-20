@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { AuthService } from '../../services/auth.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-client-detail',
@@ -18,6 +19,7 @@ export class ClientDetailComponent implements OnInit, AfterViewInit {
   client = {};
   clientLog: any;
   edit: any = true;
+  address: any;
 
   constructor(private http: HttpClient, private authService: AuthService, private router: Router, private route: ActivatedRoute, ) { }
 
@@ -26,18 +28,15 @@ export class ClientDetailComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  /**
-     * Set the paginator after the view init since this component will
-     * be able to query its view for the initialized paginator.
-     */
   applyFilter(filterValue: string) {
-    filterValue = filterValue.trim(); // Remove whitespace
-    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches{
+    filterValue = filterValue.trim();
+    filterValue = filterValue.toLowerCase();
     this.dataSource.filter = filterValue;
   }
 
   ngOnInit() {
     this.role = this.authService.isAdmin(this.authService.loadUser());
+    this.address = this.route.snapshot.params['id'];
     this.getClientDetail(this.route.snapshot.params['id']);
   }
 
@@ -46,13 +45,11 @@ export class ClientDetailComponent implements OnInit, AfterViewInit {
   }
 
   editMode() {
-    if (this.route.snapshot.params['id'].includes('cd242e') && this.role === 'superadmin') {
-      this.edit = false;
-    }
+    if (this.route.snapshot.params['id'].includes('cd242e') && this.role === 'superadmin') { this.edit = false; }
   }
 
   getClientDetail(id) {
-    this.http.get('http://localhost:8080/api/clients/' + id).subscribe(data => {
+    this.http.get(`${environment.apiUrl}api/clients/${id}`).subscribe(data => {
       this.client = data;
       this.editMode();
       this.clientLog = data['Logs'];
@@ -60,31 +57,9 @@ export class ClientDetailComponent implements OnInit, AfterViewInit {
       this.dataSource.paginator = this.paginator;
     });
   }
-
-  deleteClient(id) {
-    this.http.delete('http://localhost:8080/clients/' + id)
-      .subscribe(res => {
-        this.router.navigate(['/clients']);
-      }, (err) => {
-        console.log(err);
-      }
-      );
-  }
-
 }
 
-// export interface Element {
-//   phoneNumber: string;
-//   uin: number;
-//   name: string;
-//   isVerified: boolean;
-//   email: string;
-//   sex: string;
-//   birthDate: string;
-//   address: string;
-// }
-
-export interface Element {
+export interface ClientLogs {
   Event: string;
   Status: string;
   Code: number;
@@ -94,38 +69,3 @@ export interface Element {
   Method: string;
   Cert: string;
 }
-
-// { Name: 'string',
-// sawtooth-kaztel-sc-tfa-tp |   PhoneNumber: '77770214417',
-// sawtooth-kaztel-sc-tfa-tp |   Uin: 11635451200,
-// sawtooth-kaztel-sc-tfa-tp |   Birthdate: 124224534,
-// sawtooth-kaztel-sc-tfa-tp |   Email: 'string@mail.ru',
-// sawtooth-kaztel-sc-tfa-tp |   Sex: 'male',
-// sawtooth-kaztel-sc-tfa-tp |   PushToken: 'string',
-// sawtooth-kaztel-sc-tfa-tp |   Logs: 
-// sawtooth-kaztel-sc-tfa-tp |    { '1': 
-// sawtooth-kaztel-sc-tfa-tp |       { ActionTime: 1521619058.07,
-// sawtooth-kaztel-sc-tfa-tp |         ExpiredAt: 1521619478.07,
-// sawtooth-kaztel-sc-tfa-tp |         Event: 'login',
-// sawtooth-kaztel-sc-tfa-tp |         Method: 'sms',
-// sawtooth-kaztel-sc-tfa-tp |         Status: 'SEND_CODE',
-// sawtooth-kaztel-sc-tfa-tp |         Embeded: undefined,
-// sawtooth-kaztel-sc-tfa-tp |         Cert: undefined,
-// sawtooth-kaztel-sc-tfa-tp |         Code: 235122 },
-// sawtooth-kaztel-sc-tfa-tp |      '2': 
-// sawtooth-kaztel-sc-tfa-tp |       { ActionTime: 1521619107.082,
-// sawtooth-kaztel-sc-tfa-tp |         ExpiredAt: 1521619527.082,
-// sawtooth-kaztel-sc-tfa-tp |         Event: 'login',
-// sawtooth-kaztel-sc-tfa-tp |         Embeded: undefined,
-// sawtooth-kaztel-sc-tfa-tp |         Status: 'VALID',
-// sawtooth-kaztel-sc-tfa-tp |         Code: 235122,
-// sawtooth-kaztel-sc-tfa-tp |         Cert: undefined },
-// sawtooth-kaztel-sc-tfa-tp |      '3': 
-// sawtooth-kaztel-sc-tfa-tp |       { ActionTime: 1521619212.461,
-// sawtooth-kaztel-sc-tfa-tp |         ExpiredAt: 1521619632.461,
-// sawtooth-kaztel-sc-tfa-tp |         Event: 'login',
-// sawtooth-kaztel-sc-tfa-tp |         Method: 'push',
-// sawtooth-kaztel-sc-tfa-tp |         Status: 'SEND_CODE',
-// sawtooth-kaztel-sc-tfa-tp |         Embeded: undefined,
-// sawtooth-kaztel-sc-tfa-tp |         Cert: undefined,
-// sawtooth-kaztel-sc-tfa-tp |         Code: 201844 } } }

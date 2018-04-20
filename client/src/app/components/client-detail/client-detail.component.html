@@ -1,6 +1,6 @@
 <div class="client-detail-container">
   <div class="client-detail-actions">
-    <button *ngIf="edit" mat-raised-button class="action-button" color="primary" [routerLink]="['/client-edit', client.address]">РЕДАКТИРОВАТЬ</button>
+    <button *ngIf="edit" mat-raised-button class="action-button" color="primary" [routerLink]="['/client-edit', address]">РЕДАКТИРОВАТЬ</button>
     <div>
       <button mat-raised-button class="action-button" color="primary" [routerLink]="['/client-create']">НОВЫЙ ПОЛЬЗОВАТЕЛЬ</button>
       <button mat-raised-button class="action-button" color="primary" [routerLink]="['/dashboard']">ВСЕ ПОЛЬЗОВАТЕЛИ</button>
@@ -75,6 +75,15 @@
     </mat-list>
   </div>
 
+  <div class="log-table-container" *ngIf="!client.Logs">
+    <mat-list dense>
+      <h2 mat-subheader>История действий пользователя</h2>
+      <mat-divider></mat-divider>
+      <mat-list-item>
+          <p mat-line>История действий пользователя ведется в базе клиента. Для доступа к истории пользователя откройте просмотр из таблицы клиента</p>
+      </mat-list-item>
+    </mat-list>
+  </div>
   <div class="log-table-container" *ngIf="client.Logs">
     <mat-list dense>
       <h2 mat-subheader>История действий пользователя</h2>

@@ -1,3 +1,4 @@
+const ENV = require('../config/environment');
 const {
     createContext,
     CryptoFactory
@@ -18,14 +19,9 @@ const decode = buf => JSON.parse(buf.toString());
 const crypto = require('crypto');
 const _hash = (x) => crypto.createHash('sha512').update(x).digest('hex').toLowerCase();
 
+const path = require('path');
 const fs = require('fs');
 const protobufLib = require('protocol-buffers');
-// pass a proto file as a buffer/string or pass a parsed protobuf-schema object
-// var messages = protobufLib(fs.readFileSync('./proto/service_client.proto'));
-// var messages = protobufLib(fs.readFileSync('go/src/tfa/service/service.proto'))
-// Saving the context of this module inside the _this variable
-_this = this;
-
 
 exports.generateOptions = (_url, headers) => {
     let options = {
@@ -42,7 +38,6 @@ exports.generateOptions = (_url, headers) => {
 }
 
 exports.getState = (options, method, service) => {
-    // return new pending promise
     return new Promise((resolve, reject) => {
         request.get(options, (err, response) => {
 
@@ -50,13 +45,10 @@ exports.getState = (options, method, service) => {
 
             if (!(JSON.parse(response.body).error)) {
                 var dataBase64 = JSON.parse(response.body).data
-                // console.log(dataBase64);
                 if (method === 'all') resolve(dataBase64);
-                // var decodeDataBase64 = cbor.decode(new Buffer(dataBase64, 'base64'));
-                //  console.log(decodeDataBase64);
                 if (method === 'one') {
-                    const messages = protobufLib(fs.readFileSync(`/home/vasiliy/workdirs/2fa-cabinet-git/models/proto/${service}.proto`));
-                    // const messages = protobufLib(fs.readFileSync(`../models/proto/${service}.proto`));
+                    var filePath = path.join(__dirname, `../models/proto/${service}.proto`);
+                    var messages = protobufLib(fs.readFileSync(filePath));
                     var decodeDataBase64 = messages.User.decode(new Buffer(dataBase64, 'base64'));
                     if (decodeDataBase64.AdditionalData) {
                         decodeDataBase64.AdditionalData = JSON.parse(JSON.parse(decodeDataBase64.AdditionalData));
@@ -103,14 +95,14 @@ exports.payloadCreate = (body, action) => {
         }
     }
     if (body.AdditionalData) addData = JSON.stringify(body.AdditionalData);
-        
+
     if (body.service == 'kaztel') {
         payload = {
             Action: action, // create | update | delete
             PhoneNumber: body.PhoneNumber,
             PayloadUser: {
                 PhoneNumber: body.PhoneNumber,
-                Uin: body.Uin, 
+                Uin: body.Uin,
                 Name: body.Name,
                 IsVerified: body.IsVerified,
                 Email: body.Email,
@@ -131,9 +123,9 @@ exports.payloadCreate = (body, action) => {
 exports.batchListBytesCreate = (payload, service, address) => {
     return new Promise((resolve, reject) => {
         console.log(`Into batchListBytesCreate | payload = ${JSON.stringify(payload)} | service = ${service} | address = ${address} |`);
-        // const payloadBytes = cbor.encode(payload);
-        const messages = protobufLib(fs.readFileSync(`/home/vasiliy/workdirs/2fa-cabinet-git/models/proto/${service}.proto`));
-        // const messages = protobufLib(fs.readFileSync(`../models/proto/${service}.proto`));
+        
+        var filePath = path.join(__dirname, `../models/proto/${service}.proto`);
+        const messages = protobufLib(fs.readFileSync(filePath));
         const payloadBytes = messages.SCPayload.encode(payload);
 
         console.log('payloadBytes.length.', payloadBytes);
@@ -258,7 +250,7 @@ const checkBatchStatus = function (res, batchStatusesLink, address) {
 exports.createClient = function (batchListBytes) {
     return new Promise((resolve, reject) => {
         request.post({
-            url: 'http://127.0.0.1:8008/batches',
+            url: `${ENV.VALIDATOR_REST_API_HTTP}/batches`,
             body: batchListBytes,
             //for sawtooth-apache-basic-auth-proxy
             // auth: {

@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import {RouterModule, Routes} from '@angular/router';
-import { FlashMessagesModule } from 'angular2-flash-messages';
 
 import {FlexLayoutModule} from '@angular/flex-layout';
 import { MaterialModule } from 'app/material.module';
@@ -63,8 +62,7 @@ const appRoutes: Routes =  [
     HttpModule,
     HttpClientModule,
     FlexLayoutModule,
-    RouterModule.forRoot(appRoutes),
-    FlashMessagesModule.forRoot()
+    RouterModule.forRoot(appRoutes)
   ],
   providers: [ValidateService, AuthService, AuthGuard, { provide: MatPaginatorIntl, useClass: MatPaginatorIntlRu}],
   bootstrap: [AppComponent]

@@ -1,36 +1,32 @@
-
 // Gettign the Newly created Mongoose Model we just created 
-var Client = require('../models/client.model')
+var Client = require('../models/client.model');
 
-// Saving the context of this module inside the _this variable
-_this = this
 
-// Async function to get the To do List
-exports.getClients = async function(query, page, limit){
+exports.getClients = async function (query, page, limit) {
 
     // Options setup for the mongoose paginate
     var options = {
         page,
         limit
     }
-    
+
     // Try Catch the awaited promise to handle the error 
-    
+
     try {
-        var clients = await Client.paginate(query, options)
-        
+        var clients = await Client.paginate(query, options);
+
         // Return the clients list that was retured by the mongoose promise
         return clients;
 
     } catch (e) {
 
         // return a Error message describing the reason 
-        throw Error('Error while Paginating Clients')
+        throw Error('Error while Paginating Clients');
     }
 }
 
-exports.createClient = async function(client){
-    
+exports.createClient = async function (client) {
+
     // Creating a new Mongoose Object by using the new keyword
     var newClient = new Client({
         PhoneNumber: client.PhoneNumber,
@@ -44,36 +40,36 @@ exports.createClient = async function(client){
         address: client.address
     })
 
-    try{
+    try {
 
         // Saving the Client 
-        var savedClient = await newClient.save()
+        var savedClient = await newClient.save();
 
         return savedClient;
-    }catch(e){
-      
+    } catch (e) {
+
         // return a Error message describing the reason     
-        throw Error("Error while Creating Client")
+        throw Error("Error while Creating Client");
     }
 }
 
-exports.updateClient = async function(client){
-    var id = client.id
+exports.updateClient = async function (client) {
+    var id = client.id;
 
-    try{
+    try {
         //Find the old Client Object by the Id
-    
+
         var oldClient = await Client.findById(id);
-    }catch(e){
-        throw Error("Error occured while Finding the Client")
+    } catch (e) {
+        throw Error("Error occured while Finding the Client");
     }
 
     // If no old Client Object exists return false
-    if(!oldClient){
+    if (!oldClient) {
         return false;
     }
 
-    console.log(oldClient)
+    console.log(oldClient);
 
     //Edit the Client Object
     oldClient.PhoneNumber = client.PhoneNumber;
@@ -86,27 +82,28 @@ exports.updateClient = async function(client){
     oldClient.Logs = client.Logs;
     oldClient.address = client.address;
 
+    console.log(oldClient);
 
-    console.log(oldClient)
-
-    try{
-        var savedClient = await oldClient.save()
+    try {
+        var savedClient = await oldClient.save();
         return savedClient;
-    }catch(e){
+    } catch (e) {
         throw Error("And Error occured while updating the Client");
     }
 }
 
-exports.deleteClient = async function(id){
-    
+exports.deleteClient = async function (id) {
+
     // Delete the Client
-    try{
-        var deleted = await Client.remove({_id: id})
-        if(deleted.result.n === 0){
-            throw Error("Client Could not be deleted")
+    try {
+        var deleted = await Client.remove({
+            _id: id
+        });
+        if (deleted.result.n === 0) {
+            throw Error("Client Could not be deleted");
         }
         return deleted
-    }catch(e){
-        throw Error("Error Occured while Deleting the Client")
+    } catch (e) {
+        throw Error("Error Occured while Deleting the Client");
     }
 }
