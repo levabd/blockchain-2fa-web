@@ -11,7 +11,7 @@ import { MatSnackBar } from '@angular/material';
 export class NavbarComponent implements OnInit {
   @Output() sidenavToogle = new EventEmitter<void>();
   constructor(
-    private authService: AuthService,
+    public authService: AuthService,
     private router: Router,
     public snackBar: MatSnackBar) { }
 

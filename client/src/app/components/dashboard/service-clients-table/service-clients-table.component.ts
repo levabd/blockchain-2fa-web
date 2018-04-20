@@ -28,7 +28,7 @@ export class ServiceClientsTableComponent implements OnInit, AfterViewInit {
    * Set the paginator after the view init since this component will
    * be able to query its view for the initialized paginator.
    */
-  applyFilter(filterValue: string, service) {
+  applyFilter(filterValue: string) {
     filterValue = filterValue.trim(); // Remove whitespace
     filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
     this.dataSource.filter = filterValue;

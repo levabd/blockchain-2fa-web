@@ -48,7 +48,7 @@ Build Client production
 // Build prod to folder ./public 
 // or set path into ./client/angular-cli.json "outDir" env
 $ cd client
-$ ng build --env=prod
+$ ng build --prod --env=prod
 ```
 License
 ----
