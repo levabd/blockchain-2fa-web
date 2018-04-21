@@ -2,7 +2,7 @@
     "ignore": [
       "logs/*",
       "oldm/*",
-      "public_old/*",    
+      "public/*",    
       "dist/*"
     ]
   }
