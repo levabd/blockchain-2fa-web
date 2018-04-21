@@ -12,7 +12,7 @@
     <section class="edit-client-form" fxLayout="column" fxLayoutAlign="center center">
       <form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" (ngSubmit)="updateClient()" #clientForm="ngForm">
         <mat-form-field hintLabel="Максимум 50 символов">
-          <input required matInput type="text" placeholder="ФИО клиента" name="Name" [(ngModel)]="client.Name" #nameInput="ngModel"
+          <input required matInput type="text" placeholder="ФИО клиента" name="Name" [ngModel]="client?.Name" (ngModelChange)="client.Name = $event" #nameInput="ngModel"
             oninput="this.value=this.value.replace(/[^а-яА-Я\s]+/g,'');" maxlength="50">
           <mat-icon matSuffix>person</mat-icon>
           <mat-hint align="end">{{nameInput.value?.length || 0}}/50</mat-hint>
@@ -21,8 +21,8 @@
           <mat-error></mat-error>
         </mat-form-field>
         <mat-form-field hintLabel="Формат номера 77XXXXXXXXX">
-          <input required matInput type="tel" placeholder="Номер телефона" name="PhoneNumber" [(ngModel)]="client.PhoneNumber" #phoneNumberInput="ngModel"
-            oninput="this.value=this.value.replace(/[^0-9]/g,'');" maxlength="11" [disabled]="client.PhoneNumber">
+          <input required matInput type="tel" placeholder="Номер телефона" name="PhoneNumber" [ngModel]="client?.PhoneNumber" (ngModelChange)="client.PhoneNumber = $event"  #phoneNumberInput="ngModel"
+            oninput="this.value=this.value.replace(/[^0-9]/g,'');" maxlength="11" [disabled]="client?.PhoneNumber">
           <mat-icon matSuffix>phone</mat-icon>
           <mat-hint align="end">{{phoneNumberInput.value?.length || 0}}/11</mat-hint>
           <mat-error *ngIf="phoneNumberInput.hasError('required')">Поле не должно быть пустым</mat-error>
@@ -30,7 +30,7 @@
           <mat-error></mat-error>
         </mat-form-field>
         <mat-form-field hintLabel="Максимум 12 цифр">
-          <input required matInput type="text" placeholder="ИИН" name="Uin" [(ngModel)]="client.Uin" #uinInput="ngModel" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+          <input required matInput type="text" placeholder="ИИН" name="Uin" [ngModel]="client?.Uin" (ngModelChange)="client.Uin = $event" #uinInput="ngModel" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
             maxlength="12" [disabled]="existingClient">
           <mat-icon matSuffix>contacts</mat-icon>
           <mat-hint align="end">{{uinInput.value?.length || 0}}/12</mat-hint>
@@ -40,7 +40,7 @@
         </mat-form-field>
   
         <mat-form-field hintLabel="Максимум 50 символов">
-          <input required matInput type="email" placeholder="E-mail" name="Email" [(ngModel)]="client.Email" #emailInput="ngModel"
+          <input required matInput type="email" placeholder="E-mail" name="Email" [ngModel]="client?.Email" (ngModelChange)="client.Email = $event" #emailInput="ngModel"
             maxlength="50" [disabled]="existingClient">
           <mat-icon matSuffix>email</mat-icon>
           <mat-hint align="end">{{emailInput.value?.length || 0}}/50</mat-hint>
@@ -50,7 +50,7 @@
         </mat-form-field>
   
         <mat-form-field>
-          <mat-select required placeholder="Пол" name="Sex" [(ngModel)]="client.Sex" [disabled]="existingClient">
+          <mat-select required placeholder="Пол" name="Sex" [ngModel]="client?.Sex" (ngModelChange)="client.Sex = $event" [disabled]="existingClient">
             <mat-option *ngFor="let sex of sexs" [value]="sex.value">
               {{sex.viewValue}}
             </mat-option>
@@ -66,7 +66,7 @@
           </mat-form-field> -->
   
         <mat-form-field hintLabel="Формат даты ДД.ММ.ГГГГ" *ngIf="!existingClient">
-          <input matInput placeholder="Дата рождения" name="Birthdate" [(ngModel)]="client.Birthdate" [disabled]="existingClient" onkeyup="var v = this.value;
+          <input matInput placeholder="Дата рождения" name="Birthdate"  [ngModel]="client?.Birthdate" (ngModelChange)="client.Birthdate = $event" [disabled]="existingClient" onkeyup="var v = this.value;
           if (v.match(/^\d{2}$/) !== null) {
               if (!parseInt(this.value) || parseInt(this.value) > 31){
                 this.value = '';
@@ -86,8 +86,8 @@
           }" maxlength="10" type="text">
           <mat-icon matSuffix>date_range</mat-icon>
         </mat-form-field>
-        <mat-form-field hintLabel="Максимум 6 цифр" *ngIf="role=='admin' && client.AdditionalData">
-          <input required matInput type="text" placeholder="Персональный аккаунт" name="PersonalAccount" [(ngModel)]="client.AdditionalData.PersonalAccount"
+        <mat-form-field hintLabel="Максимум 6 цифр" *ngIf="role=='admin' && client?.AdditionalData">
+          <input required matInput type="text" placeholder="Персональный аккаунт" name="PersonalAccount" [ngModel]="client?.AdditionalData.PersonalAccount" (ngModelChange)="client.AdditionalData.PersonalAccount = $event" 
             #personalAccountInput="ngModel" oninput="this.value=this.value.replace(/[^0-9]/g,'');" maxlength="6">
           <mat-icon matSuffix>account_box</mat-icon>
           <mat-hint align="end">{{personalAccountInput.value?.length || 0}}/6</mat-hint>
@@ -96,8 +96,8 @@
           <mat-error></mat-error>
         </mat-form-field>
   
-        <mat-form-field *ngIf="role=='admin' && client.AdditionalData">
-          <mat-select required placeholder="Регион" name="Region" [(ngModel)]="client.AdditionalData.Region">
+        <mat-form-field *ngIf="role=='admin' && client?.AdditionalData">
+          <mat-select required placeholder="Регион" name="Region" [ngModel]="client?.AdditionalData.Region" (ngModelChange)="client.AdditionalData.Region = $event" >
             <mat-option *ngFor="let region of regionsRu" [value]="region.value">
               {{region.value}}
             </mat-option>

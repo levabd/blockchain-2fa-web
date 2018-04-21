@@ -7,6 +7,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { AuthService } from '../../services/auth.service';
 import { environment } from '../../../environments/environment';
 
+import Client from '../../models/client.model';
+
 @Component({
   selector: 'app-client-detail',
   templateUrl: './client-detail.component.html',
@@ -38,6 +40,7 @@ export class ClientDetailComponent implements OnInit, AfterViewInit {
     this.role = this.authService.isAdmin(this.authService.loadUser());
     this.address = this.route.snapshot.params['id'];
     this.getClientDetail(this.route.snapshot.params['id']);
+    this.editMode();
   }
 
   ngAfterViewInit() {
@@ -51,9 +54,7 @@ export class ClientDetailComponent implements OnInit, AfterViewInit {
   getClientDetail(id) {
     this.http.get(`${environment.apiUrl}api/clients/${id}`).subscribe(data => {
       this.client = data;
-      this.editMode();
       this.clientLog = data['Logs'];
-      this.clientLog = data['Sex'];
       this.dataSource = new MatTableDataSource<Element>(this.clientLog);
       this.dataSource.paginator = this.paginator;
     });
