@@ -47,7 +47,7 @@ app.use('/api', api);
 
 // Index Route
 app.get('/', (req, res) => {
-  res.send('invaild endpoint');
+  res.send('API кабинета не отвечает. Обратитесь к системному администратору.');
 });
 
 app.get('*', (req, res) => {
