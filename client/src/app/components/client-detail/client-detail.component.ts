@@ -16,7 +16,7 @@ import { environment } from '../../../environments/environment';
 export class ClientDetailComponent implements OnInit, AfterViewInit {
 
   role: any;
-  client = {};
+  client: any;
   clientLog: any;
   edit: any = true;
   address: any;
@@ -53,13 +53,14 @@ export class ClientDetailComponent implements OnInit, AfterViewInit {
       this.client = data;
       this.editMode();
       this.clientLog = data['Logs'];
+      this.clientLog = data['Sex'];
       this.dataSource = new MatTableDataSource<Element>(this.clientLog);
       this.dataSource.paginator = this.paginator;
     });
   }
 }
 
-export interface ClientLogs {
+export interface Element {
   Event: string;
   Status: string;
   Code: number;

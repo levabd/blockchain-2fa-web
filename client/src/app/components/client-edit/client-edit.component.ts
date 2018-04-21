@@ -26,7 +26,7 @@ import 'rxjs/add/operator/map';
 })
 export class ClientEditComponent implements OnInit {
 
-  client = {};
+  client: any;
   existingClient = false;
   errorData = {};
   sexs = [

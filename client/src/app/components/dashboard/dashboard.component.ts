@@ -36,7 +36,7 @@ export class DashboardComponent implements OnInit {
 
   uploadState(service) {
     this.http.get(`${environment.apiUrl}api/clients/state/update?service=${service}`).subscribe(data => {
-      if (data['status'] === 200) {
+      if (data['status'] && data['status'] === 200) {
         this.openSnackBar('Состояние блокчейн успешно загружено в БД.');
         this.router.navigate(['/dashboard']);
       }
