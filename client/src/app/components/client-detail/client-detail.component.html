@@ -75,16 +75,7 @@
     </mat-list>
   </div>
 
-  <div class="log-table-container" *ngIf="!client?.Logs">
-    <mat-list dense>
-      <h2 mat-subheader>История действий пользователя</h2>
-      <mat-divider></mat-divider>
-      <mat-list-item>
-          <p mat-line>История действий пользователя ведется в базе клиента. Для доступа к истории пользователя откройте просмотр из таблицы клиента</p>
-      </mat-list-item>
-    </mat-list>
-  </div>
-  <div class="log-table-container" *ngIf="client?.Logs">
+  <div class="log-table-container">
     <mat-list dense>
       <h2 mat-subheader>История действий пользователя</h2>
       <mat-divider></mat-divider>
@@ -94,63 +85,67 @@
         <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Фильтр событий">
       </mat-form-field>
     </div>
+    <div class="client-log-table-container">
+      <mat-table #table [dataSource]="dataSource">
 
-    <mat-table #table [dataSource]="dataSource">
+        <!-- Event Column -->
+        <ng-container matColumnDef="Event">
+          <mat-header-cell *matHeaderCellDef> Событие </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.Event}} </mat-cell>
+        </ng-container>
 
-      <!-- Event Column -->
-      <ng-container matColumnDef="Event">
-        <mat-header-cell *matHeaderCellDef> Событие </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.Event}} </mat-cell>
-      </ng-container>
+        <!-- Status Column -->
+        <ng-container matColumnDef="Status">
+          <mat-header-cell *matHeaderCellDef> Статус </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.Status}} </mat-cell>
+        </ng-container>
 
-      <!-- Status Column -->
-      <ng-container matColumnDef="Status">
-        <mat-header-cell *matHeaderCellDef> Статус </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.Status}} </mat-cell>
-      </ng-container>
+        <!-- Code Column -->
+        <ng-container matColumnDef="Code">
+          <mat-header-cell *matHeaderCellDef> Код </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.Code}} </mat-cell>
+        </ng-container>
 
-      <!-- Code Column -->
-      <ng-container matColumnDef="Code">
-        <mat-header-cell *matHeaderCellDef> Код </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.Code}} </mat-cell>
-      </ng-container>
+        <!-- ExpiredAt Column -->
+        <ng-container matColumnDef="ExpiredAt">
+          <mat-header-cell *matHeaderCellDef> Истекает </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.ExpiredAt | date: 'dd.MM.yyyy'}} </mat-cell>
+        </ng-container>
 
-      <!-- ExpiredAt Column -->
-      <ng-container matColumnDef="ExpiredAt">
-        <mat-header-cell *matHeaderCellDef> Истекает </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.ExpiredAt | date: 'dd.MM.yyyy'}} </mat-cell>
-      </ng-container>
+        <!-- Embeded Column -->
+        <ng-container matColumnDef="Embeded">
+          <mat-header-cell *matHeaderCellDef> Прикреплен </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.Embeded}} </mat-cell>
+        </ng-container>
 
-      <!-- Embeded Column -->
-      <ng-container matColumnDef="Embeded">
-        <mat-header-cell *matHeaderCellDef> Прикреплен </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.Embeded}} </mat-cell>
-      </ng-container>
+        <!-- ActionTime Column -->
+        <ng-container matColumnDef="ActionTime">
+          <mat-header-cell *matHeaderCellDef> Время действия </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.ActionTime | date: 'dd.MM.yyyy'}} </mat-cell>
+        </ng-container>
 
-      <!-- ActionTime Column -->
-      <ng-container matColumnDef="ActionTime">
-        <mat-header-cell *matHeaderCellDef> Время действия </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.ActionTime | date: 'dd.MM.yyyy'}} </mat-cell>
-      </ng-container>
+        <!-- Method Column -->
+        <ng-container matColumnDef="Method">
+          <mat-header-cell *matHeaderCellDef> Метод </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.Method}} </mat-cell>
+        </ng-container>
 
-      <!-- Method Column -->
-      <ng-container matColumnDef="Method">
-        <mat-header-cell *matHeaderCellDef> Метод </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.Method}} </mat-cell>
-      </ng-container>
+        <!-- Cert Column -->
+        <ng-container matColumnDef="Cert">
+          <mat-header-cell *matHeaderCellDef> Сертификат </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.Cert}} </mat-cell>
+        </ng-container>
 
-      <!-- Cert Column -->
-      <ng-container matColumnDef="Cert">
-        <mat-header-cell *matHeaderCellDef> Сертификат </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.Cert}} </mat-cell>
-      </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+      <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true"></mat-paginator>
+      <div class="no-log-container" *ngIf="!client?.Logs">
+          <mat-divider></mat-divider>
+          <p>История действий пользователя ведется в базе клиента. Для доступа к истории пользователя откройте просмотр из таблицы Казахтелеком</p>
+      </div>
+    </div>
 
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-    </mat-table>
-
-    <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true">
-    </mat-paginator>
   </div>
 
 </div>
