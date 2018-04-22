@@ -49,13 +49,12 @@ exports.dropCollectionClients = async function (req, res, next) {
         // Drop the 'foo' collection from the current database
         var dropClients = await mongoose.connection.db.dropCollection('clients');
         console.log('Succesfully Clients Collection Dropped');
-        return res.status(204).json({
-            status: 204,
-            message: "Succesfully Clients Collection Dropped",
-            data: dropClients
+        return res.json({
+            status: 200,
+            message: "Succesfully Clients Collection Dropped"
         })
     } catch (e) {
-        return res.status(400).json({
+        return res.json({
             status: 400,
             message: e.message
         })

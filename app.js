@@ -23,9 +23,9 @@ const api = require('./routes/api.route');
 
 
 
-var logFilePath = path.join(__dirname, `./logs/file.log`);
-require('./middleware/console-log2file');
-console.file(logFilePath);
+// var logFilePath = path.join(__dirname, `./logs/file.log`);
+// require('./middleware/console-log2file');
+// console.file(logFilePath);
 
 // CORS Middleware
 app.use(cors());

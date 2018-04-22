@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl:  process.env['API_URL_ENV'] || 'http://localhost:8080/',
+  apiUrl:  process.env['API_URL_ENV'] || 'http://allatrack-tfa.tk:3002/',
 };

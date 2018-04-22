@@ -89,9 +89,17 @@ exports.getClient = async function (req, res, next) {
         'Content-Type': 'application/octet-stream'
     }
 
-    let optionsOne = await ClientTFService.generateOptions(userStateAddress, headers);
-
-    let userData = await ClientTFService.getState(optionsOne, 'one', service);
+    try {
+        var optionsOne = await ClientTFService.generateOptions(userStateAddress, headers);
+    } catch (e) {
+        console.log(`Error in generate options for one client: ${e}`);
+    }
+    
+    try {
+        var userData = await ClientTFService.getState(optionsOne, 'one', service);
+    } catch (e) {
+        console.log(`Error in get state for one client: ${e}`);
+    }    
 
     res.json(userData);
 }
@@ -99,7 +107,11 @@ exports.getClient = async function (req, res, next) {
 // Check Client Number 
 exports.checkClientNumber = async function (req, res, next) {
 
-    let address = await ClientTFService.addressHashCreate(req.params.service, req.params.phoneNumber);
+    try {
+        var address = await ClientTFService.addressHashCreate(req.params.service, req.params.phoneNumber);
+    } catch (e) {
+        console.log(`Error in address hash create for check client number: ${e}`);
+    }
 
     let userStateAddress = `${ENV.VALIDATOR_REST_API_HTTP}/state/${address}`;
 
@@ -107,7 +119,11 @@ exports.checkClientNumber = async function (req, res, next) {
         'Content-Type': 'application/octet-stream'
     }
 
-    let optionsOne = await ClientTFService.generateOptions(userStateAddress, headers);
+    try {
+        var optionsOne = await ClientTFService.generateOptions(userStateAddress, headers);
+    } catch (e) {
+        console.log(`Error in generate options for check client number: ${e}`);
+    }
 
     let getOneUserData = ClientTFService.getState(optionsOne, 'one', req.params.service)
         .then((data) => {
@@ -130,24 +146,44 @@ exports.checkClientNumber = async function (req, res, next) {
 exports.createClient = async function (req, res, next) {
 
     //Create Payload
-    let payload = await ClientTFService.payloadCreate(req.body, 0);
+    try {
+        var payload = await ClientTFService.payloadCreate(req.body, 0);
+    } catch (e) {
+        console.log(`Error in Create Payload for createClient: ${e}`);
+    }
 
     // Create Address
-    let address = await ClientTFService.addressHashCreate(req.body.service, req.body.PhoneNumber);
+    try {
+        var address = await ClientTFService.addressHashCreate(req.body.service, req.body.PhoneNumber);
+    } catch (e) {
+        console.log(`Error in Create Address for createClient: ${e}`);
+    }
 
     // Create Batch List of Bytes
-    let batchListBytes = await ClientTFService.batchListBytesCreate(payload, req.body.service, address);
+    try {
+        var batchListBytes = await ClientTFService.batchListBytesCreate(payload, req.body.service, address);
+    } catch (e) {
+        console.log(`Error in Create Batch List of Bytes for createClient: ${e}`);
+    }
 
     // Try Create Client & Get Batch Status Link
-    let batchStatusesLink = await ClientTFService.createClient(batchListBytes);
+    try {
+        var batchStatusesLink = await ClientTFService.createClient(batchListBytes);
+    } catch (e) {
+        console.log(`Error in Create Client & Get Batch Status Link for createClient: ${e}`);
+    }
 
     // Check Batch State Status & Response
-    let checkBatchStatus = await ClientTFService.checkBatchStatus(res, batchStatusesLink, address);
+    try {
+        var checkBatchStatus = await ClientTFService.checkBatchStatus(res, batchStatusesLink, address);
+    } catch (e) {
+        console.log(`Error in Check Batch State Status & Response for createClient: ${e}`);
+    }
 
     return res;
 }
 
-// Create Client in State
+// Update Client in State
 exports.updateClient = async function (req, res, next) {
 
     //Create Payload

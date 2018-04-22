@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { AuthService } from '../../services/auth.service';
+import { ValidateService } from '../../services/validate.service';
 import { MatSnackBar } from '@angular/material';
 import { DatePipe } from '@angular/common';
 
@@ -60,6 +61,7 @@ export class ClientEditComponent implements OnInit {
 
   constructor(private http: HttpClient,
     private authService: AuthService,
+    private validateService: ValidateService,
     private router: Router,
     private adapter: DateAdapter<any>,
     public snackBar: MatSnackBar,
@@ -101,6 +103,16 @@ export class ClientEditComponent implements OnInit {
 
 
   updateClient() {
+    // Required Fields
+    if (!this.validateService.validateClient(this.client)) {
+      this.openSnackBar('Пожалуйста заполните все поля');
+      return false;
+    }
+    // Validate Email
+    if (!this.validateService.validateEmail(this.client['Email'])) {
+      this.openSnackBar('Введите корректный Email');
+      return false;
+    }
     this.setService();
     this.http.post(`${environment.apiUrl}api/clients/update/`, this.client)
       .subscribe(res => {

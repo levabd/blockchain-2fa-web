@@ -184,12 +184,6 @@ const checkBatchStatus = function (res, batchStatusesLink, address) {
     return new Promise((resolve, reject) => {
         request.get({
             url: batchStatusesLink,
-            //for sawtooth-apache-basic-auth-proxy
-            // auth: {
-            //     user: 'sawtooth',
-            //     pass: 'z92aGlTdLVYk6mR',
-            //     sendImmediately: true
-            // },
             headers: {
                 'Content-Type': 'application/octet-stream'
             }
@@ -206,7 +200,7 @@ const checkBatchStatus = function (res, batchStatusesLink, address) {
 
                 case 'COMMITTED':
                     // console.log(`Batch status is ${batchStatus}`);                   
-                    res.status(201).json({
+                    res.json({
                         status: 201,
                         success: true,
                         address: address || false,
@@ -228,7 +222,7 @@ const checkBatchStatus = function (res, batchStatusesLink, address) {
                     batchErrorMessage = JSON.parse(response.body).data[0].invalid_transactions[0].message;
                     // console.log(`Error = ${batchErrorMessage}`);
 
-                    res.status(400).json({
+                    res.json({
                         status: 400,
                         success: false,
                         message: 'Ошибка при создании пользователя',

@@ -62,7 +62,7 @@
           <mat-icon matSuffix>contacts</mat-icon>
           <mat-hint align="end">{{uinInput.value?.length || 0}}/12</mat-hint>
           <mat-error *ngIf="uinInput.hasError('required')">Поле не должно быть пустым</mat-error>
-          <mat-error *ngIf="!uinInput.hasError('required')">Неверный формат номера</mat-error>
+          <mat-error *ngIf="!uinInput.hasError('required')">Неверный формат ИНН</mat-error>
           <mat-error></mat-error>
         </mat-form-field>
 

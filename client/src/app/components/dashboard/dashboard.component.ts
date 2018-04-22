@@ -51,10 +51,15 @@ export class DashboardComponent implements OnInit {
 
   dbClear() {
     this.http.get(`${environment.apiUrl}api/clientsdb/drop`).subscribe(data => {
-      if (data['status'] && data['status'] === 400) {
-        this.openSnackBar('Ошибка удаления коллекции блокчейн из БД! Проверьте наполнение таблицы.');
+      if (data['status']) {
+        if (data['status'] === 200) {
+          this.openSnackBar('Коллекция блокчейн успешно удалена из БД');
+        }
+        if (data['status'] === 400) {
+          this.openSnackBar('Ошибка удаления коллекции блокчейн из БД! Проверьте наполнение таблицы.');
+        }
       } else {
-        this.openSnackBar('Коллекция блокчейн была удалена из БД.');
+        this.openSnackBar('Ответ от сервера не получен. Операция невозможна. Связитесь с системным администратором');
         this.router.navigate(['/dashboard']);
       }
     });

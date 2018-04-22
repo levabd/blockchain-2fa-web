@@ -7,6 +7,7 @@ import { AuthService } from '../../services/auth.service';
 import { MatSnackBar } from '@angular/material';
 import { DatePipe } from '@angular/common';
 import { environment } from '../../../environments/environment';
+import { ValidateService } from '../../services/validate.service';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/forkJoin';
@@ -61,6 +62,7 @@ export class ClientCreateComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private authService: AuthService,
+    private validateService: ValidateService,
     private router: Router,
     private adapter: DateAdapter<any>,
     public snackBar: MatSnackBar) { }
@@ -131,6 +133,16 @@ export class ClientCreateComponent implements OnInit {
   }
 
   saveClient() {
+    // Required Fields
+    if (!this.validateService.validateClient(this.client)) {
+      this.openSnackBar('Пожалуйста заполните все поля');
+      return false;
+    }
+    // Validate Email
+    if (!this.validateService.validateEmail(this.client['Email'])) {
+      this.openSnackBar('Введите корректный Email');
+      return false;
+    }
     if (this.role === 'superadmin') {
       this.postClient('tfa');
     }
