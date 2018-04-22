@@ -3,11 +3,12 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-import { AuthService } from '../../services/auth.service';
 import { MatSnackBar } from '@angular/material';
 import { DatePipe } from '@angular/common';
 import { environment } from '../../../environments/environment';
+import { AuthService } from '../../services/auth.service';
 import { ValidateService } from '../../services/validate.service';
+import { ClientsService } from '../../services/clients.service';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/forkJoin';
@@ -62,6 +63,7 @@ export class ClientCreateComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private authService: AuthService,
+    private clientsService: ClientsService,
     private validateService: ValidateService,
     private router: Router,
     private adapter: DateAdapter<any>,
@@ -127,8 +129,8 @@ export class ClientCreateComponent implements OnInit {
 
   checkInAllServices(phoneNumber) {
     return Observable.forkJoin(
-      this.http.get(`${environment.apiUrl}api/clients/check/tfa/${phoneNumber}`),
-      this.http.get(`${environment.apiUrl}api/clients/check/kaztel/${phoneNumber}`)
+      this.clientsService.checkPhoneNumber('tfa', phoneNumber),
+      this.clientsService.checkPhoneNumber('kaztel', phoneNumber)
     );
   }
 
@@ -160,8 +162,7 @@ export class ClientCreateComponent implements OnInit {
   postClient(service, route = true) {
     this.client['service'] = service;
     this.client['IsVerified'] = false;
-    this.http.post(`${environment.apiUrl}api/clients/`, this.client)
-      .subscribe(res => {
+    this.clientsService.createClient(this.client).subscribe(res => {
         if (res['success']) {
           this.openSnackBar(res['message'] + ' в сети ');
           if (route) { this.router.navigate(['/client-details', res['address']]); }

@@ -76,7 +76,8 @@ exports.getAllClients = async function (req, res, next) {
 
 // Get One Client from State
 exports.getClient = async function (req, res, next) {
-
+    var token = getToken(req.headers);
+    if (token) {
     let userStateAddress = `${ENV.VALIDATOR_REST_API_HTTP}/state/${req.params.address}`;
     var service; 
     if (req.params.address.includes('cd242e')) {
@@ -101,8 +102,26 @@ exports.getClient = async function (req, res, next) {
         console.log(`Error in get state for one client: ${e}`);
     }    
 
-    res.json(userData);
+    res.json(userData);}
+    else {
+        return res.status(403).send({success: false, msg: 'Unauthorized.'});
+      }
 }
+
+
+const getToken = function (headers) {
+    if (headers && headers.authorization) {
+      var parted = headers.authorization.split(' ');
+      if (parted.length === 2) {
+        return parted[1];
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  };
+
 
 // Check Client Number 
 exports.checkClientNumber = async function (req, res, next) {

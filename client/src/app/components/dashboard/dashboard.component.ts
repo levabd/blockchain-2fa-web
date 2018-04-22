@@ -5,6 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { ClientsService } from '../../services/clients.service';
 import { environment } from '../../../environments/environment';
 
 @Component({
@@ -21,6 +22,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(private http: HttpClient,
     private authService: AuthService,
+    private clientsService: ClientsService,
     private router: Router,
     private route: ActivatedRoute,
     public snackBar: MatSnackBar) { }
@@ -35,7 +37,7 @@ export class DashboardComponent implements OnInit {
   }
 
   uploadState(service) {
-    this.http.get(`${environment.apiUrl}api/clients/state/update?service=${service}`).subscribe(data => {
+    this.clientsService.updateState(service).subscribe(data => {
       if (data['status'] && data['status'] === 200) {
         this.openSnackBar('Состояние блокчейн успешно загружено в БД.');
         this.router.navigate(['/dashboard']);
@@ -44,13 +46,13 @@ export class DashboardComponent implements OnInit {
   }
 
   uploadLog() {
-    this.http.get(`${environment.apiUrl}api/clients/state/log`).subscribe(data => {
+    this.clientsService.getLogs().subscribe(data => {
       this.allLogs = data['data'];
     });
   }
 
   dbClear() {
-    this.http.get(`${environment.apiUrl}api/clientsdb/drop`).subscribe(data => {
+    this.clientsService.deleteDatabaseCollection().subscribe(data => {
       if (data['status']) {
         if (data['status'] === 200) {
           this.openSnackBar('Коллекция блокчейн успешно удалена из БД');

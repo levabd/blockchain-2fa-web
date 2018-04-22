@@ -1,10 +1,11 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { AuthService } from '../../services/auth.service';
+import { ClientsService } from '../../services/clients.service';
 import { environment } from '../../../environments/environment';
 
 import Client from '../../models/client.model';
@@ -23,7 +24,11 @@ export class ClientDetailComponent implements OnInit, AfterViewInit {
   edit: any = true;
   address: any;
 
-  constructor(private http: HttpClient, private authService: AuthService, private router: Router, private route: ActivatedRoute, ) { }
+  constructor(private http: HttpClient,
+    private authService: AuthService,
+    private clientsService: ClientsService,
+    private router: Router,
+    private route: ActivatedRoute ) { }
 
   displayedColumns = ['Event', 'Status', 'Code', 'ExpiredAt', 'Embeded', 'ActionTime', 'Method', 'Cert'];
   dataSource = new MatTableDataSource<Element>(this.clientLog);
@@ -52,12 +57,16 @@ export class ClientDetailComponent implements OnInit, AfterViewInit {
   }
 
   getClientDetail(id) {
-    this.http.get(`${environment.apiUrl}api/clients/${id}`).subscribe(data => {
+    this.clientsService.getClient(id).subscribe(data => {
       this.client = data;
       this.clientLog = data['Logs'];
       this.dataSource = new MatTableDataSource<Element>(this.clientLog);
       this.dataSource.paginator = this.paginator;
-    });
+    },
+      err => {
+        console.log(err);
+        return false;
+      });
   }
 }
 

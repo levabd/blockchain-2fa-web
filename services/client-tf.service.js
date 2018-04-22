@@ -27,12 +27,6 @@ exports.generateOptions = (_url, headers) => {
     let options = {
         url: _url,
         headers: headers
-        //for sawtooth-apache-basic-auth-proxy
-        // auth: {
-        //     user: 'sawtooth',
-        //     pass: 'z92aGlTdLVYk6mR',
-        //     sendImmediately: true
-        // },
     }
     return options;
 }
@@ -55,14 +49,11 @@ exports.getState = (options, method, service) => {
                     }
                     resolve(decodeDataBase64);
                 }
-
             }
 
             if (JSON.parse(response.body).error) {
-                var errorData = JSON.parse(response.body)
-                resolve(errorData);
+                resolve(JSON.parse(response.body));
             }
-
         })
     });
 }
@@ -95,7 +86,6 @@ exports.payloadCreate = (body, action) => {
         }
     }
     if (body.AdditionalData) addData = JSON.stringify(body.AdditionalData);
-
     if (body.service == 'kaztel') {
         payload = {
             Action: action, // create | update | delete
@@ -112,23 +102,16 @@ exports.payloadCreate = (body, action) => {
             }
         }
     }
-    // AdditionalData = {
-    //     Region: body.Region,
-    //     PersonalAccount: body.PersonalAccount
-    // }
-    // console.log(payload);
     return (payload);
 }
 
 exports.batchListBytesCreate = (payload, service, address) => {
     return new Promise((resolve, reject) => {
         console.log(`Into batchListBytesCreate | payload = ${JSON.stringify(payload)} | service = ${service} | address = ${address} |`);
-        
+
         var filePath = path.join(__dirname, `../models/proto/${service}.proto`);
         const messages = protobufLib(fs.readFileSync(filePath));
         const payloadBytes = messages.SCPayload.encode(payload);
-
-        console.log('payloadBytes.length.', payloadBytes);
 
         const {
             createHash
@@ -198,8 +181,7 @@ const checkBatchStatus = function (res, batchStatusesLink, address) {
 
             switch (batchStatus) {
 
-                case 'COMMITTED':
-                    // console.log(`Batch status is ${batchStatus}`);                   
+                case 'COMMITTED':                  
                     res.json({
                         status: 201,
                         success: true,
@@ -210,17 +192,13 @@ const checkBatchStatus = function (res, batchStatusesLink, address) {
                     break;
 
                 case 'PENDING':
-                    // console.log(`Batch status is ${batchStatus}`);
-
                     setTimeout(function () {
                         checkBatchStatus(res, batchStatusesLink, address);
                     }, 1000);
                     break;
 
                 case 'INVALID':
-                    //Get Invalid Transactions Error Message
                     batchErrorMessage = JSON.parse(response.body).data[0].invalid_transactions[0].message;
-                    // console.log(`Error = ${batchErrorMessage}`);
 
                     res.json({
                         status: 400,
@@ -229,7 +207,6 @@ const checkBatchStatus = function (res, batchStatusesLink, address) {
                         error: batchErrorMessage,
                     })
                     resolve();
-                    // console.log(`Batch status is ${batchStatus} for ADDRESS:(${address})`)
                     break;
 
                 default:
@@ -246,12 +223,6 @@ exports.createClient = function (batchListBytes) {
         request.post({
             url: `${ENV.VALIDATOR_REST_API_HTTP}/batches`,
             body: batchListBytes,
-            //for sawtooth-apache-basic-auth-proxy
-            // auth: {
-            //     user: 'sawtooth',
-            //     pass: 'z92aGlTdLVYk6mR',
-            //     sendImmediately: true
-            // },
             headers: {
                 'Content-Type': 'application/octet-stream'
             }

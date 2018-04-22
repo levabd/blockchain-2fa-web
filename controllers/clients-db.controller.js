@@ -46,7 +46,7 @@ exports.dropCollectionClients = async function (req, res, next) {
     const mongoose = require('mongoose');
 
     try {
-        // Drop the 'foo' collection from the current database
+        // Drop the 'clients' collection from the current database
         var dropClients = await mongoose.connection.db.dropCollection('clients');
         console.log('Succesfully Clients Collection Dropped');
         return res.json({

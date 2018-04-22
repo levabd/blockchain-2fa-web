@@ -1,28 +1,27 @@
 var express = require('express')
-
 var router = express.Router()
+const passport = require('passport');
 
-// Getting the Client Controller that we just created
-
+// Getting the Client Controller and State Controller
 var ClientController = require('../../controllers/clients-tf.controller');
 var StateController = require('../../controllers/state.controller');
 
-
 // Map each API to the Controller Functions
 
-router.get('/:address', ClientController.getClient);
+// if need to load clients from state
+// router.get('/all/:service', passport.authenticate('jwt', { session: false }), ClientController.getAllClients);
 
-router.get('/all/:service', ClientController.getAllClients);
+router.get('/:address', passport.authenticate('jwt', { session: false}), ClientController.getClient);
 
-router.get('/check/:service/:phoneNumber', ClientController.checkClientNumber);
+router.get('/check/:service/:phoneNumber', passport.authenticate('jwt', { session: false }), ClientController.checkClientNumber);
 
-router.get('/state/update', StateController.updateUsersData);
+router.post('/', passport.authenticate('jwt', { session: false }), ClientController.createClient);
 
-router.get('/state/log/', StateController.getLog);
+router.post('/update/', passport.authenticate('jwt', { session: false }), ClientController.updateClient);
 
-router.post('/', ClientController.createClient);
+router.get('/state/update', passport.authenticate('jwt', { session: false}), StateController.updateUsersData);
 
-router.post('/update/', ClientController.updateClient);
+router.get('/state/log/', passport.authenticate('jwt', { session: false }), StateController.getLog);
 
 // Export the Router
 

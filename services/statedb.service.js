@@ -43,9 +43,9 @@ loadStateProxy = async function () {
 
 loadState = async function () {
     let ws = new WebSocket(`ws:${ENV.VALIDATOR_REST_API_HOST}/subscriptions`);
-    console.log(`WebSocket has been connected`);
-
+    
     ws.onopen = () => {
+        console.log(`WebSocket has been connected`);
         ws.send(JSON.stringify({
             'action': 'subscribe',
             'address_prefixes': ['5f1db9', 'cd242e']
@@ -102,13 +102,18 @@ saveState = async function (data) {
                     Logs: decodeDataBase64.Logs,
                     AdditionalData: decodeDataBase64.AdditionalData
                 });
-                newClient.save(function (err, user) {
-                    if (err) {
-                        console.log(`${DateService.getDate()} | Client ${decodeDataBase64.PhoneNumber}  hasn't been created in database | Error: ${err}`);
-                    } else {
-                        console.log(`${DateService.getDate()} | Client ${decodeDataBase64.PhoneNumber}  has been created in database`);
-                    }
-                });
+                try {
+                    newClient.save(function (err, user) {
+                        if (err) {
+                            console.log(`${DateService.getDate()} | Client ${decodeDataBase64.PhoneNumber}  hasn't been created in database | Error: ${err}`);
+                        } else {
+                            console.log(`${DateService.getDate()} | Client ${decodeDataBase64.PhoneNumber}  has been created in database`);
+                        }
+                    });                    
+                } catch (e) {
+                    console.log(`${DateService.getDate()} | Client ${decodeDataBase64.PhoneNumber}  hasn't been created in database | Error: ${e}`);
+                }
+
             }
             if (oldClient) {
                 console.log('Client is existed', JSON.stringify(oldClient.Address))
@@ -126,16 +131,21 @@ saveState = async function (data) {
                 oldClient.PushToken = decodeDataBase64.PushToken;
                 AdditionalData = decodeDataBase64.AdditionalData;
 
-                oldClient.save(function (err, user) {
-                    if (err) {
-                        console.log(`${DateService.getDate()} | Client ${decodeDataBase64.PhoneNumber}  hasn't been updated in database | Error: ${err}`);
-                    } else {
-                        console.log(`${DateService.getDate()} | Client ${decodeDataBase64.PhoneNumber}  has been updated in database`);
-                    }
-                });
+                try {
+                    oldClient.save(function (err, user) {
+                        if (err) {
+                            console.log(`${DateService.getDate()} | Client ${decodeDataBase64.PhoneNumber}  hasn't been updated in database | Error: ${err}`);
+                        } else {
+                            console.log(`${DateService.getDate()} | Client ${decodeDataBase64.PhoneNumber}  has been updated in database`);
+                        }
+                    });                    
+                } catch (e) {
+                    console.log(`${DateService.getDate()} | Client ${decodeDataBase64.PhoneNumber}  hasn't been updated in database | Error: ${e}`);
+                }
             }
         });
     }
 }
 
-ENV.USE_PROXY_SERVER ? loadStateProxy() : loadState();
+// ENV.USE_PROXY_SERVER ? loadStateProxy() : loadState();
+loadState();

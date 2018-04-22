@@ -3,16 +3,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-import { AuthService } from '../../services/auth.service';
-import { ValidateService } from '../../services/validate.service';
 import { MatSnackBar } from '@angular/material';
 import { DatePipe } from '@angular/common';
-
-import { environment } from '../../../environments/environment';
-
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/operator/map';
+
+import { AuthService } from '../../services/auth.service';
+import { ValidateService } from '../../services/validate.service';
+import { ClientsService } from '../../services/clients.service';
+
+import { environment } from '../../../environments/environment';
+
 
 @Component({
   selector: 'app-client-edit',
@@ -61,6 +63,7 @@ export class ClientEditComponent implements OnInit {
 
   constructor(private http: HttpClient,
     private authService: AuthService,
+    private clientsService: ClientsService,
     private validateService: ValidateService,
     private router: Router,
     private adapter: DateAdapter<any>,
@@ -78,7 +81,7 @@ export class ClientEditComponent implements OnInit {
   }
 
   getClient(id) {
-    this.http.get(`${environment.apiUrl}api/clients/${id}`).subscribe(data => {
+    this.clientsService.getClient(id).subscribe(data => {
       if (this.role === 'superadmin') {
         this.client = data;
         this.client['Birthdate'] = this.getDate(data['Birthdate']);
@@ -114,7 +117,7 @@ export class ClientEditComponent implements OnInit {
       return false;
     }
     this.setService();
-    this.http.post(`${environment.apiUrl}api/clients/update/`, this.client)
+    this.clientsService.updateClient(this.client)
       .subscribe(res => {
         if (res['success']) { this.openSnackBar(res['message']); this.router.navigate(['/client-details', res['address']]); }
         if (!res['success']) { this.openSnackBar(res['message'] + ' ' + res['error']); this.router.navigate(['/dashboard']); }

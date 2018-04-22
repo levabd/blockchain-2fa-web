@@ -36,8 +36,9 @@ const getState = (options) => {
 
 
 const getPagingNextLink = (state) => {
-    // console.log(state);
+
     var pagingNextLink = '';
+    
     try {
         pagingNextLink = state.paging.next;
     } catch (e) {

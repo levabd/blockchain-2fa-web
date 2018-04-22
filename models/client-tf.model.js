@@ -11,7 +11,9 @@ class ClientTF {
       this.Sex = client.Sex;
       this.BirthDate = client.BirthDate;
       this.Logs = client.Logs;
-      this.address = client.address;
+      this.Address = client.Address;
+      this.PushToken = client.PushToken;
+      this.AdditionalData = client.AdditionalData
     }      
 
   }

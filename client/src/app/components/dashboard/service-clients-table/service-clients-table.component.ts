@@ -4,6 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
+import { ClientsService } from '../../../services/clients.service';
 import { environment } from '../../../../environments/environment';
 
 @Component({
@@ -17,7 +18,11 @@ export class ServiceClientsTableComponent implements OnInit, AfterViewInit {
   role: any;
   stateUploadStatus: any;
   allLogs: any;
-  constructor(private http: HttpClient, private authService: AuthService, private router: Router, private route: ActivatedRoute, ) { }
+  constructor(private http: HttpClient,
+    private authService: AuthService,
+    private clientsService: ClientsService,
+    private router: Router,
+    private route: ActivatedRoute, ) { }
 
   displayedColumns = ['PhoneNumber', 'Uin', 'Name', 'IsVerified', 'Email', 'Sex', 'BirthDate', 'Actions'];
   dataSource = new MatTableDataSource<Element>(this.clients);
@@ -35,7 +40,7 @@ export class ServiceClientsTableComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.getClients('tfa');
+    this.getDbClients('tfa');
     this.role = this.authService.isAdmin(this.authService.loadUser());
   }
 
@@ -47,8 +52,8 @@ export class ServiceClientsTableComponent implements OnInit, AfterViewInit {
     return localStorage.getItem('user.role');
   }
 
-  getClients(service) {
-    this.http.get(`${environment.apiUrl}api/clientsdb?service=${service}`).subscribe(data => {
+  getDbClients(service) {
+    this.clientsService.getClients(service).subscribe(data => {
       this.clients = data['data']['docs'];
       this.dataSource = new MatTableDataSource<Element>(this.clients);
       this.dataSource.paginator = this.paginator;

@@ -4,9 +4,9 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
-import {RouterModule, Routes} from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
-import {FlexLayoutModule} from '@angular/flex-layout';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialModule } from 'app/material.module';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { MatPaginatorIntlRu } from 'app/components/dashboard/matPaginatorIntlRu.module';
@@ -26,17 +26,18 @@ import { ServiceClientsTableComponent } from './components/dashboard/service-cli
 
 import { ValidateService } from './services/validate.service';
 import { AuthService } from './services/auth.service';
+import { ClientsService } from './services/clients.service';
 import { AuthGuard } from './guards/auth.guard';
 
-const appRoutes: Routes =  [
-  {path: '', component: HomeComponent},
-  {path: 'register', component: RegisterComponent},
-  {path: 'login', component: LoginComponent},
-  {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
-  {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
-  {path: 'client-details/:id', component: ClientDetailComponent, data: { title: 'Подробно о клиенте' }},
-  {path: 'client-create', component: ClientCreateComponent, data: { title: 'Создание клиента' }},
-  {path: 'client-edit/:id', component: ClientEditComponent, data: { title: 'Редактирование клиента' } },
+const appRoutes: Routes = [
+  { path: '', component: HomeComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: 'client-details/:id', component: ClientDetailComponent, data: { title: 'Подробно о клиенте' }, canActivate: [AuthGuard] },
+  { path: 'client-create', component: ClientCreateComponent, data: { title: 'Создание клиента' }, canActivate: [AuthGuard] },
+  { path: 'client-edit/:id', component: ClientEditComponent, data: { title: 'Редактирование клиента' }, canActivate: [AuthGuard] },
 ];
 
 @NgModule({
@@ -64,7 +65,7 @@ const appRoutes: Routes =  [
     FlexLayoutModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [ValidateService, AuthService, AuthGuard, { provide: MatPaginatorIntl, useClass: MatPaginatorIntlRu}],
+  providers: [ClientsService, ValidateService, AuthService, AuthGuard, { provide: MatPaginatorIntl, useClass: MatPaginatorIntlRu }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
