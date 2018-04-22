@@ -1,0 +1,13 @@
+footer {
+    /* background: #1b1e31; */
+    /* background: #35384c; */
+    background: #30336b;
+    color: #fff;
+    text-align: center;
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+    font-size: 14px;
+}
+
+.cdk-visually-hidden {
+    width: 500px;
+}

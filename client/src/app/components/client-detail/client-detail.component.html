@@ -109,7 +109,7 @@
         <!-- ExpiredAt Column -->
         <ng-container matColumnDef="ExpiredAt">
           <mat-header-cell *matHeaderCellDef> Истекает </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.ExpiredAt | date: 'dd.MM.yyyy'}} </mat-cell>
+          <mat-cell *matCellDef="let element"> {{element.ExpiredAt | date: 'dd.MM.yyyy hh:mm:ss'}} </mat-cell>
         </ng-container>
 
         <!-- Embeded Column -->
@@ -121,7 +121,7 @@
         <!-- ActionTime Column -->
         <ng-container matColumnDef="ActionTime">
           <mat-header-cell *matHeaderCellDef> Время действия </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.ActionTime | date: 'dd.MM.yyyy'}} </mat-cell>
+          <mat-cell *matCellDef="let element"> {{element.ActionTime | date: 'dd.MM.yyyy hh:mm:ss'}} </mat-cell>
         </ng-container>
 
         <!-- Method Column -->

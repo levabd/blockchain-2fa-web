@@ -46,7 +46,7 @@
           <div class="admin-delete-dbstate-container">
             <h3>Удаление состояний из БД</h3>
             <button mat-button [routerLink]="['/dashboard']" class="dbstate-update-button" color="primary" (click)="dbClear()" *ngIf="role=='superadmin'">
-              <mat-icon aria-label="Очистить базу данных">cloud_upload</mat-icon>
+              <mat-icon aria-label="Очистить базу данных">delete</mat-icon>
               Очистить
             </button>
             <p>Внимание! Потребуется повторная загрузка состояния</p>

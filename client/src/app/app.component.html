@@ -1,4 +1,13 @@
-<app-navbar></app-navbar>
-<div class="container">
-  <router-outlet></router-outlet>
+<div class="app-container" fxLayout="column" style="height:100vh;">
+  <header>
+    <app-navbar></app-navbar>
+  </header>
+  <div class="content" fxFlex>
+    <router-outlet></router-outlet>
+  </div>
+  <footer fxFlex="50px" fxLayoutAlign="bottom center" fxLayout="row">
+    <div class="copyright" fxFlex="20">&copy;2FA Service. {{year}}</div>
+    <div class="info-hints" fxFlex="60">Здесь появляются уведомления.</div> 
+    <div class="info-date" fxFlex="20"></div>
+  </footer>
 </div>

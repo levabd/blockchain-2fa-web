@@ -29,6 +29,13 @@
   padding: 10px;
 }
 
+.admin-tools-container h3 {
+  color: rgba(0, 0, 0, 0.59) !important;
+  font-size: 0.9em !important;
+  text-transform: uppercase !important;
+  font-weight: 600 !important;
+}
+
 .admin-role-container,
 .admin-state-update-container,
 .admin-delete-dbstate-container {
@@ -73,14 +80,35 @@
 }
 
 .logs-view-container {
-  height: 500px;
+  height: 400px;
   overflow: auto;
 }
 
 .dbstate-update-button,
 .state-update-button {
   width: 50%;
-  box-shadow: 0px -1px 3px 0px rgba(0, 0, 0, 0.4);
+  /* box-shadow: 0px -1px 3px 0px rgba(0, 0, 0, 0.4); */
+}
+
+.state-update-button {
+  color: rgb(255, 255, 255) !important;
+  background-color: #43A047;
+}
+
+.state-update-button:hover {
+  color: rgb(255, 255, 255) !important;
+  background-color: rgb(32, 134, 37);
+}
+
+.dbstate-update-button {
+  background-color: rgba(0, 0, 0, .7);
+  color: #ffffff !important;
+  text-transform: uppercase;
+}
+
+.dbstate-update-button:hover {
+  background-color: #f44336;
+  color: #ffffff;
 }
 
 .logs-view-container pre {
