@@ -153,8 +153,16 @@ export class ClientCreateComponent implements OnInit {
         this.postClient('kaztel');
       }
       if (!this.existingClient) {
-        this.postClient('tfa', false);
-        this.postClient('kaztel');
+        this.clientsService.checkPersonalAccount(this.client['AdditionalData']['PersonalAccount']).subscribe(res => {
+          if (res['data']['docs'].length === 0) {
+            // this.openSnackBar('Аккаунт свободен');
+            this.postClient('tfa', false);
+            this.postClient('kaztel');
+          }
+          if (res['data']['docs'].length > 0) {
+            this.openSnackBar('Пользователь с таким персональным аккаунтом уже существует!');
+          }
+        });
       }
     }
   }
@@ -163,13 +171,13 @@ export class ClientCreateComponent implements OnInit {
     this.client['service'] = service;
     this.client['IsVerified'] = false;
     this.clientsService.createClient(this.client).subscribe(res => {
-        if (res['success']) {
-          this.openSnackBar(res['message'] + ' в сети ');
-          if (route) { this.router.navigate(['/client-details', res['address']]); }
-        }
-        if (!res['success']) { this.openSnackBar(res['message'] + ' ' + res['error']); this.router.navigate(['/dashboard']); }
-      }, (err) => {
-        console.log(err);
-      });
+      if (res['success']) {
+        this.openSnackBar(res['message'] + ' в сети ');
+        if (route) { this.router.navigate(['/client-details', res['address']]); }
+      }
+      if (!res['success']) { this.openSnackBar(res['message'] + ' ' + res['error']); this.router.navigate(['/dashboard']); }
+    }, (err) => {
+      console.log(err);
+    });
   }
 }

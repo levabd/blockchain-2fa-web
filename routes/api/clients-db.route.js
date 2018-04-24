@@ -9,6 +9,8 @@ var ClientController = require('../../controllers/clients-db.controller');
 
 router.get('/', passport.authenticate('jwt', { session: false}), ClientController.getClients);
 
+router.get('/account', passport.authenticate('jwt', { session: false}), ClientController.checkPersonalAccount);
+
 router.get('/drop', passport.authenticate('jwt', { session: false}), ClientController.dropCollectionClients);
 
 // Export the Router

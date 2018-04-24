@@ -37,6 +37,12 @@ export class ClientsService {
             .map(res => res.json());
     }
 
+    checkPersonalAccount(account) {
+        const headers = this.createHeaders();
+        return this.http.get(`${environment.apiUrl}api/clientsdb/account?account=${account}`, { headers: headers })
+            .map(res => res.json());
+    }
+
     createClient(client) {
         const headers = this.createHeaders();
         return this.http.post(`${environment.apiUrl}api/clients/`, client, { headers: headers })

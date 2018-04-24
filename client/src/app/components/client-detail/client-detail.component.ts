@@ -59,7 +59,7 @@ export class ClientDetailComponent implements OnInit, AfterViewInit {
   getClientDetail(id) {
     this.clientsService.getClient(id).subscribe(data => {
       this.client = data;
-      this.clientLog = data['Logs'];
+      this.clientLog = data['Logs'].reverse();
       this.dataSource = new MatTableDataSource<Element>(this.clientLog);
       this.dataSource.paginator = this.paginator;
     },

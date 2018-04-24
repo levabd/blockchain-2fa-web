@@ -132,8 +132,24 @@ export class ClientEditComponent implements OnInit {
     }
 
     if (this.role === 'admin') {
-      this.postClient('tfa', false);
-      this.postClient('kaztel', true);
+      this.clientsService.checkPersonalAccount(this.client['AdditionalData']['PersonalAccount']).subscribe(res => {
+        // console.log(res);
+        if (res['data']['docs'].length === 0) {
+          // this.openSnackBar('Аккаунт свободен');
+          this.postClient('tfa', false);
+          this.postClient('kaztel');
+        }
+        if (res['data']['docs'].length > 0) {
+          console.log(res['data']['docs'][0]['PhoneNumber']);
+          if (res['data']['docs'][0]['PhoneNumber'] === this.client['PhoneNumber']) {
+            // this.openSnackBar('Редактирование возможно');
+            this.postClient('tfa', false);
+            this.postClient('kaztel', true);
+          } else {
+            this.openSnackBar('Пользователь с таким персональным аккаунтом уже существует!');
+          }
+        }
+      });
     }
   }
 
