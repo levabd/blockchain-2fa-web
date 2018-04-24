@@ -116,19 +116,50 @@ export class ClientEditComponent implements OnInit {
       this.openSnackBar('Введите корректный Email');
       return false;
     }
-    this.setService();
-    this.clientsService.updateClient(this.client)
-      .subscribe(res => {
-        if (res['success']) { this.openSnackBar(res['message']); this.router.navigate(['/client-details', res['address']]); }
-        if (!res['success']) { this.openSnackBar(res['message'] + ' ' + res['error']); this.router.navigate(['/dashboard']); }
-      }, (err) => {
-        console.log(err);
+
+    if (this.role === 'superadmin') {
+      this.clientsService.checkPhoneNumber('kaztel', this.client['PhoneNumber']).subscribe(res => {
+        if (!res['error']) {
+          this.client['AdditionalData'] = res['AdditionalData'];
+          this.client['Logs'] = res['Logs'];
+          this.postClient('kaztel', false);
+          this.postClient('tfa', true);
+        }
+        if (res['error']) {
+          this.postClient('tfa', true);
+        }
       });
+    }
+
+    if (this.role === 'admin') {
+      this.postClient('tfa', false);
+      this.postClient('kaztel', true);
+    }
   }
 
-  setService() {
-    if (this.role === 'superadmin') { this.client['service'] = 'tfa'; }
-    if (this.role === 'admin') { this.client['service'] = 'kaztel'; }
+  postClient(service, nav = false) {
+    this.setService(service);
+    this.clientsService.updateClient(this.client).subscribe(res => {
+      if (nav && res['success']) {
+        this.openSnackBar(`Пользователь успешно обновлен`);
+        this.router.navigate(['/client-details', res['address']]);
+      }
+      if (!res['success']) {
+        this.openSnackBar(`Ошибка при обновлении пользователя: ${res['error']}`);
+        this.router.navigate(['/dashboard']);
+      }
+    }, (err) => {
+      console.log(err);
+    });
   }
+
+  setService(service) {
+    this.client['service'] = service;
+  }
+
+  // setService() {
+  //   if (this.role === 'superadmin') { this.client['service'] = 'tfa'; }
+  //   if (this.role === 'admin') { this.client['service'] = 'kaztel'; }
+  // }
 
 }

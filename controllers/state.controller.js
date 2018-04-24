@@ -130,11 +130,24 @@ var statePageNumber = 0;
 
 let getAllUsersData = async function (genOptions, serviceNameHash, headers) {
 
-    let state = await getState(genOptions);
+    try {        
+        var state = await getState(genOptions);
+    } catch (e) {
+        console.log(`${DateService.getDate()} | Ошибка получения состояния: ${e}`);
+    }
 
-    let pagingNextLink = getPagingNextLink(state);
+    try {        
+        var pagingNextLink = getPagingNextLink(state);
+    } catch (e) {
+        console.log(`${DateService.getDate()} | Ошибка получения paging Next Link: ${e}`);
+    }
 
-    await stackUsers(state, serviceNameHash);
+    try {        
+        await stackUsers(state, serviceNameHash);
+    } catch (e) {
+        console.log(`${DateService.getDate()} | Ошибка запуска сохранения пользователей: ${e}`);
+    }
+
 
     if (pagingNextLink != null && pagingNextLink != undefined && pagingNextLink != '' && pagingNextLink.includes('http')) {
         console.log(` ${pagingNextLink}`);
