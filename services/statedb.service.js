@@ -7,7 +7,9 @@ const WebSocket = require('ws');
 const fs = require('fs');
 const path = require('path');
 const protobufLib = require('protocol-buffers');
-const DateService = require('./date.service');
+
+var moment = require('moment');
+moment.locale('ru');
 
 loadStateProxy = async function () {
     var SocksProxyAgent = require('socks-proxy-agent');
@@ -42,8 +44,8 @@ loadStateProxy = async function () {
 }
 
 loadState = async function () {
-    let ws = new WebSocket(`ws:${ENV.VALIDATOR_REST_API_HOST}/subscriptions`);
-    
+    let ws = new WebSocket(`ws:${ENV.VALIDATOR_REST_API_WS}/subscriptions`);
+    console.log(`ws:${ENV.VALIDATOR_REST_API_WS}/subscriptions`);
     ws.onopen = () => {
         console.log(`WebSocket has been connected`);
         ws.send(JSON.stringify({
@@ -60,7 +62,7 @@ loadState = async function () {
 
 
 saveState = async function (data) {
-    console.log(`${DateService.getDate()} | WebSocket Message: Состояние блокчейн изменилось | Получены новые изменения`);
+    console.log(`|* ${moment().format('DD.MM.YYYY, HH:mm:ss')} *| | WebSocket Message: Состояние блокчейн изменилось | Получены новые изменения`);
 
     for (let i = 0; i < data.state_changes.length; i++) {
         console.log(`Запись состояния в базу данных  ${i+1} из ${data.state_changes.length}`);
@@ -105,13 +107,13 @@ saveState = async function (data) {
                 try {
                     newClient.save(function (err, user) {
                         if (err) {
-                            console.log(`${DateService.getDate()} | Client ${decodeDataBase64.PhoneNumber}  hasn't been created in database | Error: ${err}`);
+                            console.log(`|* ${moment().format('DD.MM.YYYY, HH:mm:ss')} *| | Client ${decodeDataBase64.PhoneNumber}  hasn't been created in database | Error: ${err}`);
                         } else {
-                            console.log(`${DateService.getDate()} | Client ${decodeDataBase64.PhoneNumber}  has been created in database`);
+                            console.log(`|* ${moment().format('DD.MM.YYYY, HH:mm:ss')} *| | Client ${decodeDataBase64.PhoneNumber}  has been created in database`);
                         }
                     });                    
                 } catch (e) {
-                    console.log(`${DateService.getDate()} | Client ${decodeDataBase64.PhoneNumber}  hasn't been created in database | Error: ${e}`);
+                    console.log(`|* ${moment().format('DD.MM.YYYY, HH:mm:ss')} *| | Client ${decodeDataBase64.PhoneNumber}  hasn't been created in database | Error: ${e}`);
                 }
 
             }
@@ -134,13 +136,13 @@ saveState = async function (data) {
                 try {
                     oldClient.save(function (err, user) {
                         if (err) {
-                            console.log(`${DateService.getDate()} | Client ${decodeDataBase64.PhoneNumber}  hasn't been updated in database | Error: ${err}`);
+                            console.log(`|* ${moment().format('DD.MM.YYYY, HH:mm:ss')} *| | Client ${decodeDataBase64.PhoneNumber}  hasn't been updated in database | Error: ${err}`);
                         } else {
-                            console.log(`${DateService.getDate()} | Client ${decodeDataBase64.PhoneNumber}  has been updated in database`);
+                            console.log(`|* ${moment().format('DD.MM.YYYY, HH:mm:ss')} *| | Client ${decodeDataBase64.PhoneNumber}  has been updated in database`);
                         }
                     });                    
                 } catch (e) {
-                    console.log(`${DateService.getDate()} | Client ${decodeDataBase64.PhoneNumber}  hasn't been updated in database | Error: ${e}`);
+                    console.log(`|* ${moment().format('DD.MM.YYYY, HH:mm:ss')} *| | Client ${decodeDataBase64.PhoneNumber}  hasn't been updated in database | Error: ${e}`);
                 }
             }
         });

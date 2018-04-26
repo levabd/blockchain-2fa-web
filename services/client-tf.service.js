@@ -23,9 +23,16 @@ const path = require('path');
 const fs = require('fs');
 const protobufLib = require('protocol-buffers');
 
+var moment = require('moment');
+
 exports.generateOptions = (_url, headers) => {
     let options = {
         url: _url,
+        auth: {
+            user: ENV.VALIDATOR_REST_API_USER,
+            pass: ENV.VALIDATOR_REST_API_PASS,
+            sendImmediately: true
+        },
         headers: headers
     }
     return options;
@@ -69,7 +76,16 @@ exports.addressHashCreate = (service, phoneNumber) => {
 }
 
 exports.payloadCreate = (body, action) => {
+    console.log(body.Birthdate);
+    var BirthdateTimestamp = 0;
+    if (action == 0) {
+        BirthdateTimestamp = moment(body.Birthdate).unix();        
+    }
 
+    if (action == 1) {
+        BirthdateTimestamp = moment(body.Birthdate, "DD.MM.YYYY").unix();        
+    }
+    console.log(BirthdateTimestamp);
     if (body.service == 'tfa') {
         payload = {
             Action: action, // create | update | delete
@@ -81,7 +97,7 @@ exports.payloadCreate = (body, action) => {
                 IsVerified: body.IsVerified,
                 Email: body.Email,
                 Sex: body.Sex,
-                Birthdate: Date.parse(body.Birthdate)
+                Birthdate: BirthdateTimestamp
             }
         }
     }
@@ -97,7 +113,7 @@ exports.payloadCreate = (body, action) => {
                 IsVerified: body.IsVerified,
                 Email: body.Email,
                 Sex: body.Sex,
-                Birthdate: Date.parse(body.Birthdate),
+                Birthdate: BirthdateTimestamp,
                 AdditionalData: JSON.stringify(addData)
             }
         }
@@ -157,7 +173,6 @@ exports.batchListBytesCreate = (payload, service, address) => {
         const batchListBytes = protobuf.BatchList.encode({
             batches: [batch]
         }).finish();
-
         resolve(batchListBytes);
     });
 }
@@ -166,6 +181,11 @@ exports.batchListBytesCreate = (payload, service, address) => {
 const checkBatchStatus = function (res, batchStatusesLink, address) {
     return new Promise((resolve, reject) => {
         request.get({
+            auth: {
+                user: ENV.VALIDATOR_REST_API_USER,
+                pass: ENV.VALIDATOR_REST_API_PASS,
+                sendImmediately: true
+            },
             url: batchStatusesLink,
             headers: {
                 'Content-Type': 'application/octet-stream'
@@ -221,6 +241,11 @@ const checkBatchStatus = function (res, batchStatusesLink, address) {
 exports.createClient = function (batchListBytes) {
     return new Promise((resolve, reject) => {
         request.post({
+            auth: {
+                user: ENV.VALIDATOR_REST_API_USER,
+                pass: ENV.VALIDATOR_REST_API_PASS,
+                sendImmediately: true
+            },
             url: `${ENV.VALIDATOR_REST_API_HTTP}/batches`,
             body: batchListBytes,
             headers: {
@@ -235,7 +260,11 @@ exports.createClient = function (batchListBytes) {
             } catch (e) {
                 throw new Error("response.body link json parse contains error")
             }
-            resolve(batchStatusesLink);
+            
+            var replaceLink = batchStatusesLink.replace("rest.api", ENV.VALIDATOR_REST_API_HOST);
+            // console.log(`***BATCH LINK*** ${batchStatusesLink}`);
+            // console.log(`***BATCH LINK*** ${replaceLink}`);
+            resolve(replaceLink);
         });
     });
 }

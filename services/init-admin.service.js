@@ -1,7 +1,9 @@
 const ENV = require('../config/environment');
 
 const User = require('../models/user');
-const DateService = require('./date.service');
+
+var moment = require('moment');
+moment.locale('ru');
 
 exports.initRootAdministrator = () => {
     return new Promise((resolve, reject) => {
@@ -15,9 +17,9 @@ exports.initRootAdministrator = () => {
 
         User.addUser(rootAdmin, (err, user) => {
             if (err) {
-                console.log(`${DateService.getDate()} | Ошибка при регистрации корневого администратора: ${err}`);
+                console.log(`|* ${moment().format('DD.MM.YYYY, HH:mm:ss')} *| | Ошибка при регистрации корневого администратора: ${err}`);
             } else {
-                console.log(`${DateService.getDate()} | Создан корневой администратор с указанными данными`);
+                console.log(`|* ${moment().format('DD.MM.YYYY, HH:mm:ss')} *| | Создан корневой администратор с указанными данными`);
             }
         });
     });

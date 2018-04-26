@@ -29,6 +29,10 @@
             <img *ngIf="role=='admin'" src="https://cdn1.iconfinder.com/data/icons/free-large-boss-icon-set/512/Businessman.png" alt="Просто администратор">
             <p *ngIf="role=='superadmin'">Администратор 2FA</p>
             <p *ngIf="role=='admin'">Администратор Казахтелеком</p>
+            <button mat-button [routerLink]="['/register']" class="admin-create-button" color="primary" *ngIf="role=='superadmin'">
+              <!-- <mat-icon aria-label="Обновить таблицу из блокчейна TFA">cloud_upload</mat-icon> -->
+              НОВЫЙ АДМИНИСТРАТОР
+            </button>
           </div>
 
           <div class="admin-state-update-container">

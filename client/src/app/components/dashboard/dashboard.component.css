@@ -90,9 +90,21 @@
   /* box-shadow: 0px -1px 3px 0px rgba(0, 0, 0, 0.4); */
 }
 
+.admin-create-button {
+  width: 80%;
+  color: rgb(255, 255, 255) !important;
+  background-color: rgb(67, 76, 160);
+  margin-top: 10px !important;
+}
+.admin-create-button:hover {
+  color: rgb(255, 255, 255) !important;
+  background-color: rgb(30, 8, 88);
+}
+
 .state-update-button {
   color: rgb(255, 255, 255) !important;
   background-color: #43A047;
+  margin-top: 10px !important;
 }
 
 .state-update-button:hover {

@@ -84,11 +84,11 @@ export class ClientEditComponent implements OnInit {
     this.clientsService.getClient(id).subscribe(data => {
       if (this.role === 'superadmin') {
         this.client = data;
-        this.client['Birthdate'] = this.getDate(data['Birthdate']);
+        this.client['Birthdate'] = this.getDate(data['Birthdate'] * 1000);
       }
       if (this.role === 'admin') {
         this.client = data;
-        this.client['Birthdate'] = this.getDate(data['Birthdate']);
+        this.client['Birthdate'] = this.getDate(data['Birthdate'] * 1000);
         if (!this.client['AdditionalData']) { this.client['AdditionalData'] = {}; }
       }
     });

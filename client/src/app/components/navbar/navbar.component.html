@@ -15,11 +15,11 @@
         <a [routerLink]="['/profile']">ПРОФИЛЬ </a>
       </li>
       <li *ngIf="!authService.loggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-        <a [routerLink]="['/login']">ВОЙТИ </a>
+        <a [routerLink]="['/login']">ВХОД В СИСТЕМУ</a>
       </li>
-      <li *ngIf="!authService.loggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+      <!-- <li *ngIf="!authService.loggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
         <a [routerLink]="['/register']">РЕГИСТРАЦИЯ</a>
-      </li>
+      </li> -->
       <li *ngIf="authService.loggedIn()">
         <a style="cursor: pointer" (click)="onLogoutClick()">ВЫЙТИ</a>
       </li>

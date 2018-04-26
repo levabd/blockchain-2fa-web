@@ -71,7 +71,7 @@
       <!-- birthDate Column -->
       <ng-container matColumnDef="BirthDate">
         <mat-header-cell *matHeaderCellDef>Дата рождения</mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.Birthdate | date: 'dd.MM.yyyy'}} </mat-cell>
+        <mat-cell *matCellDef="let element"> {{element.Birthdate*1000 | date: 'dd.MM.yyyy'}} </mat-cell>
       </ng-container>
   
       <!-- actions Column -->

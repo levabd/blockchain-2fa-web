@@ -19,8 +19,8 @@ export class RegisterComponent implements OnInit {
   hide = true;
   emailError = false;
   roles = [
-    { value: 'admin', viewValue: 'Администратор Казтел' },
-    { value: 'superadmin', viewValue: 'Администратор TFA' }
+    { value: 'superadmin', viewValue: 'Администратор TFA' },
+    { value: 'admin', viewValue: 'Администратор Казахтелеком' }
   ];
   constructor(
     private validateService: ValidateService,
@@ -62,8 +62,8 @@ export class RegisterComponent implements OnInit {
     // Register user
     this.authService.registerUser(user).subscribe(data => {
       if (data.success) {
-        this.openSnackBar('Вы успешно зарегистрированы и можете войти', 'OK');
-        this.router.navigate(['/login']);
+        this.openSnackBar('Администратор успешно зарегистрирован в сети', 'OK');
+        this.router.navigate(['/dashboard']);
       } else {
         this.openSnackBar('Ошибка при регистрации, повторите', 'OK');
         this.router.navigate(['/register']);

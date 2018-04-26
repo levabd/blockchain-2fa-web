@@ -80,7 +80,7 @@
               this.value = v + '.';
             }
            }else if (v.match(/^\d{2}\.\d{2}\.\d{4}$/) !== null) {
-            if (!parseInt(this.value.slice(6)) || parseInt(this.value.slice(6)) > 2000 || parseInt(this.value.slice(6)) < 1910){
+            if (!parseInt(this.value.slice(6)) || parseInt(this.value.slice(6)) > 2010 || parseInt(this.value.slice(6)) < 1910){
               this.value = v.slice(0, -4);
             }
           }" maxlength="10" type="text">
