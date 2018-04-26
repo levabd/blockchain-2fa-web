@@ -45,7 +45,7 @@ loadStateProxy = async function () {
 
 loadState = async function () {
     let ws = new WebSocket(`ws:${ENV.VALIDATOR_REST_API_WS}/subscriptions`);
-    console.log(`ws:${ENV.VALIDATOR_REST_API_WS}/subscriptions`);
+    // console.log(`ws:${ENV.VALIDATOR_REST_API_WS}/subscriptions`);
     ws.onopen = () => {
         console.log(`WebSocket has been connected`);
         ws.send(JSON.stringify({

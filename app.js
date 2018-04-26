@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const passport = require('passport');
 const mongoose = require('mongoose');
-
+const RootAdmin = require('./services/init-admin.service');
 // Connect To Database
 mongoose.Promise = require('bluebird');
 mongoose.connect(ENV.DATABASE, {
@@ -22,6 +22,7 @@ const users = require('./routes/users.route');
 const api = require('./routes/api.route');
 
 
+if (ENV.INIT_ROOT_ADMIN) RootAdmin.initRootAdministrator();
 
 var logFilePath = path.join(__dirname, `./logs/file.log`);
 require('./middleware/console-log2file');
