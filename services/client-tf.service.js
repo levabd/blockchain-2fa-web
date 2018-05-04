@@ -96,6 +96,7 @@ exports.payloadCreate = (body, action) => {
                 Name: body.Name,
                 IsVerified: body.IsVerified,
                 Email: body.Email,
+                PushToken: body.PushToken,
                 Sex: body.Sex,
                 Birthdate: BirthdateTimestamp
             }
