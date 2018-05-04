@@ -88,6 +88,9 @@ export class ClientEditComponent implements OnInit {
       }
       if (this.role === 'admin') {
         this.client = data;
+        this.clientsService.checkPhoneNumber('tfa', this.client['PhoneNumber']).subscribe(clientData => {
+          if (clientData['PushToken']) { this.client['PushToken'] = clientData['PushToken']; }
+        });
         this.client['Birthdate'] = this.getDate(data['Birthdate'] * 1000);
         if (!this.client['AdditionalData']) { this.client['AdditionalData'] = {}; }
       }
