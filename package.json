@@ -22,7 +22,7 @@
     "mongoose-paginate": "^5.0.3",
     "passport": "0.4.0",
     "passport-jwt": "3.0.1",
-    "protobufjs": "^6.8.6",
+    "protobufjs": "^6.11.3",
     "protocol-buffers": "^4.0.4",
     "request": "^2.83.0",
     "sawtooth-sdk": "^1.0.1",
